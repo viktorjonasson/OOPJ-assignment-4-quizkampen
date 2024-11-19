@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 public class Client {
+    //develop
     Client(String adress, int port)  {
         try (Socket socket = new Socket(adress, port);
              PrintWriter printWriter = new PrintWriter(socket.getOutputStream());
