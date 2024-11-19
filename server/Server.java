@@ -15,9 +15,10 @@ public class Server {
              Socket clientSocket = serverSocket.accept();
              BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))) {
 
-            printWriter = new PrintWriter(clientSocket.getOutputStream());
+            printWriter = new PrintWriter(clientSocket.getOutputStream(), true);
             String request;
             String[] serverAnswer;
+
             while (true) {
                 if ((request = bufferedReader.readLine()) != null) {
                     if (request.equalsIgnoreCase("NewGame")) {
@@ -33,7 +34,6 @@ public class Server {
     protected void writeToClient(String data) {
         printWriter.println(data);
     }
-
 
     public static void main(String[] args) {
         int port = 12345;
