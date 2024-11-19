@@ -1,0 +1,41 @@
+# Ignore IntelliJ IDEA specific files
+.idea/
+
+# Ignore project-specific module files
+*.iml
+
+# Ignore build directories (useful for Java/Maven/Gradle projects)
+out/
+target/
+
+# Ignore log files
+*.log
+
+# Ignore temporary and swap files
+*.swp
+*.swo
+*.bak
+*.tmp
+
+# Ignore compiled class files
+*.class
+
+# Ignore package manager directories
+node_modules/
+bower_components/
+
+# Ignore OS-specific files (macOS, Windows)
+.DS_Store
+Thumbs.db
+
+# Ignore Maven wrapper files
+.mvn/
+
+# Ignore any custom build folders
+build/
+
+# Ignore JetBrains IDE settings folder (additional, not always necessary)
+.idea/*
+
+# Ignore any temporary Files for macOS/Windows
+._*
