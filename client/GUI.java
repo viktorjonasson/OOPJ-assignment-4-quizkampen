@@ -76,6 +76,15 @@ public class GUI extends JFrame {
         }
     }
 
+    public JButton getChosenAnswerButton(String chosenAnswer) {
+
+        for (JButton button : optionButton) {
+            if (button.getText().equals(chosenAnswer))
+                 return button;
+        }
+        return null;
+    }
+
     public void updateGUI(String[] questionAndOptions) {
         if (questionAndOptions.length -1 == optionButton.length) {
             for (int i = 0; i < optionButton.length; i++) {
