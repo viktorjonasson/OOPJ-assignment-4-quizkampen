@@ -66,6 +66,7 @@ public class GUI extends JFrame {
             buttonToChange.setBackground(incorrectColor);
         }
     }
+
     public void changeText(
             JButton[] answerButtons, JLabel questionLabel, String[] answers, String question) {
         if (answerButtons.length == answers.length) {
