@@ -18,4 +18,18 @@ public class Game {
     public void newRound() {
         curentRound++;
     }
+
+    public static boolean checkAnswer(String clientAnswer, String correctAnswer)
+    {
+
+        if (clientAnswer.equals(correctAnswer))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
+    }
 }
