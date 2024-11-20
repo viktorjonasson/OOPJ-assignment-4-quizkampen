@@ -20,7 +20,7 @@ public class ClientController {
             button.addActionListener(_ -> {
                 String answer = button.getText();
                 client.writeToServer(answer);
-                //LOCK BUTTONS
+                gui.lockAnswerButtons();
             });
         }
     }

@@ -57,6 +57,12 @@ public class GUI extends JFrame {
         }
     }
 
+    public void lockAnswerButtons(){
+        for (JButton button : optionButton) {
+            button.setEnabled(false);
+        }
+    }
+
     public void changeColor(JButton buttonToChange, boolean correctAnswer) {
         Color correctColor = new Color(83, 214, 49, 203);
         Color incorrectColor = new Color(225, 52, 123, 203);
