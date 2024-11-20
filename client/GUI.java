@@ -17,7 +17,7 @@ public class GUI extends JFrame {
     JButton continueBtn = new JButton("Fortsätt");
 
     //Getter for buttons
-    public JButton[] getOptionButton() {
+    public JButton[] getOptionButtons() {
         return optionButton;
     }
 

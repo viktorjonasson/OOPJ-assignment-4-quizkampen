@@ -7,7 +7,7 @@ public class ClientController {
     ClientController(Client client, GUI gui) {
         this.client = client;
         this.gui = gui;
-        initializeButtonListeners(gui.getAnswerButtons());
+        initializeButtonListeners(gui.getOptionButtons());
     }
 
     void initializeButtonListeners(JButton[] answerButtons) {
