@@ -8,10 +8,10 @@ public class Client {
     //develop
     Client(String adress, int port)  {
         try (Socket socket = new Socket(adress, port);
-             PrintWriter printWriter = new PrintWriter(socket.getOutputStream());
+             PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
              BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
-            requestAnswers(printWriter, "NewGame");
 
+            requestAnswers(printWriter, "NewGame");
             String answer;
             while (true) {
                 if ((answer = br.readLine()) != null) {
@@ -24,7 +24,7 @@ public class Client {
     }
 
     private void requestAnswers(PrintWriter printWriter, String request) {
-        printWriter.write(request);
+        printWriter.println(request);
     }
 
     public static void main(String[] args) {

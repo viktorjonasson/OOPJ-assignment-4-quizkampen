@@ -1,7 +1,5 @@
 import java.net.Socket;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 //develop
 public class GameHandler {
@@ -13,6 +11,8 @@ public class GameHandler {
     public void createNewGame(Socket incomingConnection, Server server) {
         this.server = server;
         this.db = new DataBase();
+        this.pendingGames = new LinkedList<>();
+        this.ongoingGames = new ArrayList<>();
         Game newGameRoom = new Game(incomingConnection);
         pendingGames.add(newGameRoom);
         server.writeToClient(Arrays.toString(db.getQuestionSet()));
