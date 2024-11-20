@@ -29,7 +29,6 @@ public class Client {
                     }
                 }
             }
-
         } catch (IOException e) {
             //TO DO: Handle exception
         } finally {

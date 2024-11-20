@@ -17,7 +17,7 @@ public class ClientController {
     void initializeButtonListeners(JButton[] answerButtons) {
         for (JButton button : answerButtons) {
             button.addActionListener(_ -> {
-                String answer = button.getText();
+                String answer = "Answer: " + button.getText();
                 client.writeToServer(answer);
                 //LOCK BUTTONS
             });
