@@ -11,5 +11,15 @@ public class GUI {
             buttonToChange.setBackground(incorrectColor);
         }
     }
-
+    public void changeText(
+            JButton[] answerButtons, JLabel questionLabel, String[] answers, String question) {
+        if (answerButtons.length == answers.length) {
+            for (int i = 0; i < answerButtons.length; i++) {
+                answerButtons[i].setText(answers[i]);
+            }
+            questionLabel.setText(question);
+        } else {
+            System.err.println("Amount of buttons does not match amount of answer elements");
+        }
+    }
 }
