@@ -8,11 +8,10 @@ public class ClientController {
         int port = 12345;
         String address = "127.0.0.1";
         client = new Client(address, port, this);
-        initializeButtonListeners(gui.getOptionButtons());
-        startNewGame();
-
         gui = new GUI();
         gui.gameBoard();
+        initializeButtonListeners(gui.getOptionButtons());
+        startNewGame();
     }
 
     void initializeButtonListeners(JButton[] answerButtons) {

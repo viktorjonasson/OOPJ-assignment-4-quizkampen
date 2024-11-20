@@ -16,9 +16,17 @@ public class Client {
             printWriter = new PrintWriter(socket.getOutputStream(), true);
 
             String serverReply;
+            String[] parts;
             while (true) {
                 if ((serverReply = br.readLine()) != null) {
-                    clientController.notifyGUI(serverReply);
+                    if (serverReply.startsWith("QuestionSet")) {
+                        clientController.notifyGUI(serverReply);
+                    }
+                    String solution = "Solution: textenPåDenTrycktaKnappen | booleanISträngform";
+                    if (serverReply.startsWith("Solution")) {
+                        parts = serverReply.split(":");
+                        clientController.handleSolution(parts[1].trim());
+                    }
                 }
             }
 

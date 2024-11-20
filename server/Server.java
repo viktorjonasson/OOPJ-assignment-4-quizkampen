@@ -17,13 +17,17 @@ public class Server {
              BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))) {
 
             printWriter = new PrintWriter(clientSocket.getOutputStream(), true);
-            String request;
-            String[] serverAnswer;
 
+            String request;
+            String[] parts;
             while (true) {
                 if ((request = bufferedReader.readLine()) != null) {
-                    if (request.equalsIgnoreCase("NewGame")) {
+                    if (request.startsWith("NewGame")) {
                         gameHandler.createNewGame(clientSocket, this);
+                    }
+                    if (request.startsWith("Answer")) {
+                        parts = request.split(":");
+                        gameHandler.handleAnswer(parts[1].trim());
                     }
                 }
             }
