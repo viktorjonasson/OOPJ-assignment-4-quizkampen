@@ -6,19 +6,22 @@ import java.net.Socket;
 
 public class Client {
     PrintWriter printWriter;
+    ClientController clientController;
     //develop
-    Client(String adress, int port)  {
+    Client(String adress, int port, ClientController clientController)  {
+        this.clientController = clientController;
         try (Socket socket = new Socket(adress, port);
              BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
 
             printWriter = new PrintWriter(socket.getOutputStream(), true);
 
-            String answer;
+            String serverReply;
             while (true) {
-                if ((answer = br.readLine()) != null) {
-                    System.out.println(answer);
+                if ((serverReply = br.readLine()) != null) {
+                    clientController.notifyGUI(serverReply);
                 }
             }
+
         } catch (IOException e) {
             //TO DO: Handle exception
         } finally {
@@ -31,6 +34,4 @@ public class Client {
     public void writeToServer(String data) {
         printWriter.println(data);
     }
-
-
 }

@@ -7,11 +7,12 @@ public class ClientController {
     ClientController() {
         int port = 12345;
         String address = "127.0.0.1";
-        gui = new GUI();
-        gui.gameBoard();
-        client = new Client(address, port);
+        client = new Client(address, port, this);
         initializeButtonListeners(gui.getOptionButtons());
         startNewGame();
+
+        gui = new GUI();
+        gui.gameBoard();
     }
 
     void initializeButtonListeners(JButton[] answerButtons) {
@@ -22,6 +23,10 @@ public class ClientController {
                 //LOCK BUTTONS
             });
         }
+    }
+
+    void notifyGUI(String[] notification) {
+        gui.updateGUI(notification);
     }
 
     void startNewGame() {
