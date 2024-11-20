@@ -13,7 +13,7 @@ public class Client {
 
             printWriter = new PrintWriter(socket.getOutputStream(), true);
 
-            requestAnswers(printWriter, "NewGame");
+            requestAnswers("NewGame");
             String answer;
             while (true) {
                 if ((answer = br.readLine()) != null) {
@@ -29,7 +29,7 @@ public class Client {
         }
     }
 
-    private void requestAnswers(PrintWriter printWriter, String request) {
+    private void requestAnswers(String request) {
         printWriter.println(request);
     }
 

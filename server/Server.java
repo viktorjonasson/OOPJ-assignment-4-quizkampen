@@ -29,6 +29,10 @@ public class Server {
             }
         } catch (IOException e) {
             //TO DO: FIX THIS
+        } finally {
+            if (printWriter != null) {
+                printWriter.close();
+            }
         }
     }
 
