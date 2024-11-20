@@ -26,7 +26,7 @@ public class Game {
         {
             return true;
         }
-        else
+        else // komm
         {
             return false;
         }
