@@ -8,17 +8,16 @@ public class ClientController {
         int port = 12345;
         String address = "127.0.0.1";
         client = new Client(address, port, this);
-        initializeButtonListeners(gui.getOptionButtons());
-        startNewGame();
-
         gui = new GUI();
         gui.gameBoard();
+        initializeButtonListeners(gui.getOptionButtons());
+        startNewGame();
     }
 
     void initializeButtonListeners(JButton[] answerButtons) {
         for (JButton button : answerButtons) {
             button.addActionListener(_ -> {
-                String answer = button.getText();
+                String answer = "Answer: " + button.getText();
                 client.writeToServer(answer);
                 gui.lockAnswerButtons();
             });
