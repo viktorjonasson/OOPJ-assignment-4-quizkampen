@@ -29,4 +29,8 @@ public class GameHandler {
             return false;
         }
     }
+
+    public boolean checkAnswer(String answer) {
+            return answer.equals("Option 1");
+    }
 }
