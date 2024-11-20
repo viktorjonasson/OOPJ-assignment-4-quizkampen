@@ -5,13 +5,15 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 public class Client {
+    PrintWriter printWriter;
     //develop
     Client(String adress, int port)  {
         try (Socket socket = new Socket(adress, port);
-             PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
              BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
 
-            requestAnswers(printWriter, "NewGame");
+            printWriter = new PrintWriter(socket.getOutputStream(), true);
+
+            requestAnswers("NewGame");
             String answer;
             while (true) {
                 if ((answer = br.readLine()) != null) {
@@ -20,11 +22,19 @@ public class Client {
             }
         } catch (IOException e) {
             //TO DO: Handle exception
+        } finally {
+            if (printWriter != null) {
+                printWriter.close();
+            }
         }
     }
 
-    private void requestAnswers(PrintWriter printWriter, String request) {
+    private void requestAnswers(String request) {
         printWriter.println(request);
+    }
+
+    public void sendAnswer(String answer) {
+        printWriter.println(answer);
     }
 
     public static void main(String[] args) {
