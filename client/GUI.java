@@ -78,11 +78,6 @@ public class GUI extends JFrame {
             System.err.println("Amount of buttons does not match amount of answer elements");
         }
     }
-
-    public static void main(String[] args) {
-        GUI m = new GUI();
-        m.gameBoard();
-    }
 }
 
 

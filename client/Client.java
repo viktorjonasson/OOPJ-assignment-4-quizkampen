@@ -13,7 +13,6 @@ public class Client {
 
             printWriter = new PrintWriter(socket.getOutputStream(), true);
 
-            requestAnswers("NewGame");
             String answer;
             while (true) {
                 if ((answer = br.readLine()) != null) {
@@ -29,17 +28,9 @@ public class Client {
         }
     }
 
-    private void requestAnswers(String request) {
-        printWriter.println(request);
+    public void writeToServer(String data) {
+        printWriter.println(data);
     }
 
-    public void sendAnswer(String answer) {
-        printWriter.println(answer);
-    }
 
-    public static void main(String[] args) {
-        int port = 12345;
-        String address = "127.0.0.1";
-        new Client(address, port);
-    }
 }
