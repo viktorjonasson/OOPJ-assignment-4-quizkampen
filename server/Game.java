@@ -19,6 +19,8 @@ public class Game {
         curentRound++;
     }
 
+    //Nu har vi råkat lägga denna metod på två ställen (vi kanske haft två tickets?
+    //Ska den vara här eller i gameHandler? /Ylva
     public static boolean checkAnswer(String clientAnswer, String correctAnswer)
     {
 
