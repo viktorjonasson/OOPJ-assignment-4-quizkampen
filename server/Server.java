@@ -1,7 +1,4 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -9,31 +6,37 @@ public class Server {
     private GameHandler gameHandler;
     private PrintWriter printWriter;
 
-        //develop
     Server(String address, int port) {
         gameHandler = new GameHandler();
         try (ServerSocket serverSocket = new ServerSocket(port);
              Socket clientSocket = serverSocket.accept();
-             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))) {
+             ObjectOutputStream objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
+             ObjectInputStream objectInputStream = new ObjectInputStream(clientSocket.getInputStream());) {
 
             printWriter = new PrintWriter(clientSocket.getOutputStream(), true);
 
-            String request;
+            Object request;
             String[] parts;
-            while (true) {
-                if ((request = bufferedReader.readLine()) != null) {
-                    if (request.startsWith("NewGame")) {
-                        gameHandler.createNewGame(clientSocket, this);
-                    }
-                    if (request.startsWith("Answer")) {
-                        parts = request.split(":");
-                        gameHandler.checkAnswer(parts[1].trim());
 
+            while (true) {
+                if ((request = objectInputStream.readObject()) != null){
+
+                    if (request instanceof String) {
+                        if (((String) request).startsWith("NewGame"))
+                            gameHandler.createNewGame(clientSocket, this);
+
+                        if (((String) request).startsWith("Answer")) {
+                            parts = ((String) request).split(":");
+                            gameHandler.checkAnswer(parts[1].trim());
+                        }
                     }
                 }
             }
+
         } catch (IOException e) {
             //TO DO: FIX THIS
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         } finally {
             if (printWriter != null) {
                 printWriter.close();
