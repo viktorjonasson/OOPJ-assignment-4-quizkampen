@@ -8,15 +8,11 @@ public class ClientController {
     ClientController() {
         int port = 12345;
         String address = "127.0.0.1";
-        new Thread(() -> {
-            client = new Client(address, port, this);
-        }).start();
-        SwingUtilities.invokeLater(() -> {
-            gui = new GUI();
-            gui.gameBoard();
-            initializeButtonListeners(gui.getOptionButtons());
-            startNewGame();
-        });
+        client = new Client(address, port, this);
+        gui = new GUI();
+        gui.gameBoard();
+        initializeButtonListeners(gui.getOptionButtons());
+        startNewGame();
     }
 
     void initializeButtonListeners(JButton[] answerButtons) {
@@ -29,12 +25,9 @@ public class ClientController {
         }
     }
 
-    void notifyGUI(String input) {
-        String[] parts = input.substring(1, input.length() - 1).split(",\\s*");
-        String question = parts[0];
-        String[] alternatives = new String[parts.length - 1];
-        System.arraycopy(parts, 1, alternatives, 0, alternatives.length);
-        gui.updateGUI(question, alternatives);
+    void notifyGUI(String notification) {
+        String[] questionSet = notification.substring(1, notification.length() - 1).split(",\\s*");
+        gui.updateGUI(questionSet);
     }
 
     void startNewGame() {

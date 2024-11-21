@@ -13,7 +13,7 @@ public class GUI extends JFrame {
     JPanel quizOptionPanel = new JPanel(new GridLayout(2, 2));
 
     JLabel header = new JLabel("This kategori – Fråga N", SwingConstants.CENTER);
-    JLabel questionLabel = new JLabel();
+    JLabel question = new JLabel();
     JButton[] optionButtons = new JButton[4];
     JButton continueBtn = new JButton("Fortsätt");
 
@@ -37,7 +37,7 @@ public class GUI extends JFrame {
         questionPanel.setBorder(outerPadding);
         questionPanel.add(header, BorderLayout.NORTH);
         questionPanel.add(quizContentPanel, BorderLayout.CENTER);
-        quizContentPanel.add(questionLabel, BorderLayout.NORTH);
+        quizContentPanel.add(question, BorderLayout.NORTH);
         quizContentPanel.add(quizOptionPanel, BorderLayout.CENTER);
         quizOptionPanel.setBorder(optionButtonsPadding);
 
@@ -45,7 +45,7 @@ public class GUI extends JFrame {
 
         //GUI – Set content
         //Ska förhoppningsvis kunna tas bort. Annars sätt annat default-värde.
-        questionLabel.setText("<HTML>Hur många YH-poäng är Nackademins utbildning i Javaprogrammering?</HTML>");
+        question.setText("<HTML>Hur många YH-poäng är Nackademins utbildning i Javaprogrammering?</HTML>");
         initOptionButton();
 
         //GUI – Display it
@@ -95,12 +95,14 @@ public class GUI extends JFrame {
         return null;
     }
 
-    public void updateGUI(String question, String[] alternatives) {
-        if (alternatives.length == optionButtons.length) {
+    public void updateGUI(String[] questionSet) {
+        if (questionSet.length - 1 == optionButtons.length) {
+
+            question.setText(questionSet[0].trim());
+
             for (int i = 0; i < optionButtons.length; i++) {
-                optionButtons[i].setText(alternatives[i]);
+                optionButtons[i].setText(questionSet[i + 1].trim());
             }
-            questionLabel.setText(question);
         } else {
             System.err.println("Amount of buttons does not match amount of answer elements");
         }
