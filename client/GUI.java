@@ -13,7 +13,7 @@ public class GUI extends JFrame {
     JPanel quizOptionPanel = new JPanel(new GridLayout(2, 2));
 
     JLabel header = new JLabel("This kategori – Fråga N", SwingConstants.CENTER);
-    JLabel question = new JLabel();
+    JLabel questionLabel = new JLabel();
     JButton[] optionButtons = new JButton[4];
     JButton continueBtn = new JButton("Fortsätt");
 
@@ -37,7 +37,7 @@ public class GUI extends JFrame {
         questionPanel.setBorder(outerPadding);
         questionPanel.add(header, BorderLayout.NORTH);
         questionPanel.add(quizContentPanel, BorderLayout.CENTER);
-        quizContentPanel.add(question, BorderLayout.NORTH);
+        quizContentPanel.add(questionLabel, BorderLayout.NORTH);
         quizContentPanel.add(quizOptionPanel, BorderLayout.CENTER);
         quizOptionPanel.setBorder(optionButtonsPadding);
 
@@ -45,7 +45,7 @@ public class GUI extends JFrame {
 
         //GUI – Set content
         //Ska förhoppningsvis kunna tas bort. Annars sätt annat default-värde.
-        question.setText("<HTML>Hur många YH-poäng är Nackademins utbildning i Javaprogrammering?</HTML>");
+        questionLabel.setText("<HTML>Hur många YH-poäng är Nackademins utbildning i Javaprogrammering?</HTML>");
         initOptionButton();
 
         //GUI – Display it
@@ -95,11 +95,12 @@ public class GUI extends JFrame {
         return null;
     }
 
-    public void updateGUI(String[] questionAndOptions) {
-        if (questionAndOptions.length - 1 == optionButtons.length) {
+    public void updateGUI(String question, String[] alternatives) {
+        if (alternatives.length == optionButtons.length) {
             for (int i = 0; i < optionButtons.length; i++) {
-                optionButtons[i].setText(questionAndOptions[i + 1]);
+                optionButtons[i].setText(alternatives[i]);
             }
+            questionLabel.setText(question);
         } else {
             System.err.println("Amount of buttons does not match amount of answer elements");
         }

@@ -16,7 +16,8 @@ public class GameHandler {
         ++GameID;
         Game newGameRoom = new Game(incomingConnection, GameID);
         pendingGames.add(newGameRoom);
-        server.writeToClient(Arrays.toString(db.getQuestionSet()));
+        String reply = "QuestionSet: " + Arrays.toString(db.getQuestionSet());
+        server.writeToClient(reply);
     }
 
     public boolean connectPlayerToGame(Socket playerConnection, Game game) {

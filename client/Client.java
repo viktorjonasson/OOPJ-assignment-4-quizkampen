@@ -8,36 +8,37 @@ public class Client {
     PrintWriter printWriter;
     ClientController clientController;
     //develop
-    Client(String adress, int port, ClientController clientController)  {
+    Client(String address, int port, ClientController clientController)  {
         this.clientController = clientController;
-        try (Socket socket = new Socket(adress, port);
-             BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
+        new Thread(() -> {
+            try (Socket socket = new Socket(address, port);
+                 BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
 
-            printWriter = new PrintWriter(socket.getOutputStream(), true);
+                printWriter = new PrintWriter(socket.getOutputStream(), true);
 
-            String serverReply;
-            String[] parts;
-            while (true) {
-                if ((serverReply = br.readLine()) != null) {
-                    if (serverReply.startsWith("QuestionSet")) {
-                        parts = serverReply.split(": ");
-                        String questionAndAnswers = parts[1];
-                        clientController.notifyGUI(questionAndAnswers);
-                    }
-                    String solution = "Solution: textenPåDenTrycktaKnappen | booleanISträngform";
-                    if (serverReply.startsWith("Solution")) {
-                        parts = serverReply.split(":");
-                        clientController.handleSolution(parts[1].trim());
+                String serverReply;
+                String[] parts;
+                while (true) {
+                    if ((serverReply = br.readLine()) != null) {
+                        if (serverReply.startsWith("QuestionSet")) {
+                            parts = serverReply.split(": ");
+                            String questionAndAnswers = parts[1];
+                            clientController.notifyGUI(questionAndAnswers);
+                        }
+                        if (serverReply.startsWith("Solution")) {
+                            parts = serverReply.split(":");
+                            clientController.handleSolution(parts[1].trim());
+                        }
                     }
                 }
+            } catch (IOException e) {
+                e.printStackTrace();  // Log the exception for debugging
+            } finally {
+                if (printWriter != null) {
+                    printWriter.close();
+                }
             }
-        } catch (IOException e) {
-            //TO DO: Handle exception
-        } finally {
-            if (printWriter != null) {
-                printWriter.close();
-            }
-        }
+        }).start();
     }
 
     public void writeToServer(String data) {
