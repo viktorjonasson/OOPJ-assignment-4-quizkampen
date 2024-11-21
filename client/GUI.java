@@ -1,6 +1,7 @@
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.util.Optional;
 
 public class GUI extends JFrame {
 
@@ -13,12 +14,21 @@ public class GUI extends JFrame {
 
     JLabel header = new JLabel("This kategori – Fråga N", SwingConstants.CENTER);
     JLabel question = new JLabel();
-    JButton[] optionButton = new JButton[4];
+    JButton[] optionButtons = new JButton[4];
     JButton continueBtn = new JButton("Fortsätt");
 
     //Getter for buttons
+    public Optional<JButton> getButton(String buttonText) {
+        for (JButton button : optionButtons) {
+            if (button.getText().equals(buttonText)) {
+                return Optional.of(button);
+            }
+        }
+        return Optional.empty();
+    }
+
     public JButton[] getOptionButtons() {
-        return optionButton;
+        return optionButtons;
     }
 
     public void gameBoard() {
@@ -45,15 +55,15 @@ public class GUI extends JFrame {
     }
 
     public void initOptionButton() {
-        for (int i = 0; i < optionButton.length; i++) {
-            quizOptionPanel.add(optionButton[i] = new JButton());
+        for (int i = 0; i < optionButtons.length; i++) {
+            quizOptionPanel.add(optionButtons[i] = new JButton());
         }
         setOptionButton();
     }
 
     public void setOptionButton() {
-        for (int i = 0; i < optionButton.length; i++) {
-            optionButton[i].setText("Option " + i);
+        for (int i = 0; i < optionButtons.length; i++) {
+            optionButtons[i].setText("Option " + i);
         }
     }
 
@@ -67,13 +77,12 @@ public class GUI extends JFrame {
         }
     }
 
-    public void changeText(
-            JButton[] answerButtons, JLabel questionLabel, String[] answers, String question) {
-        if (answerButtons.length == answers.length) {
-            for (int i = 0; i < answerButtons.length; i++) {
-                answerButtons[i].setText(answers[i]);
+    public void updateGUI(String[] questionAndOptions) {
+        if (questionAndOptions.length -1 == optionButtons.length) {
+            for (int i = 0; i < optionButtons.length; i++) {
+                optionButtons[i].setText(questionAndOptions[i+1]);
             }
-            questionLabel.setText(question);
+            question.setText(questionAndOptions[0]);
         } else {
             System.err.println("Amount of buttons does not match amount of answer elements");
         }
