@@ -25,7 +25,11 @@ public class ClientController {
         }
     }
 
-    void notifyGUI(String[] notification) {
+    void notifyGUI(String notification) {
+//        String[] alternatives = new String[4];
+//        for (int i = 2; i < parts.length; i++) {
+//            alternatives[i - 2] = parts[i];
+//        }
         gui.updateGUI(notification);
     }
 

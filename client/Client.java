@@ -20,7 +20,9 @@ public class Client {
             while (true) {
                 if ((serverReply = br.readLine()) != null) {
                     if (serverReply.startsWith("QuestionSet")) {
-                        clientController.notifyGUI(serverReply);
+                        parts = serverReply.split(": ");
+                        String questionAndAnswers = parts[1];
+                        clientController.notifyGUI(questionAndAnswers);
                     }
                     String solution = "Solution: textenPåDenTrycktaKnappen | booleanISträngform";
                     if (serverReply.startsWith("Solution")) {
