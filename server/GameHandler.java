@@ -31,7 +31,13 @@ public class GameHandler {
         }
     }
 
-    public boolean checkAnswer(String answer) {
-            return answer.equals("Option 1");
+    void checkAnswer(String answer) {
+        String reply = "Solution: ";
+        if (answer.equals("Option 1")) {
+            reply += answer + ", true";
+        } else {
+            reply += answer + ", false";
+        }
+        server.writeToClient(reply);
     }
 }

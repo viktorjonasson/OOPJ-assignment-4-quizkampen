@@ -37,8 +37,8 @@ public class ClientController {
 
     public void handleSolution(String solution) {
         boolean correctAnswer = false;
-        String[] parts = solution.split("\\|");
-        if (parts[1].equalsIgnoreCase("true")) {
+        String[] parts = solution.split(",");
+        if (parts[1].trim().equalsIgnoreCase("true")) {
             correctAnswer = true;
         }
         Optional<JButton> pressedButton = gui.getButton(parts[0]);
