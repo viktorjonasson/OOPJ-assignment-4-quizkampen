@@ -5,6 +5,15 @@ public class Game {
     Socket player2;
     final int GAME_ID; //Antar att final är rätt iom att ett rum aldrig byter id?
     int curentRound = 1;
+    int currentPlayer = 1;
+
+    void switchPlayer() {
+        if (currentPlayer == 1) {
+            currentPlayer = 2;
+        } else {
+            currentPlayer = 1;
+        }
+    }
 
     Game(Socket player1Socket, int gameId) {
         this.player1 = player1Socket;

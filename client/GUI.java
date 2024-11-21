@@ -1,6 +1,7 @@
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.util.Optional;
 
 public class GUI extends JFrame {
 
@@ -13,12 +14,21 @@ public class GUI extends JFrame {
 
     JLabel header = new JLabel("This kategori – Fråga N", SwingConstants.CENTER);
     JLabel question = new JLabel();
-    JButton[] optionButton = new JButton[4];
+    JButton[] optionButtons = new JButton[4];
     JButton continueBtn = new JButton("Fortsätt");
 
     //Getter for buttons
+    public Optional<JButton> getButton(String buttonText) {
+        for (JButton button : optionButtons) {
+            if (button.getText().equals(buttonText)) {
+                return Optional.of(button);
+            }
+        }
+        return Optional.empty();
+    }
+
     public JButton[] getOptionButtons() {
-        return optionButton;
+        return optionButtons;
     }
 
     public void gameBoard() {
@@ -47,21 +57,21 @@ public class GUI extends JFrame {
 
     //Funder senare på om denna behövs
     public void initOptionButton() {
-        for (int i = 0; i < optionButton.length; i++) {
-            quizOptionPanel.add(optionButton[i] = new JButton());
+        for (int i = 0; i < optionButtons.length; i++) {
+            quizOptionPanel.add(optionButtons[i] = new JButton());
         }
         setOptionButton();
     }
 
     //Funder senare på om denna behövs
     public void setOptionButton() {
-        for (int i = 0; i < optionButton.length; i++) {
-            optionButton[i].setText("Option " + i);
+        for (int i = 0; i < optionButtons.length; i++) {
+            optionButtons[i].setText("Option " + i);
         }
     }
 
-    public void lockAnswerButtons(){
-        for (JButton button : optionButton) {
+    public void lockAnswerButtons() {
+        for (JButton button : optionButtons) {
             button.setEnabled(false);
         }
     }
@@ -76,25 +86,25 @@ public class GUI extends JFrame {
         }
     }
 
-    public JButton getChosenAnswerButton(String chosenAnswer) {
 
-        for (JButton button : optionButton) {
+    public JButton getChosenAnswerButton(String chosenAnswer) {
+        for (JButton button : optionButtons) {
             if (button.getText().equals(chosenAnswer))
-                 return button;
+                return button;
         }
         return null;
     }
 
     public void updateGUI(String[] questionAndOptions) {
-        if (questionAndOptions.length -1 == optionButton.length) {
-            for (int i = 0; i < optionButton.length; i++) {
-                optionButton[i].setText(questionAndOptions[i+1]);
+        if (questionAndOptions.length - 1 == optionButtons.length) {
+            for (int i = 0; i < optionButtons.length; i++) {
+                optionButtons[i].setText(questionAndOptions[i + 1]);
             }
-            question.setText(questionAndOptions[0]);
         } else {
             System.err.println("Amount of buttons does not match amount of answer elements");
         }
     }
 }
+
 
 
