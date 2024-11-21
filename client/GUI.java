@@ -95,10 +95,13 @@ public class GUI extends JFrame {
         return null;
     }
 
-    public void updateGUI(String[] questionAndOptions) {
-        if (questionAndOptions.length - 1 == optionButtons.length) {
+    public void updateGUI(String[] questionSet) {
+        if (questionSet.length - 1 == optionButtons.length) {
+
+            question.setText(questionSet[0]);
+
             for (int i = 0; i < optionButtons.length; i++) {
-                optionButtons[i].setText(questionAndOptions[i + 1]);
+                optionButtons[i].setText(questionSet[i + 1]);
             }
         } else {
             System.err.println("Amount of buttons does not match amount of answer elements");
