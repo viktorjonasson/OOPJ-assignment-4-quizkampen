@@ -10,33 +10,26 @@ public class Server {
         gameHandler = new GameHandler();
         try (ServerSocket serverSocket = new ServerSocket(port);
              Socket clientSocket = serverSocket.accept();
-             ObjectOutputStream objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
-             ObjectInputStream objectInputStream = new ObjectInputStream(clientSocket.getInputStream());) {
+             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))) {
 
             printWriter = new PrintWriter(clientSocket.getOutputStream(), true);
 
-            Object request;
+            String request;
             String[] parts;
-
             while (true) {
-                if ((request = objectInputStream.readObject()) != null){
+                if ((request = bufferedReader.readLine()) != null) {
+                    if (request.startsWith("NewGame")) {
+                        gameHandler.createNewGame(clientSocket, this);
+                    }
+                    if (request.startsWith("Answer")) {
+                        parts = request.split(":");
+                        gameHandler.checkAnswer(parts[1].trim());
 
-                    if (request instanceof String) {
-                        if (((String) request).startsWith("NewGame"))
-                            gameHandler.createNewGame(clientSocket, this);
-
-                        if (((String) request).startsWith("Answer")) {
-                            parts = ((String) request).split(":");
-                            gameHandler.checkAnswer(parts[1].trim());
-                        }
                     }
                 }
             }
-
         } catch (IOException e) {
             //TO DO: FIX THIS
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
         } finally {
             if (printWriter != null) {
                 printWriter.close();
