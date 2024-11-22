@@ -19,12 +19,13 @@ public class ClientController {
     }
 
     void initializeContinueButtonListener(JButton continueBtn) {
-            continueBtn.addActionListener(_ -> {
-                Optional<String[]> q = gameLogic.getNextQuestion();
-                if (q.isPresent()) {
-                    gui.updateGUI(q.get());
-                }
-            });
+        continueBtn.addActionListener(_ -> {
+            Optional<String[]> question = gameLogic.getNextQuestion();
+            if (question.isPresent()) {
+                gui.updateGUI(question.get());
+                gui.lockContinueButton();
+            }
+        });
     }
 
     void initializeButtonListeners(JButton[] answerButtons) {
@@ -33,6 +34,7 @@ public class ClientController {
                 String answer = "Answer: " + button.getText();
                 client.writeToServer(answer);
                 gui.lockAnswerButtons();
+                gui.unLockContinueButton();
             });
         }
     }
