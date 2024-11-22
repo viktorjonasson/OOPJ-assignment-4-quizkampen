@@ -99,6 +99,7 @@ public class GUI extends JFrame {
         if (questionSet.length - 1 == optionButtons.length) {
             question.setText(questionSet[0].trim());
             for (int i = 0; i < optionButtons.length; i++) {
+                optionButtons[i].setEnabled(true);
                 optionButtons[i].setText(questionSet[i + 1].trim());
             }
         } else {

@@ -14,7 +14,18 @@ public class ClientController {
         gui.gameBoard();
         gameLogic = new GameLogic();
         initializeButtonListeners(gui.getOptionButtons());
+        initializeContinueButtonListener(gui.continueBtn);
         startNewGame();
+    }
+
+    void initializeContinueButtonListener(JButton continueBtn) {
+            continueBtn.addActionListener(_ -> {
+                Optional<String[]> q = gameLogic.getNextQuestion();
+                if (q.isPresent()) {
+                    gui.updateGUI(q.get());
+                }
+            });
+        }
     }
 
     void initializeButtonListeners(JButton[] answerButtons) {
