@@ -60,6 +60,11 @@ public class ClientController {
         }
     }
 
+    void handleCategorySet(String notification) {
+        String[] categoryChoice = notification.substring(1, notification.length() - 1).split("\\|");
+        gui.updateCategoryPanel(categoryChoice);
+    }
+
     void startNewGame() {
         String request = "NewGame";
         client.writeToServer(request);
