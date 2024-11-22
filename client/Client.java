@@ -21,7 +21,7 @@ public class Client {
                 String[] parts;
                 while (true) {
                     if ((serverReply = br.readLine()) != null) {
-                        if (serverReply.equals("CategorySet")) {
+                        if (serverReply.startsWith("CategorySet")) {
                             parts = serverReply.split(": ");
                             String categorySet = parts[1];
                             clientController.handleCategorySet(categorySet);
@@ -38,7 +38,7 @@ public class Client {
                     }
                 }
             } catch (IOException e) {
-                e.printStackTrace();  // Log the exception for debugging
+                System.err.println("IO Error: " + e.getMessage());
             } finally {
                 if (printWriter != null) {
                     printWriter.close();

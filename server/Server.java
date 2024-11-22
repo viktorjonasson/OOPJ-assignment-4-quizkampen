@@ -3,10 +3,10 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class Server {
-    private GameHandler gameHandler;
+    private final GameHandler gameHandler;
     private PrintWriter printWriter;
 
-    Server(String address, int port) {
+    Server(int port) {
         gameHandler = new GameHandler(this);
         try (ServerSocket serverSocket = new ServerSocket(port);
              Socket clientSocket = serverSocket.accept();
@@ -44,7 +44,6 @@ public class Server {
 
     public static void main(String[] args) {
         int port = 12345;
-        String address = "127.0.0.1";
-        new Server(address, port);
+        new Server(port);
     }
 }
