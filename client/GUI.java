@@ -67,6 +67,7 @@ public class GUI extends JFrame {
     //Funder senare på om denna behövs
     public void setOptionButton() {
         for (int i = 0; i < optionButtons.length; i++) {
+            optionButtons[i].setSize(300,300);
             optionButtons[i].setText("Option " + i);
         }
     }
