@@ -15,6 +15,14 @@ public class ClientController {
         startNewGame();
     }
 
+    void initializeContinueButtonListener(JButton continueBtn) {
+
+            continueBtn.addActionListener(_ -> {
+                gui.updateGUI(questionSet);
+            });
+        }
+    }
+
     void initializeButtonListeners(JButton[] answerButtons) {
         for (JButton button : answerButtons) {
             button.addActionListener(_ -> {
