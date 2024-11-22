@@ -11,6 +11,7 @@ public class GUI extends JFrame {
     JPanel quizContentPanel = new JPanel(new BorderLayout());
     Border optionButtonsPadding = BorderFactory.createEmptyBorder(20, 0, 20, 0);
     JPanel quizOptionPanel = new JPanel(new GridLayout(2, 2));
+    Color defaultColor = new JButton().getBackground();
 
     JLabel header = new JLabel("This kategori – Fråga N", SwingConstants.CENTER);
     JLabel question = new JLabel();
@@ -112,10 +113,24 @@ public class GUI extends JFrame {
                 optionButtons[i].setEnabled(true);
                 optionButtons[i].setText(questionSet[i + 1].trim());
             }
-        } else {
+            resetButtonColor();
+        }
+
+        else {
             System.err.println("Amount of buttons does not match amount of answer elements");
         }
     }
+    public void resetButtonColor()
+    {
+
+
+        for (JButton optionButton : optionButtons)
+        {
+            optionButton.setBackground(defaultColor);
+        }
+
+    }
+
 }
 
 
