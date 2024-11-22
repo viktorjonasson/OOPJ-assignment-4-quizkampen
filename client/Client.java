@@ -21,7 +21,7 @@ public class Client {
                 String[] parts;
                 while (true) {
                     if ((serverReply = br.readLine()) != null) {
-                        if (serverReply.equals("CategorySet")) {
+                        if (serverReply.startsWith("CategorySet")) {
                             parts = serverReply.split(": ");
                             String categorySet = parts[1];
                             clientController.handleCategorySet(categorySet);
