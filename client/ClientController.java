@@ -25,7 +25,6 @@ public class ClientController {
                     gui.updateGUI(q.get());
                 }
             });
-        }
     }
 
     void initializeButtonListeners(JButton[] answerButtons) {

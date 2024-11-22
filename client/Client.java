@@ -7,8 +7,9 @@ import java.net.Socket;
 public class Client {
     PrintWriter printWriter;
     ClientController clientController;
+
     //develop
-    Client(String address, int port, ClientController clientController)  {
+    Client(String address, int port, ClientController clientController) {
         this.clientController = clientController;
         new Thread(() -> {
             try (Socket socket = new Socket(address, port);
