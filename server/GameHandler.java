@@ -8,11 +8,14 @@ public class GameHandler {
     private Server server;
     private int GameID = 0;
 
-    public void createNewGame(Socket incomingConnection, Server server) {
+    GameHandler(Server server) {
         this.server = server;
         this.db = new DataBase();
         this.pendingGames = new LinkedList<>();
         this.ongoingGames = new ArrayList<>();
+    }
+
+    public void createNewGame(Socket incomingConnection, Server server) {
         ++GameID;
         Game newGameRoom = new Game(incomingConnection, GameID);
         pendingGames.add(newGameRoom);
