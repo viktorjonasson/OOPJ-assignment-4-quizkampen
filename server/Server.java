@@ -27,7 +27,7 @@ public class Server {
                     }
                     if (request.startsWith("Category")) {
                         parts = request.split(":");
-                        gameHandler.getQuestionSet();
+                        gameHandler.handleQuestionSet();
                     }
                 }
             }

@@ -19,8 +19,7 @@ public class GameHandler {
         ++GameID;
         Game newGameRoom = new Game(incomingConnection, GameID);
         pendingGames.add(newGameRoom);
-        String reply = "CategorySet: " + Arrays.toString(db.getCategorySet());
-        server.writeToClient(reply);
+        handleCategorySet();
     }
 
     public boolean connectPlayerToGame(Socket playerConnection, Game game) {
@@ -34,7 +33,12 @@ public class GameHandler {
         }
     }
 
-    public void getQuestionSet() {
+    public void handleCategorySet() {
+        String reply = "CategorySet: " + Arrays.toString(db.getCategorySet());
+        server.writeToClient(reply);
+    }
+
+    public void handleQuestionSet() {
         String reply = "QuestionSet: " + Arrays.toString(db.getQuestionSet());
         server.writeToClient(reply);
     }
