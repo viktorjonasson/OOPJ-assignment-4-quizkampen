@@ -17,6 +17,13 @@ public class GUI extends JFrame {
     JButton[] optionButtons = new JButton[4];
     JButton continueBtn = new JButton("Fortsätt");
 
+    //CategoryPanelStuff
+    JPanel categoryPanel = new JPanel(new BorderLayout(0, 40));
+    JPanel catContentPanel = new JPanel(new BorderLayout());
+    JButton[] categoryButtons = new JButton[3];
+    JPanel catOptionPanel = new JPanel(new GridLayout(1, 3));
+    JLabel choseCategory = new JLabel();
+
     //Getter for buttons
     public Optional<JButton> getButton(String buttonText) {
         for (JButton button : optionButtons) {
@@ -32,8 +39,26 @@ public class GUI extends JFrame {
     }
 
     public void gameBoard() {
-        //GUI – Placement
+
+        //CategoryPanel – Placement
+        this.add(categoryPanel);
+        categoryPanel.setVisible(true);
+        categoryPanel.setBorder(outerPadding);
+        categoryPanel.add(catContentPanel, BorderLayout.CENTER);
+
+        catContentPanel.add(choseCategory, BorderLayout.NORTH);
+        quizContentPanel.add(catOptionPanel, BorderLayout.CENTER);
+        catOptionPanel.setBorder(optionButtonsPadding);
+
+        for (int i = 0; i < categoryButtons.length; i++) {
+            JButton button = new JButton();
+            button.setSize(30, 10);
+            catOptionPanel.add(button);
+        }
+
+        //QuestionPanel – Placement
         this.add(questionPanel);
+        questionPanel.setVisible(false);
         questionPanel.setBorder(outerPadding);
         questionPanel.add(header, BorderLayout.NORTH);
         questionPanel.add(quizContentPanel, BorderLayout.CENTER);
