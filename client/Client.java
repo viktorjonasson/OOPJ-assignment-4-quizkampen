@@ -23,7 +23,7 @@ public class Client {
                         if (serverReply.startsWith("QuestionSet")) {
                             parts = serverReply.split(": ");
                             String questionAndAnswers = parts[1];
-                            clientController.notifyGUI(questionAndAnswers);
+                            clientController.handleQuestionSet(questionAndAnswers);
                         }
                         if (serverReply.startsWith("Solution")) {
                             parts = serverReply.split(":");

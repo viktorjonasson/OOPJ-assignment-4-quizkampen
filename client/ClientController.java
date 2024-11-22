@@ -4,6 +4,7 @@ import java.util.Optional;
 public class ClientController {
     Client client;
     GUI gui;
+    GameLogic gameLogic;
 
     ClientController() {
         int port = 12345;
@@ -11,6 +12,7 @@ public class ClientController {
         client = new Client(address, port, this);
         gui = new GUI();
         gui.gameBoard();
+        gameLogic = new GameLogic();
         initializeButtonListeners(gui.getOptionButtons());
         startNewGame();
     }
@@ -33,9 +35,14 @@ public class ClientController {
         }
     }
 
-    void notifyGUI(String notification) {
-        String[] questionSet = notification.substring(1, notification.length() - 1).split(",\\s*");
-        gui.updateGUI(questionSet);
+    void handleQuestionSet(String notification) {
+        gameLogic.loadQuestionSet(notification);
+        Optional<String[]> question = gameLogic.getNextQuestion();
+        if (question.isPresent()) {
+            gui.updateGUI(question.get());
+        } else {
+            System.err.println("Error loading question.");
+        }
     }
 
     void startNewGame() {
