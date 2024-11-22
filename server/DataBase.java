@@ -1,20 +1,20 @@
 public class DataBase {
-
+    //develop
     public String[] getQuestionSet() {
         return new String[]{"Question 1",
-                "Option 1.1",
-                "Option 1.2",
-                "Option 1.3",
-                "Option 1.4",
+                "Q1 Option 1",
+                "Q1 Option 2",
+                "Q1 Option 3",
+                "Q1 Option 4",
                 "Question 2",
-                "Option 2.1",
-                "Option 2.2",
-                "Option 2.3",
-                "Option 2.4",
+                "Q2 Option 1",
+                "Q2 Option 2",
+                "Q2 Option 3",
+                "Q2 Option 4",
                 "Question 3",
-                "Option 3.1",
-                "Option 3.2",
-                "Option 3.3",
-                "Option 3.4"};
+                "Q3 Option 1",
+                "Q3 Option 2",
+                "Q3 Option 3",
+                "Q3 Option 4",};
     }
 }
