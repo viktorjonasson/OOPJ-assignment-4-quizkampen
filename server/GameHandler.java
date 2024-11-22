@@ -19,7 +19,7 @@ public class GameHandler {
         ++GameID;
         Game newGameRoom = new Game(incomingConnection, GameID);
         pendingGames.add(newGameRoom);
-        String reply = "QuestionSet: " + Arrays.toString(db.getQuestionSet());
+        String reply = "QuestionSet: " + Arrays.toString(db.getQuestionSet()); //blir getCategories
         server.writeToClient(reply);
     }
 

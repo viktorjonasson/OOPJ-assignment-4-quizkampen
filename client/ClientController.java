@@ -22,7 +22,7 @@ public class ClientController {
         continueBtn.addActionListener(_ -> {
             Optional<String[]> question = gameLogic.getNextQuestion();
             if (question.isPresent()) {
-                gui.updateGUI(question.get());
+                gui.updateQuestionPanel(question.get());
                 gui.lockContinueButton();
             }
         });
@@ -43,7 +43,7 @@ public class ClientController {
         gameLogic.loadQuestionSet(notification);
         Optional<String[]> question = gameLogic.getNextQuestion();
         if (question.isPresent()) {
-            gui.updateGUI(question.get());
+            gui.updateQuestionPanel(question.get());
         } else {
             System.err.println("Error loading question.");
         }

@@ -105,7 +105,7 @@ public class GUI extends JFrame {
         return null;
     }
 
-    public void updateGUI(String[] questionSet) {
+    public void updateQuestionPanel(String[] questionSet) {
         if (questionSet.length - 1 == optionButtons.length) {
             question.setText(questionSet[0].trim());
             for (int i = 0; i < optionButtons.length; i++) {
