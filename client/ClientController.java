@@ -28,6 +28,16 @@ public class ClientController {
         });
     }
 
+    void initializeCategoryButtons(JButton[] categoryButtons) {
+        for (JButton button : categoryButtons) {
+            button.addActionListener(_ -> {
+                String category = "Category: " + button.getText();
+                client.writeToServer(category);
+            });
+        }
+
+    }
+
     void initializeButtonListeners(JButton[] answerButtons) {
         for (JButton button : answerButtons) {
             button.addActionListener(_ -> {
