@@ -15,6 +15,7 @@ public class ClientController {
         gameLogic = new GameLogic();
         initializeButtonListeners(gui.getOptionButtons());
         initializeContinueButtonListener(gui.continueBtn);
+        initializeCategoryButtons(gui.getCategoryButtons());
         startNewGame();
     }
 

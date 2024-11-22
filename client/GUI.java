@@ -38,6 +38,10 @@ public class GUI extends JFrame {
         return optionButtons;
     }
 
+    public JButton[] getCategoryButtons() {
+        return categoryButtons;
+    }
+
     public void gameBoard() {
         //GUI – Set content
         setupQuestionPanel();
@@ -154,6 +158,3 @@ public class GUI extends JFrame {
         }
     }
 }
-
-
-

@@ -24,7 +24,6 @@ public class Server {
                     if (request.startsWith("Answer")) {
                         parts = request.split(":");
                         gameHandler.checkAnswer(parts[1].trim());
-
                     }
                 }
             }
