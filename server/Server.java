@@ -25,6 +25,10 @@ public class Server {
                         parts = request.split(":");
                         gameHandler.checkAnswer(parts[1].trim());
                     }
+                    if (request.startsWith("Category")) {
+                        parts = request.split(":");
+                        gameHandler.getQuestionSet();
+                    }
                 }
             }
 

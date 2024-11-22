@@ -34,6 +34,11 @@ public class GameHandler {
         }
     }
 
+    public void getQuestionSet() {
+        String reply = "QuestionSet: " + Arrays.toString(db.getQuestionSet());
+        server.writeToClient(reply);
+    }
+
     void checkAnswer(String answer) {
         String reply = "Solution: ";
         if (answer.equals("Option 1")) {
