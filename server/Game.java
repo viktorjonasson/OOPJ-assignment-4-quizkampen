@@ -23,6 +23,7 @@ public class Game {
     public int getCurentRound() {
         return curentRound;
     }
+
     //Vet inte om vi ska ha dessa två metoder, lägger in dem tillfälligt.
     public void newRound() {
         curentRound++;
@@ -30,14 +31,11 @@ public class Game {
 
     //Nu har vi råkat lägga denna metod på två ställen (vi kanske haft två tickets?
     //Ska den vara här eller i gameHandler? /Ylva
-    public static boolean checkAnswer(String clientAnswer, String correctAnswer)
-    {
+    public static boolean checkAnswer(String clientAnswer, String correctAnswer) {
 
-        if (clientAnswer.equals(correctAnswer))
-        {
+        if (clientAnswer.equals(correctAnswer)) {
             return true;
-        }
-        else // komm
+        } else // komm
         {
             return false;
         }
