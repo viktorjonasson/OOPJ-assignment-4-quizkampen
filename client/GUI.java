@@ -21,7 +21,7 @@ public class GUI extends JFrame {
     JPanel categoryPanel = new JPanel(new BorderLayout(0, 40));
     JPanel catContentPanel = new JPanel(new BorderLayout());
     JButton[] categoryButtons = new JButton[3];
-    JPanel catOptionPanel = new JPanel(new GridLayout(1, 3));
+    JPanel catOptionPanel = new JPanel(new GridLayout(3, 1));
     JLabel choseCategory = new JLabel();
 
     //Getter for buttons
@@ -64,16 +64,14 @@ public class GUI extends JFrame {
         categoryPanel.setBorder(outerPadding);
         categoryPanel.add(catContentPanel, BorderLayout.CENTER);
 
+        choseCategory.setText("Välj kategori:");
         catContentPanel.add(choseCategory, BorderLayout.NORTH);
         catContentPanel.add(catOptionPanel, BorderLayout.CENTER);
         catOptionPanel.setBorder(optionButtonsPadding);
 
         for (int i = 0; i < categoryButtons.length; i++) {
             catOptionPanel.add(categoryButtons[i] = new JButton());
-        }
-
-        for (int i = 0; i < categoryButtons.length; i++) {
-            categoryButtons[i].setSize(300, 300);
+            categoryButtons[i].setSize(300, 100);
             categoryButtons[i].setText("");
         }
     }
