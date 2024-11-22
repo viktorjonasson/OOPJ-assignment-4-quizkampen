@@ -37,6 +37,7 @@ public class GUI extends JFrame {
         questionPanel.setBorder(outerPadding);
         questionPanel.add(header, BorderLayout.NORTH);
         questionPanel.add(quizContentPanel, BorderLayout.CENTER);
+
         quizContentPanel.add(question, BorderLayout.NORTH);
         quizContentPanel.add(quizOptionPanel, BorderLayout.CENTER);
         quizOptionPanel.setBorder(optionButtonsPadding);
@@ -95,7 +96,6 @@ public class GUI extends JFrame {
             buttonToChange.setBackground(incorrectColor);
         }
     }
-
 
     public JButton getChosenAnswerButton(String chosenAnswer) {
         for (JButton button : optionButtons) {
