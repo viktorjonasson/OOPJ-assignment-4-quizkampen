@@ -39,7 +39,21 @@ public class GUI extends JFrame {
     }
 
     public void gameBoard() {
+        //GUI – Set content
+        setupQuestionPanel();
+        setupCategoryPanel();
 
+        //Ska förhoppningsvis kunna tas bort. Annars sätt annat default-värde.
+        question.setText("<HTML>Hur många YH-poäng är Nackademins utbildning i Javaprogrammering?</HTML>");
+
+        //GUI – Display it
+        setSize(500, 700);
+        setVisible(true);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+    }
+
+    private void setupCategoryPanel() {
         //CategoryPanel – Placement
         this.add(categoryPanel);
         categoryPanel.setVisible(true);
@@ -47,15 +61,20 @@ public class GUI extends JFrame {
         categoryPanel.add(catContentPanel, BorderLayout.CENTER);
 
         catContentPanel.add(choseCategory, BorderLayout.NORTH);
-        quizContentPanel.add(catOptionPanel, BorderLayout.CENTER);
+        catContentPanel.add(catOptionPanel, BorderLayout.CENTER);
         catOptionPanel.setBorder(optionButtonsPadding);
 
         for (int i = 0; i < categoryButtons.length; i++) {
-            JButton button = new JButton();
-            button.setSize(30, 10);
-            catOptionPanel.add(button);
+            catOptionPanel.add(categoryButtons[i] = new JButton());
         }
 
+        for (int i = 0; i < categoryButtons.length; i++) {
+            categoryButtons[i].setSize(300, 300);
+            categoryButtons[i].setText("");
+        }
+    }
+
+    private void setupQuestionPanel() {
         //QuestionPanel – Placement
         this.add(questionPanel);
         questionPanel.setVisible(false);
@@ -69,28 +88,10 @@ public class GUI extends JFrame {
 
         questionPanel.add(continueBtn, BorderLayout.SOUTH);
 
-        //GUI – Set content
-        //Ska förhoppningsvis kunna tas bort. Annars sätt annat default-värde.
-        question.setText("<HTML>Hur många YH-poäng är Nackademins utbildning i Javaprogrammering?</HTML>");
-        initOptionButton();
-
-        //GUI – Display it
-        setSize(500, 700);
-        setVisible(true);
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-    }
-
-    //Funder senare på om denna behövs
-    public void initOptionButton() {
         for (int i = 0; i < optionButtons.length; i++) {
             quizOptionPanel.add(optionButtons[i] = new JButton());
         }
-        setOptionButton();
-    }
 
-    //Funder senare på om denna behövs
-    public void setOptionButton() {
         for (int i = 0; i < optionButtons.length; i++) {
             optionButtons[i].setSize(300,300);
             optionButtons[i].setText("Option " + i);
@@ -140,6 +141,16 @@ public class GUI extends JFrame {
             }
         } else {
             System.err.println("Amount of buttons does not match amount of answer elements");
+        }
+    }
+
+    public void updateCategoryPanel(String[] categoryChoice) {
+        if (categoryButtons.length == categoryChoice.length) {
+            for (int i = 0; i < categoryChoice.length; i++) {
+                categoryButtons[i].setText(categoryChoice[i]);
+            }
+        } else {
+            System.err.println("Mismatch concerning amount of buttons and categories");
         }
     }
 }
