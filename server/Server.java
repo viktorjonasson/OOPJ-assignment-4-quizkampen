@@ -7,7 +7,7 @@ public class Server {
     private PrintWriter printWriter;
 
     Server(String address, int port) {
-        gameHandler = new GameHandler();
+        gameHandler = new GameHandler(this);
         try (ServerSocket serverSocket = new ServerSocket(port);
              Socket clientSocket = serverSocket.accept();
              BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))) {
