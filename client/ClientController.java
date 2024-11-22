@@ -28,12 +28,23 @@ public class ClientController {
         });
     }
 
+    void initializeCategoryButtons(JButton[] categoryButtons) {
+        for (JButton button : categoryButtons) {
+            button.addActionListener(_ -> {
+                String category = "Category: " + button.getText();
+                client.writeToServer(category);
+                gui.lockButtons(categoryButtons);
+            });
+        }
+
+    }
+
     void initializeButtonListeners(JButton[] answerButtons) {
         for (JButton button : answerButtons) {
             button.addActionListener(_ -> {
                 String answer = "Answer: " + button.getText();
                 client.writeToServer(answer);
-                gui.lockAnswerButtons();
+                gui.lockButtons(answerButtons);
                 gui.unLockContinueButton();
             });
         }
