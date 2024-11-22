@@ -8,8 +8,10 @@ public class GameLogic {
         questions = new ArrayList<>();
     }
 
-    public void loadQuestionSet(String questions) {
-        String[] questionSet = questions.substring(1, questions.length() - 1).split(",\\s*");
+    public void loadQuestionSet(String serverResponse) {
+        System.out.println(serverResponse);
+        String[] questionSet = serverResponse.substring(1, serverResponse.length() - 1).split(",\\s*");
+        questions.add(questionSet);
     }
 
     public Optional<String[]> getNextQuestion() {
