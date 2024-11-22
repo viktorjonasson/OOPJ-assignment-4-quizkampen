@@ -71,8 +71,8 @@ public class GUI extends JFrame {
         }
     }
 
-    public void lockAnswerButtons() {
-        for (JButton button : optionButtons) {
+    public void lockButtons(JButton[] buttonsToLock) {
+        for (JButton button : buttonsToLock) {
             button.setEnabled(false);
         }
     }

@@ -1,5 +1,5 @@
 public class DataBase {
-    //develop
+
     public String[] getQuestionSet() {
         return new String[]{"Question 1",
                 "Q1 Option 1",
@@ -18,5 +18,12 @@ public class DataBase {
                 "Q3 Option 2",
                 "Q3 Option 3",
                 "Q3 Option 4"};
+    }
+    public String[] getCategorySet() {
+        return new String[]{"Category 1",
+                "|",
+                "Category 2",
+                "|",
+                "Category 3"};
     }
 }

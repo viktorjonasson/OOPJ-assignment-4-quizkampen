@@ -33,6 +33,7 @@ public class ClientController {
             button.addActionListener(_ -> {
                 String category = "Category: " + button.getText();
                 client.writeToServer(category);
+                gui.lockButtons(categoryButtons);
             });
         }
 
@@ -43,7 +44,7 @@ public class ClientController {
             button.addActionListener(_ -> {
                 String answer = "Answer: " + button.getText();
                 client.writeToServer(answer);
-                gui.lockAnswerButtons();
+                gui.lockButtons(answerButtons);
                 gui.unLockContinueButton();
             });
         }
