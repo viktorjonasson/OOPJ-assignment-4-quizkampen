@@ -20,10 +20,8 @@ public class DataBase {
                 "Q3 Option 4"};
     }
     public String[] getCategorySet() {
-        return new String[]{"Category 1",
-                "|",
-                "Category 2",
-                "|",
+        return new String[]{"Category 1 |",
+                "Category 2 |",
                 "Category 3"};
     }
 }
