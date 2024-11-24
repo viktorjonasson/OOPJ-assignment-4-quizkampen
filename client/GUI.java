@@ -106,6 +106,7 @@ public class GUI extends JFrame {
 
         continueBtn.setPreferredSize(continueBtn.getPreferredSize());
         questionPanel.add(continueBtn, BorderLayout.SOUTH);
+        lockContinueButton();
 
         for (int i = 0; i < optionButtons.length; i++) {
             quizOptionPanel.add(optionButtons[i] = new JButton());
