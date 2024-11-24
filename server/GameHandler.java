@@ -50,6 +50,7 @@ public class GameHandler {
         } else {
             reply += answer + ", false";
         }
+        //TODO: funktion för att uppdatera poäng i rätt game-instans
         server.writeToClient(reply);
     }
 }

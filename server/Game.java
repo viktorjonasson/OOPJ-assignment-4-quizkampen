@@ -5,10 +5,49 @@ public class Game {
     Socket player2;
     int[][] player1Res = new int[6][3];
     int[][] player2Res = new int[6][3];
-    final int GAME_ID; //Antar att final är rätt iom att ett rum aldrig byter id?
+    final int GAME_ID;
     int currentRound = 1;
     int currentPlayer = 1;
-    int currentQuestions = 1;
+    int currentQuestion = 1;
+
+    Game(Socket player1Socket, int gameId) {
+        this.player1 = player1Socket;
+        GAME_ID = gameId;
+    }
+
+    public void updateResult(boolean correctAnswer) {
+        if (currentPlayer == 1){
+            setPlayer1Res(correctAnswer);
+        }else
+            setPlayer2Res(correctAnswer);
+
+        switchPlayer();
+
+        //Detta anrop funkar inte för två spelare.
+        updateCounters();
+    }
+
+    public void updateCounters(){
+        ++currentQuestion;
+            if (currentQuestion <3){
+                currentQuestion = 1;
+                ++currentRound;
+            }
+    }
+
+    public void setPlayer1Res(boolean correctAnswer){
+        if (correctAnswer) {
+            player1Res[currentRound-1][currentQuestion -1] = 1; //rätt svar
+        }else
+            player1Res[currentRound-1][currentQuestion -1] = -1; //fel svar
+    }
+
+    public void setPlayer2Res(boolean correctAnswer){
+        if (correctAnswer) {
+            player2Res[currentRound-1][currentQuestion -1] = 1; //rätt svar
+        }else
+            player2Res[currentRound-1][currentQuestion -1] = -1; //fel svar
+    }
 
     void switchPlayer() {
         if (currentPlayer == 1) {
@@ -18,23 +57,9 @@ public class Game {
         }
     }
 
-    Game(Socket player1Socket, int gameId) {
-        this.player1 = player1Socket;
-        GAME_ID = gameId;
-    }
+    public int getCurrentQuestion() {return currentQuestion;}
 
     public int getCurrentRound() {
         return currentRound;
-    }
-
-    //Vet inte om vi ska ha dessa två metoder, lägger in dem tillfälligt.
-    public void newRound() {
-        currentRound++;
-    }
-
-    //Nu har vi råkat lägga denna metod på två ställen (vi kanske haft två tickets)?
-    //Ska den vara här eller i gameHandler? /Ylva
-    public static boolean checkAnswer(String clientAnswer, String correctAnswer) {
-        return clientAnswer.equals(correctAnswer);
     }
 }
