@@ -8,6 +8,7 @@ public class Game {
     final int GAME_ID; //Antar att final är rätt iom att ett rum aldrig byter id?
     int currentRound = 1;
     int currentPlayer = 1;
+    int currentQuestions = 1;
 
     void switchPlayer() {
         if (currentPlayer == 1) {
