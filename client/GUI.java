@@ -87,7 +87,7 @@ public class GUI extends JFrame {
 
         for (int i = 0; i < categoryButtons.length; i++) {
             catOptionPanel.add(categoryButtons[i] = new JButton());
-            categoryButtons[i].setSize(300, 100);
+            categoryButtons[i].setPreferredSize(new Dimension(100, 50));
             categoryButtons[i].setText("");
         }
     }
@@ -134,8 +134,6 @@ public class GUI extends JFrame {
                 cardLayout.show(mainPanel, "Score");
                 System.out.println("Panel för SCORE_TABLE (scorePanel) finns finns bara i fantasin (men den är fin, tycker Kalle).");
         }
-        repaint();
-        revalidate();
     }
 
     public void lockButtons(JButton[] buttonsToLock) {
@@ -162,6 +160,13 @@ public class GUI extends JFrame {
         } else {
             buttonToChange.setBackground(incorrectColor);
         }
+
+        JFrame rootFrame = (JFrame) SwingUtilities.getWindowAncestor(buttonToChange);
+        if (rootFrame != null) {
+            Dimension currentSize = rootFrame.getSize();
+            rootFrame.setSize(currentSize.width - 1, currentSize.height);  // Shrink width by 1 pixel
+            rootFrame.setSize(currentSize.width + 1, currentSize.height);  // Restore original width
+        }
     }
 
     public JButton getChosenAnswerButton(String chosenAnswer) {
@@ -179,7 +184,6 @@ public class GUI extends JFrame {
             for (int i = 0; i < optionButtons.length; i++) {
                 optionButtons[i].setEnabled(true);
                 optionButtons[i].setText(questionSet[i + 1].trim());
-                System.out.println(questionSet[i + 1].trim());
             }
         } else {
             System.err.println("Amount of buttons does not match amount of answer elements");
