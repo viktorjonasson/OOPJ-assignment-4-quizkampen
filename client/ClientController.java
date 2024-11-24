@@ -5,6 +5,7 @@ public class ClientController {
     Client client;
     GUI gui;
     GameLogic gameLogic;
+    GameState gameState;
 
     ClientController() {
         int port = 12345;
@@ -56,6 +57,7 @@ public class ClientController {
         Optional<String[]> question = gameLogic.getNextQuestion();
         if (question.isPresent()) {
             gui.updateQuestionPanel(question.get());
+            gui.switchPanel(GameState.ANSWER_QUESTION);
         } else {
             System.err.println("Error loading question.");
         }
@@ -64,6 +66,7 @@ public class ClientController {
     void handleCategorySet(String notification) {
         String[] categoryChoice = notification.substring(1, notification.length() - 1).split("\\|");
         gui.updateCategoryPanel(categoryChoice);
+        gui.switchPanel(GameState.CHOOSE_CATEGORY);
     }
 
     void startNewGame() {
