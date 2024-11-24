@@ -174,6 +174,7 @@ public class GUI extends JFrame {
 
     public void updateQuestionPanel(String[] questionSet) {
         if (questionSet.length - 1 == optionButtons.length) {
+            resetButtonColor(optionButtons);
             question.setText(questionSet[0].trim());
             for (int i = 0; i < optionButtons.length; i++) {
                 optionButtons[i].setEnabled(true);
@@ -192,6 +193,12 @@ public class GUI extends JFrame {
             }
         } else {
             System.err.println("Mismatch concerning amount of buttons and categories");
+        }
+    }
+
+    public void resetButtonColor(JButton[] buttons) {
+        for (JButton button : buttons) {
+            button.setBackground(null);
         }
     }
 }
