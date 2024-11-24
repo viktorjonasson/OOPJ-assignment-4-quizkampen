@@ -104,6 +104,7 @@ public class GUI extends JFrame {
         quizContentPanel.add(quizOptionPanel, BorderLayout.CENTER);
         quizOptionPanel.setBorder(optionButtonsPadding);
 
+        continueBtn.setPreferredSize(continueBtn.getPreferredSize());
         questionPanel.add(continueBtn, BorderLayout.SOUTH);
 
         for (int i = 0; i < optionButtons.length; i++) {
@@ -144,12 +145,20 @@ public class GUI extends JFrame {
 
     public void lockContinueButton() {
         continueBtn.setEnabled(false);
-        continueBtn.setVisible(false);
+        continueBtn.setBackground(getContentPane().getBackground());
+        continueBtn.setOpaque(true);
+        continueBtn.setBorder(BorderFactory.createEmptyBorder());
+        continueBtn.setForeground(getContentPane().getBackground());
+        continueBtn.setText("");
     }
 
     public void unLockContinueButton() {
         continueBtn.setEnabled(true);
-        continueBtn.setVisible(true);
+        continueBtn.setBackground(null);
+        continueBtn.setOpaque(false);
+        continueBtn.setBorder(BorderFactory.createLineBorder(null));
+        continueBtn.setForeground(null);
+        continueBtn.setText("Fortsätt");
     }
 
     public void changeColor(JButton buttonToChange, boolean correctAnswer) {
