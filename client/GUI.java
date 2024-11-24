@@ -6,10 +6,12 @@ import java.util.Optional;
 public class GUI extends JFrame {
 
     //GUI Setup
-    JPanel questionPanel = new JPanel(new BorderLayout(0, 40));
     Border outerPadding = BorderFactory.createEmptyBorder(20, 40, 30, 40);
-    JPanel quizContentPanel = new JPanel(new BorderLayout());
     Border optionButtonsPadding = BorderFactory.createEmptyBorder(20, 0, 20, 0);
+
+    //GUI QuestionPanelStuff
+    JPanel questionPanel = new JPanel(new BorderLayout(0, 40));
+    JPanel quizContentPanel = new JPanel(new BorderLayout());
     JPanel quizOptionPanel = new JPanel(new GridLayout(2, 2));
 
     JLabel header = new JLabel("This kategori – Fråga N", SwingConstants.CENTER);
@@ -60,7 +62,7 @@ public class GUI extends JFrame {
     private void setupCategoryPanel() {
         //CategoryPanel – Placement
         this.add(categoryPanel);
-        categoryPanel.setVisible(true);
+        categoryPanel.setVisible(false);
         categoryPanel.setBorder(outerPadding);
         categoryPanel.add(catContentPanel, BorderLayout.CENTER);
 
@@ -95,9 +97,32 @@ public class GUI extends JFrame {
         }
 
         for (int i = 0; i < optionButtons.length; i++) {
-            optionButtons[i].setSize(300,300);
+            optionButtons[i].setSize(300, 300);
             optionButtons[i].setText("Option " + i);
         }
+    }
+
+    //Antopas nu från ClientController.handleQuestionSet() resp. handleCategorySet()
+    public void switchPanel(GameState state) {
+        //Tänker att man inleder med att nollställa synlighet på alla paneler, men det finns kanske bättre sätt?
+        categoryPanel.setVisible(false);
+        questionPanel.setVisible(false);
+
+        switch (state) {
+            case NEW_GAME:
+                System.out.println("Panel NEW_GAME finns ännu inte");
+                break;
+            case CHOOSE_CATEGORY:
+                categoryPanel.setVisible(true);
+                break;
+            case ANSWER_QUESTION:
+                questionPanel.setVisible(true);
+                break;
+            case SCORE_TABLE:
+                System.out.println("Panel SCORE_TABLE finns ännu inte.");
+        }
+        repaint();
+        revalidate();
     }
 
     public void lockButtons(JButton[] buttonsToLock) {
