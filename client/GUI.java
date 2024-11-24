@@ -8,6 +8,9 @@ public class GUI extends JFrame {
     //GUI Setup
     Border outerPadding = BorderFactory.createEmptyBorder(20, 40, 30, 40);
     Border optionButtonsPadding = BorderFactory.createEmptyBorder(20, 0, 20, 0);
+    //NYTT NU: Vi använder CardLayout för att panel.
+    CardLayout cardLayout = new CardLayout();
+    JPanel mainPanel = new JPanel(cardLayout);
 
     //GUI QuestionPanelStuff
     JPanel questionPanel = new JPanel(new BorderLayout(0, 40));
@@ -25,6 +28,12 @@ public class GUI extends JFrame {
     JButton[] categoryButtons = new JButton[3];
     JPanel catOptionPanel = new JPanel(new GridLayout(3, 1));
     JLabel choseCategory = new JLabel();
+
+    //ScorePanelStuff
+    JPanel scorePanel = new JPanel(new BorderLayout());
+
+    //NewGamePanelStuff
+    JPanel newGamePanel = new JPanel(new BorderLayout());
 
     //Getter for buttons
     public Optional<JButton> getButton(String buttonText) {
@@ -46,11 +55,16 @@ public class GUI extends JFrame {
 
     public void gameBoard() {
         //GUI – Set content
+        this.add(mainPanel);
         setupQuestionPanel();
         setupCategoryPanel();
+        mainPanel.add(questionPanel, "Question");
+        mainPanel.add(categoryPanel, "Category");
+        mainPanel.add(scorePanel, "Score");
+        mainPanel.add(newGamePanel, "New Game");
 
         //Ska förhoppningsvis kunna tas bort. Annars sätt annat default-värde.
-        question.setText("<HTML>Hur många YH-poäng är Nackademins utbildning i Javaprogrammering?</HTML>");
+        //question.setText("<HTML>Hur många YH-poäng är Nackademins utbildning i Javaprogrammering?</HTML>");
 
         //GUI – Display it
         setSize(500, 700);
@@ -61,8 +75,8 @@ public class GUI extends JFrame {
 
     private void setupCategoryPanel() {
         //CategoryPanel – Placement
-        this.add(categoryPanel);
-        categoryPanel.setVisible(false);
+        mainPanel.add(categoryPanel);
+        categoryPanel.setVisible(true);
         categoryPanel.setBorder(outerPadding);
         categoryPanel.add(catContentPanel, BorderLayout.CENTER);
 
@@ -80,8 +94,8 @@ public class GUI extends JFrame {
 
     private void setupQuestionPanel() {
         //QuestionPanel – Placement
-        this.add(questionPanel);
-        questionPanel.setVisible(false);
+        mainPanel.add(questionPanel);
+        questionPanel.setVisible(true);
         questionPanel.setBorder(outerPadding);
         questionPanel.add(header, BorderLayout.NORTH);
         questionPanel.add(quizContentPanel, BorderLayout.CENTER);
@@ -104,22 +118,21 @@ public class GUI extends JFrame {
 
     //Antopas nu från ClientController.handleQuestionSet() resp. handleCategorySet()
     public void switchPanel(GameState state) {
-        //Tänker att man inleder med att nollställa synlighet på alla paneler, men det finns kanske bättre sätt?
-        categoryPanel.setVisible(false);
-        questionPanel.setVisible(false);
 
         switch (state) {
             case NEW_GAME:
-                System.out.println("Panel NEW_GAME finns ännu inte");
+                cardLayout.show(mainPanel, "New Game");
+                System.out.println("Panel för NEW_GAME (newGamePanel) finns bara i fantasin (men den är fin, tycker Kalle).");
                 break;
             case CHOOSE_CATEGORY:
-                categoryPanel.setVisible(true);
+                cardLayout.show(mainPanel, "Category");
                 break;
             case ANSWER_QUESTION:
-                questionPanel.setVisible(true);
+                cardLayout.show(mainPanel, "Question");
                 break;
             case SCORE_TABLE:
-                System.out.println("Panel SCORE_TABLE finns ännu inte.");
+                cardLayout.show(mainPanel, "Score");
+                System.out.println("Panel för SCORE_TABLE (scorePanel) finns finns bara i fantasin (men den är fin, tycker Kalle).");
         }
         repaint();
         revalidate();
@@ -165,6 +178,7 @@ public class GUI extends JFrame {
             for (int i = 0; i < optionButtons.length; i++) {
                 optionButtons[i].setEnabled(true);
                 optionButtons[i].setText(questionSet[i + 1].trim());
+                System.out.println(questionSet[i + 1].trim());
             }
         } else {
             System.err.println("Amount of buttons does not match amount of answer elements");
