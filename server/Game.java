@@ -3,6 +3,8 @@ import java.net.Socket;
 public class Game {
     Socket player1;
     Socket player2;
+    int[][] player1Res = new int[6][3];
+    int[][] player2Res = new int[6][3];
     final int GAME_ID; //Antar att final är rätt iom att ett rum aldrig byter id?
     int currentRound = 1;
     int currentPlayer = 1;
