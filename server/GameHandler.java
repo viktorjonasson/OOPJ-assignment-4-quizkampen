@@ -17,6 +17,10 @@ public class GameHandler {
         this.ongoingGames = new ArrayList<>();
     }
 
+    public Queue<Game> getPendingGames() {
+        return pendingGames;
+    }
+
     public void createNewGame(Socket incomingConnection) throws IOException {
         ++GameID;
         Game newGameRoom = new Game(incomingConnection, GameID);

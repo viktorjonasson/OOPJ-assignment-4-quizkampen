@@ -22,13 +22,14 @@ public class Game extends Thread {
     }
 
     public void run(){
-
         System.out.println("Utanför");
-
         while(true){
-            if (player2 != null){
-                System.out.println("I while-blocket");
-
+            if (player1 != null && player2 != null) {
+                System.out.println("Both players connected");
+            } else {
+                if (player1 != null) {
+                    System.out.println("Player1 connected");
+                }
             }
         }
     }

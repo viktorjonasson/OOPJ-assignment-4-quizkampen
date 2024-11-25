@@ -8,12 +8,14 @@ public class Server {
     private ServerSocket serverSocket;
     Server(int port) {
         gameHandler = new GameHandler(this);
-
         try {
             serverSocket = new ServerSocket(port);
             while (true) {
-                gameHandler.createNewGame(serverSocket.accept());
-                gameHandler.connectPlayerToGame(serverSocket.accept());
+                if (gameHandler.getPendingGames().isEmpty()) {
+                    gameHandler.createNewGame(serverSocket.accept());
+                } else {
+                    gameHandler.connectPlayerToGame(serverSocket.accept());
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
