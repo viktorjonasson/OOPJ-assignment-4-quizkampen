@@ -1,4 +1,6 @@
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -9,6 +11,7 @@ public class Game extends Thread {
     Socket player2;
     PrintWriter writerPlayer1;
     PrintWriter writerPlayer2;
+    BufferedReader readerPlayer1;
     int[][] player1Res = new int[6][3];
     int[][] player2Res = new int[6][3];
     final int GAME_ID;
@@ -16,6 +19,7 @@ public class Game extends Thread {
     int currentPlayer = 1;
     int currentQuestion = 1;
     private DataBase db;
+    boolean gameStarted = false;
 
     Game(Socket player1Socket, int gameId) throws IOException {
         this.player1 = player1Socket;
@@ -25,23 +29,48 @@ public class Game extends Thread {
         start();
     }
 
-    public void run(){
+    public void run() {
         System.out.println("Utanför");
-        while(true){
+        String request;
+        String[] parts;
+        while (true) {
             if (player1 != null && player2 != null) {
                 System.out.println("Both players connected");
             } else {
                 if (player1 != null) {
-                    handleCategorySet();
+                    if (!gameStarted) {
+                        try {
+                            readerPlayer1 = new BufferedReader(new InputStreamReader(player1.getInputStream()));
+                            handleCategorySet();
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                        gameStarted = true;
+                    } else {
+                        try {
+                            if ((request = readerPlayer1.readLine()) != null) {
+                                if (request.startsWith("Category")) {
+                                    parts = request.split(":");
+                                    handleQuestionSet();
+                                }
+                                if (request.startsWith("Answer")) {
+                                    parts = request.split(":");
+                                    checkAnswer(parts[1].trim());
+                                }
+                            }
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
                 }
             }
         }
     }
 
     public void updateResult(boolean correctAnswer) {
-        if (currentPlayer == 1){
+        if (currentPlayer == 1) {
             setPlayer1Res(correctAnswer);
-        }else
+        } else
             setPlayer2Res(correctAnswer);
 
         switchPlayer();
@@ -50,26 +79,26 @@ public class Game extends Thread {
         updateCounters();
     }
 
-    public void updateCounters(){
+    public void updateCounters() {
         ++currentQuestion;
-            if (currentQuestion <3){
-                currentQuestion = 1;
-                ++currentRound;
-            }
+        if (currentQuestion < 3) {
+            currentQuestion = 1;
+            ++currentRound;
+        }
     }
 
-    public void setPlayer1Res(boolean correctAnswer){
+    public void setPlayer1Res(boolean correctAnswer) {
         if (correctAnswer) {
-            player1Res[currentRound-1][currentQuestion -1] = 1; //rätt svar
+            player1Res[currentRound - 1][currentQuestion - 1] = 1; //rätt svar
         } else
-            player1Res[currentRound-1][currentQuestion -1] = -1; //fel svar
+            player1Res[currentRound - 1][currentQuestion - 1] = -1; //fel svar
     }
 
-    public void setPlayer2Res(boolean correctAnswer){
+    public void setPlayer2Res(boolean correctAnswer) {
         if (correctAnswer) {
-            player2Res[currentRound-1][currentQuestion -1] = 1; //rätt svar
-        }else
-            player2Res[currentRound-1][currentQuestion -1] = -1; //fel svar
+            player2Res[currentRound - 1][currentQuestion - 1] = 1; //rätt svar
+        } else
+            player2Res[currentRound - 1][currentQuestion - 1] = -1; //fel svar
     }
 
     void switchPlayer() {
@@ -80,7 +109,9 @@ public class Game extends Thread {
         }
     }
 
-    public int getCurrentQuestion() {return currentQuestion;}
+    public int getCurrentQuestion() {
+        return currentQuestion;
+    }
 
     public int getCurrentRound() {
         return currentRound;
@@ -102,7 +133,7 @@ public class Game extends Thread {
     public void handleQuestionSet() {
         ArrayList<String> questionSet = db.getQuestionSet();
         String reply = "QuestionSet: " + questionSet.toString();
-        //server.writeToClient(reply);
+        writeToClient(reply);
     }
 
     void checkAnswer(String answer) {
@@ -113,6 +144,6 @@ public class Game extends Thread {
             reply += answer + ", false";
         }
         //TODO: funktion för att uppdatera poäng i rätt game-instans
-        // server.writeToClient(reply);
+         writeToClient(reply);
     }
 }

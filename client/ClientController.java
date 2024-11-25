@@ -56,8 +56,8 @@ public class ClientController {
         gameLogic.loadQuestionSet(notification);
         Optional<String[]> question = gameLogic.getNextQuestion();
         if (question.isPresent()) {
-            gui.updateQuestionPanel(question.get());
             gui.switchPanel(GameState.ANSWER_QUESTION);
+            gui.updateQuestionPanel(question.get());
         } else {
             System.err.println("Error loading question.");
         }
@@ -65,12 +65,12 @@ public class ClientController {
 
     void handleCategorySet(String notification) {
         String[] categoryChoice = notification.substring(1, notification.length() - 1).split("\\|");
-        gui.switchPanel(GameState.CHOOSE_CATEGORY);
         gui.updateCategoryPanel(categoryChoice);
-
+        gui.switchPanel(GameState.CHOOSE_CATEGORY);
     }
 
     void startNewGame() {
+        gui.switchPanel(GameState.CHOOSE_CATEGORY);
         String request = "NewGame";
         client.writeToServer(request);
     }

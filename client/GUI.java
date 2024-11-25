@@ -76,6 +76,11 @@ public class GUI extends JFrame {
     private void setupCategoryPanel() {
         //CategoryPanel – Placement
         mainPanel.add(categoryPanel);
+        for (int i = 0; i < categoryButtons.length; i++) {
+            catOptionPanel.add(categoryButtons[i] = new JButton());
+            categoryButtons[i].setPreferredSize(new Dimension(100, 50));
+            categoryButtons[i].setText("");
+        }
         categoryPanel.setVisible(true);
         categoryPanel.setBorder(outerPadding);
         categoryPanel.add(catContentPanel, BorderLayout.CENTER);
@@ -84,12 +89,6 @@ public class GUI extends JFrame {
         catContentPanel.add(choseCategory, BorderLayout.NORTH);
         catContentPanel.add(catOptionPanel, BorderLayout.CENTER);
         catOptionPanel.setBorder(optionButtonsPadding);
-
-        for (int i = 0; i < categoryButtons.length; i++) {
-            catOptionPanel.add(categoryButtons[i] = new JButton());
-            categoryButtons[i].setPreferredSize(new Dimension(100, 50));
-            categoryButtons[i].setText("");
-        }
     }
 
     private void setupQuestionPanel() {
