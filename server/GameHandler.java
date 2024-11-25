@@ -15,7 +15,7 @@ public class GameHandler {
         this.ongoingGames = new ArrayList<>();
     }
 
-    public void createNewGame(Socket incomingConnection, Server server) {
+    public void createNewGame(Socket incomingConnection) {
         ++GameID;
         Game newGameRoom = new Game(incomingConnection, GameID);
         pendingGames.add(newGameRoom);

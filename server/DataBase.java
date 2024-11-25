@@ -16,7 +16,7 @@ public class DataBase {
         question2Shuffled.add("|");
         ArrayList<String> question3Shuffled = question_3.getShuffled();
 
-        return new ArrayList<String>() {{
+        return new ArrayList<>() {{
             addAll(question1Shuffled);
             addAll(question2Shuffled);
             addAll(question3Shuffled);

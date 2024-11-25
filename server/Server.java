@@ -19,7 +19,7 @@ public class Server {
             while (true) {
                 if ((request = bufferedReader.readLine()) != null) {
                     if (request.startsWith("NewGame")) {
-                        gameHandler.createNewGame(clientSocket, this);
+                        gameHandler.createNewGame(clientSocket);
                     }
                     if (request.startsWith("Answer")) {
                         parts = request.split(":");
