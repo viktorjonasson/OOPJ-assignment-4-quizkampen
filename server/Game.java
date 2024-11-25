@@ -18,14 +18,20 @@ public class Game extends Thread {
         this.player1 = player1Socket;
         writerPlayer1 = new PrintWriter(player1.getOutputStream(), true);
         GAME_ID = gameId;
+        start();
     }
 
     public void run(){
 
+        System.out.println("Utanför");
 
+        while(true){
+            if (player2 != null){
+                System.out.println("I while-blocket");
 
+            }
+        }
     }
-
 
     public void updateResult(boolean correctAnswer) {
         if (currentPlayer == 1){
