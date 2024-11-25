@@ -202,6 +202,7 @@ public class GUI extends JFrame {
         if (categoryButtons.length == categoryChoice.length) {
             for (int i = 0; i < categoryChoice.length; i++) {
                 categoryButtons[i].setText(categoryChoice[i]);
+                categoryButtons[i].setEnabled(true);
             }
         } else {
             System.err.println("Mismatch concerning amount of buttons and categories");

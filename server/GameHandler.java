@@ -24,7 +24,7 @@ public class GameHandler {
         ++GameID;
         Game newGameRoom = new Game(incomingConnection, GameID);
         pendingGames.add(newGameRoom);
-        newGameRoom.handleCategorySet();
+        newGameRoom.sendCategoriesToClient();
     }
 
     public boolean connectPlayerToGame(Socket playerConnection) {

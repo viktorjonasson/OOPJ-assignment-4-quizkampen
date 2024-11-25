@@ -47,6 +47,12 @@ public class Game extends Thread {
                         writeToClient(round.getQuestions());
                         round.answeredQuestions = 0;
                     }
+                    if (round.finished()) {
+                        sendCategoriesToClient();
+                        round.answeredQuestions = 0;
+                        round.player1AnsweredQuestions = 0;
+                        round.player2AnsweredQuestions = 0;
+                    }
                 }
             } else {
                 if (player1 != null && round.answeredQuestions != 3) {
@@ -71,7 +77,7 @@ public class Game extends Thread {
     public void handleNewGame() {
         try {
             readerPlayer1 = new BufferedReader(new InputStreamReader(player1.getInputStream()));
-            handleCategorySet();
+            sendCategoriesToClient();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -161,7 +167,7 @@ public class Game extends Thread {
         }
     }
 
-    public void handleCategorySet() {
+    public void sendCategoriesToClient() {
         String reply = "CategorySet: " + Arrays.toString(db.getCategorySet());
         writeToClient(reply);
     }
