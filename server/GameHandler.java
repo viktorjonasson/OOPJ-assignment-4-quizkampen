@@ -39,7 +39,8 @@ public class GameHandler {
     }
 
     public void handleQuestionSet() {
-        String reply = "QuestionSet: " + Arrays.toString(db.getQuestionSet());
+        ArrayList<String> questionSet = db.getQuestionSet();
+        String reply = "QuestionSet: " + questionSet.toString();
         server.writeToClient(reply);
     }
 
