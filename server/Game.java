@@ -6,6 +6,7 @@ import java.net.Socket;
 import java.util.Arrays;
 
 public class Game extends Thread {
+
     Socket player1;
     Socket player2;
     PrintWriter writerPlayer1;
@@ -15,11 +16,11 @@ public class Game extends Thread {
     int[][] player1Res = new int[6][3];
     int[][] player2Res = new int[6][3];
     final int GAME_ID;
-    int currentRound = 1;
     int currentPlayer = 1;
+    int currentRound = 0;
     int currentQuestion = 0;
-    private final DataBase db;
     boolean gameStarted = false;
+    private final DataBase db;
 
     Game(Socket player1Socket, int gameId) throws IOException {
         this.player1 = player1Socket;
@@ -123,18 +124,21 @@ public class Game extends Thread {
     public void setPlayerResult(boolean correctAnswer) {
         if (correctAnswer) {
             if (currentPlayer == 1) {
-                player1Res[currentRound - 1][currentQuestion] = 1;
+                player1Res[currentRound][currentQuestion] = 1;
             } else {
-                player2Res[currentRound - 1][currentQuestion] = 1;
+                player2Res[currentRound][currentQuestion] = 1;
             }
         } else {
             if (currentPlayer == 1) {
-                player1Res[currentRound - 1][currentQuestion] = -1;
+                player1Res[currentRound][currentQuestion] = -1;
             } else {
-                player2Res[currentRound - 1][currentQuestion] = -1;
+                player2Res[currentRound][currentQuestion] = -1;
             }
         }
-        //Detta är bara för demonstration av score keeping. Ta bort när alla vet hur det funkar
+        /*  OBS!
+            Detta är bara för demonstration av score keeping och tar väldigt mycket plats.
+            Ta bort när alla vet hur det funkar
+         */
         if (currentPlayer == 1) {
             System.out.println();
             System.out.println("Player 1 score:");
