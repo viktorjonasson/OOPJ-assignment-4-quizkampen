@@ -1,8 +1,12 @@
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.Socket;
 
-public class Game {
+public class Game extends Thread {
     Socket player1;
     Socket player2;
+    PrintWriter writerPlayer1;
+    PrintWriter writerPlayer2;
     int[][] player1Res = new int[6][3];
     int[][] player2Res = new int[6][3];
     final int GAME_ID;
@@ -10,10 +14,18 @@ public class Game {
     int currentPlayer = 1;
     int currentQuestion = 1;
 
-    Game(Socket player1Socket, int gameId) {
+    Game(Socket player1Socket, int gameId) throws IOException {
         this.player1 = player1Socket;
+        writerPlayer1 = new PrintWriter(player1.getOutputStream(), true);
         GAME_ID = gameId;
     }
+
+    public void run(){
+
+
+
+    }
+
 
     public void updateResult(boolean correctAnswer) {
         if (currentPlayer == 1){

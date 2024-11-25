@@ -1,3 +1,5 @@
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.*;
 
@@ -15,33 +17,34 @@ public class GameHandler {
         this.ongoingGames = new ArrayList<>();
     }
 
-    public void createNewGame(Socket incomingConnection) {
+    public void createNewGame(Socket incomingConnection) throws IOException {
         ++GameID;
         Game newGameRoom = new Game(incomingConnection, GameID);
         pendingGames.add(newGameRoom);
         handleCategorySet();
     }
 
-    public boolean connectPlayerToGame(Socket playerConnection, Game game) {
+    public boolean connectPlayerToGame(Socket playerConnection) {
         try {
-            game.player2 = playerConnection;
-            ongoingGames.add(game);
-            pendingGames.remove(game);
+            Game tempGame = pendingGames.poll();
+            tempGame.player2 = playerConnection;
+            ongoingGames.add(tempGame);
+            tempGame.writerPlayer2 = new PrintWriter(playerConnection.getOutputStream(), true);
             return true;
-        } catch (NullPointerException e) {
+        } catch (NullPointerException | IOException e) {
             return false;
         }
     }
 
     public void handleCategorySet() {
         String reply = "CategorySet: " + Arrays.toString(db.getCategorySet());
-        server.writeToClient(reply);
+       // server.writeToClient(reply);
     }
 
     public void handleQuestionSet() {
         ArrayList<String> questionSet = db.getQuestionSet();
         String reply = "QuestionSet: " + questionSet.toString();
-        server.writeToClient(reply);
+        //server.writeToClient(reply);
     }
 
     void checkAnswer(String answer) {
@@ -52,6 +55,6 @@ public class GameHandler {
             reply += answer + ", false";
         }
         //TODO: funktion för att uppdatera poäng i rätt game-instans
-        server.writeToClient(reply);
+       // server.writeToClient(reply);
     }
 }
