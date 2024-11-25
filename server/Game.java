@@ -3,7 +3,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Game extends Thread {
@@ -43,7 +42,7 @@ public class Game extends Thread {
                     if (round.answeredQuestions != 3) {
                         handleClientRequest(round);
                     }
-                    if (round.answeredQuestions == 3) {
+                    if (round.answeredQuestions == 3 && !round.finished()) {
                         switchPlayer();
                         writeToClient(round.getQuestions());
                         round.answeredQuestions = 0;

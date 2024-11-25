@@ -4,7 +4,6 @@ import java.net.Socket;
 
 public class Server {
     private final GameHandler gameHandler;
-    private PrintWriter printWriter;
     private ServerSocket serverSocket;
     Server(int port) {
         gameHandler = new GameHandler(this);
