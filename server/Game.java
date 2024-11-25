@@ -49,6 +49,7 @@ public class Game extends Thread {
                     }
                     if (round.finished()) {
                         sendCategoriesToClient();
+                        //Följande är en temporär lösning. Vi behöver bygga ut logiken
                         round.answeredQuestions = 0;
                         round.player1AnsweredQuestions = 0;
                         round.player2AnsweredQuestions = 0;
