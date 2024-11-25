@@ -22,6 +22,7 @@ public class DataBase {
             addAll(question3Shuffled);
         }};
     }
+
     public String[] getCategorySet() {
         return new String[]{"Category 1 |",
                 "Category 2 |",
