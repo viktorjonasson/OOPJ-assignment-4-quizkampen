@@ -31,6 +31,19 @@ public class GUI extends JFrame {
 
     //ScorePanelStuff
     JPanel scorePanel = new JPanel(new BorderLayout());
+    JPanel headerPanel = new JPanel(new BorderLayout());
+    JLabel gameStatus = new JLabel("Deras tur"); //Placeholder, sätt dynamiskt sen.
+    JLabel player1Name = new JLabel("Spelare 1");
+    JLabel player2Name = new JLabel("Spelare 2");
+    JLabel totalResult = new JLabel("0 – 0");
+    JPanel player1ResultsPanel = new JPanel(new GridLayout(6, 3));
+    JLabel[] player1Results = new JLabel[18];
+    JPanel roundIndicatorPanel = new JPanel(new GridLayout(6, 1));
+    JLabel[] roundIndicators = new JLabel[6];
+    JPanel player2ResultsPanel = new JPanel(new GridLayout(6, 3));
+    JLabel[] player2Results = new JLabel[18];
+    JButton startRoundButton = new JButton("Spela"); //Denna ska döljas när det är andra spelarens tur.
+
 
     //NewGamePanelStuff
     JPanel newGamePanel = new JPanel(new BorderLayout());
@@ -56,6 +69,7 @@ public class GUI extends JFrame {
     public void gameBoard() {
         //GUI – Set content
         this.add(mainPanel);
+        setupScorePanel();
         setupQuestionPanel();
         setupCategoryPanel();
         mainPanel.add(questionPanel, "Question");
@@ -72,6 +86,38 @@ public class GUI extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
+
+    private void setupScorePanel() {
+        //ScorePanel – Placement
+        mainPanel.add(scorePanel);
+        scorePanel.setVisible(true);
+        scorePanel.setBorder(outerPadding);
+        scorePanel.add(headerPanel, BorderLayout.NORTH);
+        headerPanel.add(gameStatus, BorderLayout.NORTH);
+        headerPanel.add(player1Name, BorderLayout.WEST);
+        headerPanel.add(totalResult, BorderLayout.CENTER);
+        headerPanel.add(player2Name, BorderLayout.EAST);
+        scorePanel.add(player1ResultsPanel, BorderLayout.WEST);
+        scorePanel.add(roundIndicatorPanel, BorderLayout.CENTER);
+        scorePanel.add(player2ResultsPanel, BorderLayout.EAST);
+        for (int i = 0; i < player1Results.length; i++) {
+            player1ResultsPanel.add(player1Results[i] = new JLabel());
+            player1Results[i].setPreferredSize(new Dimension(5, 5));
+            player1Results[i].setText("O");
+        }
+        for (int i = 0; i < roundIndicators.length; i++) {
+            roundIndicatorPanel.add(roundIndicators[i] = new JLabel());
+            roundIndicators[i].setPreferredSize(new Dimension(5, 5));
+            roundIndicators[i].setText("Round " + i + 1);
+        }
+        for (int i = 0; i < player2Results.length; i++) {
+            player2ResultsPanel.add(player2Results[i] = new JLabel());
+            player2Results[i].setPreferredSize(new Dimension(5, 5));
+            player2Results[i].setText("O");
+        }
+        scorePanel.add(startRoundButton, BorderLayout.SOUTH);
+    }
+
 
     private void setupCategoryPanel() {
         //CategoryPanel – Placement
@@ -135,6 +181,7 @@ public class GUI extends JFrame {
             case SCORE_TABLE:
                 cardLayout.show(mainPanel, "Score");
                 System.out.println("Panel för SCORE_TABLE (scorePanel) finns finns bara i fantasin (men den är fin, tycker Kalle).");
+                break;
         }
     }
 
