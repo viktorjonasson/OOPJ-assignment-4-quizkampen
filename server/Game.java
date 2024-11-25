@@ -31,15 +31,13 @@ public class Game extends Thread {
 
     public void run() {
         Round round = new Round(db, this);
-        BufferedReader reader;
         while (true) {
             if (player1 != null && player2 != null) {
                 if (!gameStarted) {
                     handleNewGame();
                 } else {
                     if (currentPlayer == 1 && round.answeredQuestions != 3) {
-                        reader = readerPlayer1;
-                        handleClientRequest(reader, round);
+                        handleClientRequest(round);
                     }
                 }
             } else {
@@ -47,7 +45,7 @@ public class Game extends Thread {
                     if (!gameStarted) {
                         handleNewGame();
                     } else {
-                        handleClientRequest(readerPlayer1, round);
+                        handleClientRequest(round);
                     }
                 }
             }
@@ -64,7 +62,7 @@ public class Game extends Thread {
         gameStarted = true;
     }
 
-    public void handleClientRequest(BufferedReader reader, Round currentRound) {
+    public void handleClientRequest(Round currentRound) {
         String request;
         String reply;
         String[] parts;
