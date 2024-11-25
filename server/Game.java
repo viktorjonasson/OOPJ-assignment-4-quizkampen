@@ -12,6 +12,7 @@ public class Game extends Thread {
     PrintWriter writerPlayer1;
     PrintWriter writerPlayer2;
     BufferedReader readerPlayer1;
+    BufferedReader readerPlayer2;
     int[][] player1Res = new int[6][3];
     int[][] player2Res = new int[6][3];
     final int GAME_ID;
@@ -36,8 +37,16 @@ public class Game extends Thread {
                 if (!gameStarted) {
                     handleNewGame();
                 } else {
-                    if (currentPlayer == 1 && round.answeredQuestions != 3) {
+                    if (readerPlayer2 == null) {
+                        initializePlayer2Reader();
+                    }
+                    if (round.answeredQuestions != 3) {
                         handleClientRequest(round);
+                    }
+                    if (round.answeredQuestions == 3) {
+                        switchPlayer();
+                        writeToClient(round.getQuestions());
+                        round.answeredQuestions = 0;
                     }
                 }
             } else {
@@ -49,6 +58,14 @@ public class Game extends Thread {
                     }
                 }
             }
+        }
+    }
+
+    private void initializePlayer2Reader() {
+        try {
+            readerPlayer2 = new BufferedReader(new InputStreamReader(player2.getInputStream()));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -67,7 +84,9 @@ public class Game extends Thread {
         String reply;
         String[] parts;
         try {
-            if ((request = readerPlayer1.readLine()) != null && currentRound.answeredQuestions != 3) {
+            if (currentRound.answeredQuestions != 3 &&
+                (currentPlayer == 1 && (request = readerPlayer1.readLine()) != null) ||
+                (currentPlayer == 2 && (request = readerPlayer2.readLine()) != null)) {
                 if (request.startsWith("Category")) {
                     parts = request.split(":");
                     currentRound.setCategory(parts[1]);
