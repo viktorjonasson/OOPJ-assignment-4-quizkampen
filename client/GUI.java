@@ -69,9 +69,9 @@ public class GUI extends JFrame {
     public void gameBoard() {
         //GUI – Set content
         this.add(mainPanel);
-        setupScorePanel();
         setupCategoryPanel();
         setupQuestionPanel();
+        setupScorePanel();
         mainPanel.add(questionPanel, "Question");
         mainPanel.add(categoryPanel, "Category");
         mainPanel.add(scorePanel, "Score");
