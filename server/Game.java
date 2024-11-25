@@ -12,13 +12,14 @@ public class Game extends Thread {
     PrintWriter writerPlayer1;
     PrintWriter writerPlayer2;
     BufferedReader readerPlayer1;
+    BufferedReader readerPlayer2;
     int[][] player1Res = new int[6][3];
     int[][] player2Res = new int[6][3];
     final int GAME_ID;
     int currentRound = 1;
     int currentPlayer = 1;
     int currentQuestion = 1;
-    private DataBase db;
+    private final DataBase db;
     boolean gameStarted = false;
 
     Game(Socket player1Socket, int gameId) throws IOException {
@@ -30,39 +31,97 @@ public class Game extends Thread {
     }
 
     public void run() {
-        System.out.println("Utanför");
         String request;
+        String reply;
         String[] parts;
+        Round round = new Round(db, this);
         while (true) {
+            System.out.println("Inside loop");
             if (player1 != null && player2 != null) {
+                handleClientResponse();
+                System.out.println("2 players connected");
+                if (round.answeredQuestions == 3) {
+                    switchPlayer();
+                    writeToClient(round.getQuestions());
+                }
                 System.out.println("Both players connected");
             } else {
                 if (player1 != null) {
-                    if (!gameStarted) {
-                        try {
-                            readerPlayer1 = new BufferedReader(new InputStreamReader(player1.getInputStream()));
-                            handleCategorySet();
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                        gameStarted = true;
-                    } else {
-                        try {
-                            if ((request = readerPlayer1.readLine()) != null) {
-                                if (request.startsWith("Category")) {
-                                    parts = request.split(":");
-                                    handleQuestionSet();
-                                }
-                                if (request.startsWith("Answer")) {
-                                    parts = request.split(":");
-                                    checkAnswer(parts[1].trim());
-                                }
-                            }
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
+                    handleClientResponse();
+//                    if (!gameStarted) {
+//                        try {
+//                            readerPlayer1 = new BufferedReader(new InputStreamReader(player1.getInputStream()));
+//                            handleCategorySet();
+//                        } catch (IOException e) {
+//                            throw new RuntimeException(e);
+//                        }
+//                        gameStarted = true;
+//                    } else {
+//                        try {
+//                            if ((request = readerPlayer1.readLine()) != null && round.answeredQuestions != 3) {
+//                                if (request.startsWith("Category")) {
+//                                    parts = request.split(":");
+//                                    round.setCategory(parts[1]);
+//                                    writeToClient(round.getQuestions());
+//                                }
+//                                if (request.startsWith("Answer") && round.answeredQuestions < 3) {
+//                                    parts = request.split(":");
+//                                    reply = round.checkAnswer(parts[1].trim());
+//                                    writeToClient(reply);
+//                                    round.incrementAnsweredQuestions();
+//                                }
+//                            }
+//                        } catch (IOException e) {
+//                            throw new RuntimeException(e);
+//                        }
+//                    }
+                }
+            }
+
+        }
+    }
+
+    public void handleClientResponse() {
+        String request;
+        String reply;
+        String[] parts;
+        Round round = new Round(db, this);
+        BufferedReader reader;
+        Socket playerSocket;
+        if (currentPlayer == 1) {
+            reader = readerPlayer1;
+            playerSocket = player1;
+            if (reader == null) {
+                try {
+                    reader = new BufferedReader(new InputStreamReader(playerSocket.getInputStream()));
+                    handleCategorySet();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        } else {
+            reader = readerPlayer2;
+            playerSocket = player2;
+        }
+        if (!gameStarted) {
+            gameStarted = true;
+        } else {
+            try {
+                if ((request = reader.readLine()) != null && round.answeredQuestions != 3) {
+                    if (request.startsWith("Category")) {
+                        parts = request.split(":");
+                        round.setCategory(parts[1]);
+                        writeToClient(round.getQuestions());
+                    }
+                    if (request.startsWith("Answer") && round.answeredQuestions < 3) {
+                        parts = request.split(":");
+                        reply = round.checkAnswer(parts[1].trim());
+                        writeToClient(reply);
+                        round.incrementAnsweredQuestions();
                     }
                 }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         }
     }
@@ -130,20 +189,5 @@ public class Game extends Thread {
         writeToClient(reply);
     }
 
-    public void handleQuestionSet() {
-        ArrayList<String> questionSet = db.getQuestionSet();
-        String reply = "QuestionSet: " + questionSet.toString();
-        writeToClient(reply);
-    }
 
-    void checkAnswer(String answer) {
-        String reply = "Solution: ";
-        if (answer.equals("Right answer")) {
-            reply += answer + ", true";
-        } else {
-            reply += answer + ", false";
-        }
-        //TODO: funktion för att uppdatera poäng i rätt game-instans
-         writeToClient(reply);
-    }
 }
