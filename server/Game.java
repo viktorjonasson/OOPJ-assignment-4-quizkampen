@@ -30,51 +30,60 @@ public class Game extends Thread {
     }
 
     public void run() {
-        String request;
-        String reply;
-        String[] parts;
         Round round = new Round(db, this);
+        BufferedReader reader;
         while (true) {
-            System.out.println("Inside loop");
             if (player1 != null && player2 != null) {
-
-                System.out.println("2 players connected");
-                if (round.answeredQuestions == 3) {
-                    switchPlayer();
-                    writeToClient(round.getQuestions());
+                if (!gameStarted) {
+                    handleNewGame();
+                } else {
+                    if (currentPlayer == 1 && round.answeredQuestions != 3) {
+                        reader = readerPlayer1;
+                        handleClientRequest(reader, round);
+                    }
                 }
-                System.out.println("Both players connected");
             } else {
-                if (player1 != null) {
+                if (player1 != null && round.answeredQuestions != 3) {
                     if (!gameStarted) {
-                        try {
-                            readerPlayer1 = new BufferedReader(new InputStreamReader(player1.getInputStream()));
-                            handleCategorySet();
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                        gameStarted = true;
+                        handleNewGame();
                     } else {
-                        try {
-                            if ((request = readerPlayer1.readLine()) != null && round.answeredQuestions != 3) {
-                                if (request.startsWith("Category")) {
-                                    parts = request.split(":");
-                                    round.setCategory(parts[1]);
-                                    writeToClient(round.getQuestions());
-                                }
-                                if (request.startsWith("Answer") && round.answeredQuestions < 3) {
-                                    parts = request.split(":");
-                                    reply = round.checkAnswer(parts[1].trim());
-                                    writeToClient(reply);
-                                    round.incrementAnsweredQuestions();
-                                }
-                            }
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
+                        handleClientRequest(readerPlayer1, round);
                     }
                 }
             }
+        }
+    }
+
+    public void handleNewGame() {
+        try {
+            readerPlayer1 = new BufferedReader(new InputStreamReader(player1.getInputStream()));
+            handleCategorySet();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        gameStarted = true;
+    }
+
+    public void handleClientRequest(BufferedReader reader, Round currentRound) {
+        String request;
+        String reply;
+        String[] parts;
+        try {
+            if ((request = readerPlayer1.readLine()) != null && currentRound.answeredQuestions != 3) {
+                if (request.startsWith("Category")) {
+                    parts = request.split(":");
+                    currentRound.setCategory(parts[1]);
+                    writeToClient(currentRound.getQuestions());
+                }
+                if (request.startsWith("Answer") && currentRound.answeredQuestions < 3) {
+                    parts = request.split(":");
+                    reply = currentRound.checkAnswer(parts[1].trim());
+                    writeToClient(reply);
+                    currentRound.incrementAnsweredQuestions();
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
