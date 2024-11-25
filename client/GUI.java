@@ -56,8 +56,8 @@ public class GUI extends JFrame {
     public void gameBoard() {
         //GUI – Set content
         this.add(mainPanel);
-        setupQuestionPanel();
         setupCategoryPanel();
+        setupQuestionPanel();
         mainPanel.add(questionPanel, "Question");
         mainPanel.add(categoryPanel, "Category");
         mainPanel.add(scorePanel, "Score");
@@ -120,7 +120,6 @@ public class GUI extends JFrame {
 
     //Antopas nu från ClientController.handleQuestionSet() resp. handleCategorySet()
     public void switchPanel(GameState state) {
-
         switch (state) {
             case NEW_GAME:
                 cardLayout.show(mainPanel, "New Game");

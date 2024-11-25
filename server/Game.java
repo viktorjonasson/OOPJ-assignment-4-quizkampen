@@ -1,6 +1,8 @@
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Game extends Thread {
     Socket player1;
@@ -13,9 +15,11 @@ public class Game extends Thread {
     int currentRound = 1;
     int currentPlayer = 1;
     int currentQuestion = 1;
+    private DataBase db;
 
     Game(Socket player1Socket, int gameId) throws IOException {
         this.player1 = player1Socket;
+        this.db = new DataBase();
         writerPlayer1 = new PrintWriter(player1.getOutputStream(), true);
         GAME_ID = gameId;
         start();
@@ -28,7 +32,7 @@ public class Game extends Thread {
                 System.out.println("Both players connected");
             } else {
                 if (player1 != null) {
-                    System.out.println("Player1 connected");
+                    handleCategorySet();
                 }
             }
         }
@@ -57,7 +61,7 @@ public class Game extends Thread {
     public void setPlayer1Res(boolean correctAnswer){
         if (correctAnswer) {
             player1Res[currentRound-1][currentQuestion -1] = 1; //rätt svar
-        }else
+        } else
             player1Res[currentRound-1][currentQuestion -1] = -1; //fel svar
     }
 
@@ -80,5 +84,35 @@ public class Game extends Thread {
 
     public int getCurrentRound() {
         return currentRound;
+    }
+
+    protected void writeToClient(String data) {
+        if (currentPlayer == 1) {
+            writerPlayer1.println(data);
+        } else {
+            writerPlayer2.println(data);
+        }
+    }
+
+    public void handleCategorySet() {
+        String reply = "CategorySet: " + Arrays.toString(db.getCategorySet());
+        writeToClient(reply);
+    }
+
+    public void handleQuestionSet() {
+        ArrayList<String> questionSet = db.getQuestionSet();
+        String reply = "QuestionSet: " + questionSet.toString();
+        //server.writeToClient(reply);
+    }
+
+    void checkAnswer(String answer) {
+        String reply = "Solution: ";
+        if (answer.equals("Option 1")) {
+            reply += answer + ", true";
+        } else {
+            reply += answer + ", false";
+        }
+        //TODO: funktion för att uppdatera poäng i rätt game-instans
+        // server.writeToClient(reply);
     }
 }

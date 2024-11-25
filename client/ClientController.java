@@ -8,10 +8,10 @@ public class ClientController {
     GameState gameState;
 
     ClientController() {
+        gui = new GUI();
         int port = 12345;
         String address = "127.0.0.1";
         client = new Client(address, port, this);
-        gui = new GUI();
         gui.gameBoard();
         gameLogic = new GameLogic();
         initializeButtonListeners(gui.getOptionButtons());
@@ -65,8 +65,9 @@ public class ClientController {
 
     void handleCategorySet(String notification) {
         String[] categoryChoice = notification.substring(1, notification.length() - 1).split("\\|");
-        gui.updateCategoryPanel(categoryChoice);
         gui.switchPanel(GameState.CHOOSE_CATEGORY);
+        gui.updateCategoryPanel(categoryChoice);
+
     }
 
     void startNewGame() {

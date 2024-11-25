@@ -69,7 +69,7 @@ public class Server {
 //    protected void writeToClient(String data) {
 //        printWriter.println(data);
 //    }
-//
+
     public static void main(String[] args) {
         int port = 12345;
         new Server(port);
