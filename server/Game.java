@@ -173,8 +173,4 @@ public class Game extends Thread {
         String reply = "CategorySet: " + Arrays.toString(db.getCategorySet());
         writeToClient(reply);
     }
-
-
-
-
 }
