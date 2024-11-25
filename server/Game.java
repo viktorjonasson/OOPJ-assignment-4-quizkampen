@@ -138,7 +138,7 @@ public class Game extends Thread {
 
     void checkAnswer(String answer) {
         String reply = "Solution: ";
-        if (answer.equals("Option 1")) {
+        if (answer.equals("Right answer")) {
             reply += answer + ", true";
         } else {
             reply += answer + ", false";
