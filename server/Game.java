@@ -17,7 +17,7 @@ public class Game extends Thread {
     final int GAME_ID;
     int currentRound = 1;
     int currentPlayer = 1;
-    int currentQuestion = 1;
+    int currentQuestion = 0;
     private final DataBase db;
     boolean gameStarted = false;
 
@@ -51,6 +51,7 @@ public class Game extends Thread {
                         sendCategoriesToClient();
                         currentRound++;
                         //Följande är en temporär lösning. Vi behöver bygga ut logiken
+                        currentQuestion = 0;
                         round.answeredQuestions = 0;
                         round.player1AnsweredQuestions = 0;
                         round.player2AnsweredQuestions = 0;
@@ -111,18 +112,6 @@ public class Game extends Thread {
         }
     }
 
-    public void updateResult(boolean correctAnswer) {
-        if (currentPlayer == 1) {
-            setPlayer1Res(correctAnswer);
-        } else
-            setPlayer2Res(correctAnswer);
-
-        switchPlayer();
-
-        //Detta anrop funkar inte för två spelare.
-        updateCounters();
-    }
-
     public void updateCounters() {
         ++currentQuestion;
         if (currentQuestion < 3) {
@@ -131,18 +120,56 @@ public class Game extends Thread {
         }
     }
 
-    public void setPlayer1Res(boolean correctAnswer) {
+    public void setPlayerResult(boolean correctAnswer) {
         if (correctAnswer) {
-            player1Res[currentRound - 1][currentQuestion - 1] = 1; //rätt svar
-        } else
-            player1Res[currentRound - 1][currentQuestion - 1] = -1; //fel svar
-    }
-
-    public void setPlayer2Res(boolean correctAnswer) {
-        if (correctAnswer) {
-            player2Res[currentRound - 1][currentQuestion - 1] = 1; //rätt svar
-        } else
-            player2Res[currentRound - 1][currentQuestion - 1] = -1; //fel svar
+            if (currentPlayer == 1) {
+                player1Res[currentRound - 1][currentQuestion] = 1;
+            } else {
+                player2Res[currentRound - 1][currentQuestion] = 1;
+            }
+        } else {
+            if (currentPlayer == 1) {
+                player1Res[currentRound - 1][currentQuestion] = -1;
+            } else {
+                player2Res[currentRound - 1][currentQuestion] = -1;
+            }
+        }
+        //Detta är bara för demonstration av score keeping. Ta bort när alla vet hur det funkar
+        if (currentPlayer == 1) {
+            System.out.println();
+            System.out.println("Player 1 score:");
+            for (int[] row : player1Res) {
+                for (int res : row) {
+                    if (res == -1) {
+                        System.out.print("W ");
+                    }
+                    if (res == 1) {
+                        System.out.print("R ");
+                    }
+                    if (res == 0) {
+                        System.out.print("N/A ");
+                    }
+                }
+                System.out.println();
+            }
+        } else {
+            System.out.println();
+            System.out.println("Player 2 score:");
+            for (int[] row : player2Res) {
+                for (int res : row) {
+                    if (res == -1) {
+                        System.out.print("W ");
+                    }
+                    if (res == 1) {
+                        System.out.print("R ");
+                    }
+                    if (res == 0) {
+                        System.out.print("N/A ");
+                    }
+                }
+                System.out.println();
+            }
+        }
     }
 
     void switchPlayer() {
@@ -151,14 +178,7 @@ public class Game extends Thread {
         } else {
             currentPlayer = 1;
         }
-    }
-
-    public int getCurrentQuestion() {
-        return currentQuestion;
-    }
-
-    public int getCurrentRound() {
-        return currentRound;
+        currentQuestion = 0;
     }
 
     protected void writeToClient(String data) {

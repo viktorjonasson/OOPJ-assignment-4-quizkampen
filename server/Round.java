@@ -25,25 +25,25 @@ public class Round {
 
     public void incrementAnsweredQuestions() {
         answeredQuestions++;
-    }
-
-    public int getAnsweredQuestions() {
-        return answeredQuestions;
+        game.currentQuestion = answeredQuestions;
     }
 
     public String checkAnswer(String answer) {
+        boolean rightAnswer;
         String reply = "Solution: ";
         if (answer.equals("Right answer")) {
             reply += answer + ", true";
+            rightAnswer = true;
         } else {
             reply += answer + ", false";
+            rightAnswer = false;
         }
         if (game.currentPlayer == 1) {
             player1AnsweredQuestions++;
         } else {
             player2AnsweredQuestions++;
         }
-        //TODO: funktion för att uppdatera poäng i rätt game-instans
+        game.setPlayerResult(rightAnswer);
         return reply;
     }
 
