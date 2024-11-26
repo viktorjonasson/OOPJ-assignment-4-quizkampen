@@ -89,7 +89,7 @@ public class GUI extends JFrame {
 
     private void setupScorePanel() {
         //ScorePanel – Placement
-        mainPanel.add(scorePanel);
+//        mainPanel.add(scorePanel);
         scorePanel.setVisible(true);
         scorePanel.setBorder(outerPadding);
         scorePanel.add(headerPanel, BorderLayout.NORTH);
@@ -124,7 +124,7 @@ public class GUI extends JFrame {
 
     private void setupCategoryPanel() {
         //CategoryPanel – Placement
-        mainPanel.add(categoryPanel);
+//        mainPanel.add(categoryPanel);
         for (int i = 0; i < categoryButtons.length; i++) {
             catOptionPanel.add(categoryButtons[i] = new JButton());
             categoryButtons[i].setPreferredSize(new Dimension(100, 50));
@@ -142,7 +142,7 @@ public class GUI extends JFrame {
 
     private void setupQuestionPanel() {
         //QuestionPanel – Placement
-        mainPanel.add(questionPanel);
+//        mainPanel.add(questionPanel);
         questionPanel.setVisible(true);
         questionPanel.setBorder(outerPadding);
         questionPanel.add(header, BorderLayout.NORTH);

@@ -48,6 +48,7 @@ public class Round {
     }
 
     public boolean finished() {
-        return player1AnsweredQuestions == 3 && player2AnsweredQuestions == 3;
+        return player1AnsweredQuestions == game.questionsPerRound
+               && player2AnsweredQuestions == game.questionsPerRound;
     }
 }

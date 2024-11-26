@@ -7,15 +7,16 @@ import java.util.Arrays;
 
 public class Game extends Thread {
 
-    int gameRounds = 6; //readFromProperties()
     Socket player1;
     Socket player2;
     PrintWriter writerPlayer1;
     PrintWriter writerPlayer2;
     BufferedReader readerPlayer1;
     BufferedReader readerPlayer2;
-    int[][] player1Res = new int[gameRounds][3];
-    int[][] player2Res = new int[gameRounds][3];
+    int gameRounds = 6; //readFromProperties()
+    int questionsPerRound = 3; //readFromProperties()
+    int[][] player1Res = new int[gameRounds][questionsPerRound];
+    int[][] player2Res = new int[gameRounds][questionsPerRound];
     final int GAME_ID;
     int currentPlayer = 1;
     int currentRound = 0;
@@ -41,10 +42,10 @@ public class Game extends Thread {
                     if (readerPlayer2 == null) {
                         initializePlayer2Reader();
                     }
-                    if (round.answeredQuestions != 3) {
+                    if (round.answeredQuestions != questionsPerRound) {
                         handleClientRequest(round);
                     }
-                    if (round.answeredQuestions == 3 && !round.finished()) {
+                    if (round.answeredQuestions == questionsPerRound && !round.finished()) {
                         switchPlayer();
                         writeToClient(round.getQuestions());
                         round.answeredQuestions = 0;
@@ -60,7 +61,7 @@ public class Game extends Thread {
                     }
                 }
             } else {
-                if (player1 != null && round.answeredQuestions != 3) {
+                if (player1 != null && round.answeredQuestions != questionsPerRound) {
                     if (!gameStarted) {
                         handleNewGame();
                     } else {
