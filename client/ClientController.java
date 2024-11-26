@@ -31,6 +31,18 @@ public class ClientController {
         });
     }
 
+    void initializeScoreButtonListener(JButton startRoundButton) {
+        startRoundButton.addActionListener(_ -> {
+            if (true) {//Om denna spelare ska välja kategori:
+
+                gui.switchPanel(GameState.CHOOSE_CATEGORY);
+                gui.updateQuestionPanel(question.get());
+                gui.lockContinueButton();
+            }else
+                gui.switchPanel(GameState.SCORE_TABLE);
+        });
+    }
+
     void initializeCategoryButtons(JButton[] categoryButtons) {
         for (JButton button : categoryButtons) {
             button.addActionListener(_ -> {
