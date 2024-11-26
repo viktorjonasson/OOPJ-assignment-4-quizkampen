@@ -13,17 +13,21 @@ public class Game extends Thread {
     BufferedReader readerPlayer2;
     int gameRounds;
     int questionsPerRound;
-    int[][] player1Res = new int[gameRounds][questionsPerRound];
-    int[][] player2Res = new int[gameRounds][questionsPerRound];
+    int[][] player1Res;
+    int[][] player2Res;
     final int GAME_ID;
     int currentPlayer = 1;
     int currentRound = 0;
     int currentQuestion = 0;
     boolean gameStarted = false;
+    boolean player1Initiated = false;
+    boolean player2Initiated = false;
     private final DataBase db;
 
     Game(Socket player1Socket, int gameId) throws IOException {
         readGameProperties();
+        player1Res = new int[gameRounds][questionsPerRound];
+        player2Res = new int[gameRounds][questionsPerRound];
         this.player1 = player1Socket;
         this.db = new DataBase();
         writerPlayer1 = new PrintWriter(player1.getOutputStream(), true);
@@ -73,7 +77,7 @@ public class Game extends Thread {
         }
     }
 
-    private void readGameProperties () {
+    private void readGameProperties() {
         try (FileInputStream input = new FileInputStream("server/game-config.properties")) {
             gameProperties.load(input);
             gameRounds = Integer.parseInt(gameProperties.getProperty("amountOfRounds"));
@@ -110,7 +114,10 @@ public class Game extends Thread {
                 (currentPlayer == 1 && (request = readerPlayer1.readLine()) != null) ||
                 (currentPlayer == 2 && (request = readerPlayer2.readLine()) != null)) {
                 if (request.startsWith("PropertiesReceived")) {
-                    sendCategoriesToClient();
+                    if (!player1Initiated) {
+                        writerPlayer1.println("CategorySet: " + Arrays.toString(db.getCategorySet()));
+                        player1Initiated = true;
+                    }
                 }
                 if (request.startsWith("Category")) {
                     parts = request.split(":");

@@ -82,6 +82,8 @@ public class ClientController {
         gameLogic.loadQuestionSet(notification);
         Optional<String[]> question = gameLogic.getNextQuestion();
         if (question.isPresent()) {
+            gui.switchPanel(GameState.ANSWER_QUESTION);
+            gui.lockContinueButton();
             gui.updateQuestionPanel(question.get());
             if (gui.startRoundButton.getText().equals("WAITING FOR OPPONENT TO FINISH ROUND")){
                 gui.switchPanel(GameState.ANSWER_QUESTION);
