@@ -83,7 +83,7 @@ public class Game extends Thread {
     public void handleNewGame() {
         try {
             readerPlayer1 = new BufferedReader(new InputStreamReader(player1.getInputStream()));
-            sendCategoriesToClient();
+            sendGameProperties(1);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -98,6 +98,9 @@ public class Game extends Thread {
             if (currentRound.answeredQuestions != 3 &&
                 (currentPlayer == 1 && (request = readerPlayer1.readLine()) != null) ||
                 (currentPlayer == 2 && (request = readerPlayer2.readLine()) != null)) {
+                if (request.startsWith("PropertiesReceived")) {
+                    sendCategoriesToClient();
+                }
                 if (request.startsWith("Category")) {
                     parts = request.split(":");
                     currentRound.setCategory(parts[1]);

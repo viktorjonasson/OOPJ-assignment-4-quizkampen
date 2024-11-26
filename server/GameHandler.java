@@ -25,8 +25,8 @@ public class GameHandler {
         Game newGameRoom = new Game(incomingConnection, GameID);
         pendingGames.add(newGameRoom);
         //Send amount of rounds
-        newGameRoom.sendGameProperties(1);
-        newGameRoom.sendCategoriesToClient();
+//        newGameRoom.sendGameProperties(1);
+
     }
 
     public boolean connectPlayerToGame(Socket playerConnection) {

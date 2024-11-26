@@ -26,6 +26,7 @@ public class Client {
                             // Server reply -> "GameProperties: gameRounds, questionsPerRound"
                             //int gameRounds, int questionsPerRound
                             // Handle properties
+                            writeToServer("PropertiesReceived");
                         }
                         if (serverReply.startsWith("CategorySet")) {
                             parts = serverReply.split(": ");
