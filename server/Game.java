@@ -20,6 +20,8 @@ public class Game extends Thread {
     int currentRound = 0;
     int currentQuestion = 0;
     boolean gameStarted = false;
+    boolean player1Initiated = false;
+    boolean player2Initiated = false;
     private final DataBase db;
 
     Game(Socket player1Socket, int gameId) throws IOException {
@@ -112,7 +114,10 @@ public class Game extends Thread {
                 (currentPlayer == 1 && (request = readerPlayer1.readLine()) != null) ||
                 (currentPlayer == 2 && (request = readerPlayer2.readLine()) != null)) {
                 if (request.startsWith("PropertiesReceived")) {
-                    sendCategoriesToClient();
+                    if (!player1Initiated) {
+                        writerPlayer1.println("CategorySet: " + Arrays.toString(db.getCategorySet()));
+                        player1Initiated = true;
+                    }
                 }
                 if (request.startsWith("Category")) {
                     parts = request.split(":");

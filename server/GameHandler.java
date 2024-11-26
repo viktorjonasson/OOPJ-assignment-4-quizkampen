@@ -36,6 +36,7 @@ public class GameHandler {
                 tempGame.player2 = playerConnection;
                 ongoingGames.add(tempGame);
                 tempGame.writerPlayer2 = new PrintWriter(playerConnection.getOutputStream(), true);
+                tempGame.player2Initiated = true;
                 tempGame.sendGameProperties(2);
             }
             //Send amount of rounds
