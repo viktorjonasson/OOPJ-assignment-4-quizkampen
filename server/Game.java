@@ -7,14 +7,15 @@ import java.util.Arrays;
 
 public class Game extends Thread {
 
+    int gameRounds = 6; //readFromProperties()
     Socket player1;
     Socket player2;
     PrintWriter writerPlayer1;
     PrintWriter writerPlayer2;
     BufferedReader readerPlayer1;
     BufferedReader readerPlayer2;
-    int[][] player1Res = new int[6][3];
-    int[][] player2Res = new int[6][3];
+    int[][] player1Res = new int[gameRounds][3];
+    int[][] player2Res = new int[gameRounds][3];
     final int GAME_ID;
     int currentPlayer = 1;
     int currentRound = 0;

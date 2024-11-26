@@ -24,6 +24,7 @@ public class GameHandler {
         ++GameID;
         Game newGameRoom = new Game(incomingConnection, GameID);
         pendingGames.add(newGameRoom);
+        //Send amount of rounds
         newGameRoom.sendCategoriesToClient();
     }
 
@@ -33,6 +34,7 @@ public class GameHandler {
             tempGame.player2 = playerConnection;
             ongoingGames.add(tempGame);
             tempGame.writerPlayer2 = new PrintWriter(playerConnection.getOutputStream(), true);
+            //Send amount of rounds
             return true;
         } catch (NullPointerException | IOException e) {
             return false;

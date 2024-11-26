@@ -21,6 +21,7 @@ public class Client {
                 String[] parts;
                 while (true) {
                     if ((serverReply = br.readLine()) != null) {
+                        //if serverReply starts with amountOfRounds -> load GUI accordingly
                         if (serverReply.startsWith("CategorySet")) {
                             parts = serverReply.split(": ");
                             String categorySet = parts[1];
