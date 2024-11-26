@@ -21,7 +21,12 @@ public class Client {
                 String[] parts;
                 while (true) {
                     if ((serverReply = br.readLine()) != null) {
-                        //if serverReply starts with amountOfRounds -> load GUI accordingly
+                        //if serverReply starts with gameProperties -> load GUI accordingly
+                        if (serverReply.startsWith("GameProperties")) {
+                            // Server reply -> "GameProperties: gameRounds, questionsPerRound"
+                            //int gameRounds, int questionsPerRound
+                            // Handle properties
+                        }
                         if (serverReply.startsWith("CategorySet")) {
                             parts = serverReply.split(": ");
                             String categorySet = parts[1];

@@ -199,4 +199,13 @@ public class Game extends Thread {
         String reply = "CategorySet: " + Arrays.toString(db.getCategorySet());
         writeToClient(reply);
     }
+
+    public void sendGameProperties(int player) {
+        String reply = "GameProperties: " + gameRounds + ", " + questionsPerRound;
+        if (player == 1) {
+            writerPlayer1.println(reply);
+        } else {
+            writerPlayer2.println(reply);
+        }
+    }
 }
