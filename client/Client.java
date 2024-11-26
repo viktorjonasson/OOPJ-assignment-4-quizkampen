@@ -31,9 +31,12 @@ public class Client {
                         if (serverReply.startsWith("CategorySet")) {
                             parts = serverReply.split(": ");
                             String categorySet = parts[1];
+                            //HandleCategorySet ska bara ladda in frågorna i UI. Inte visa panel
                             clientController.handleCategorySet(categorySet);
+                            //Låsa upp knapp som byter skärm för ny runda
                         }
                         if (serverReply.startsWith("QuestionSet")) {
+                            //Låser upp knapp för att gå vidare i spel
                             parts = serverReply.split(": ");
                             String questionAndAnswers = parts[1];
                             clientController.handleQuestionSet(questionAndAnswers);

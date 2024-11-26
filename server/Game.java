@@ -46,11 +46,13 @@ public class Game extends Thread {
                         handleClientRequest(round);
                     }
                     if (round.answeredQuestions == questionsPerRound && !round.finished()) {
+                        //Send current player result to opponent
                         switchPlayer();
                         writeToClient(round.getQuestions());
                         round.answeredQuestions = 0;
                     }
                     if (round.finished()) {
+                        //Send player2 result to player1
                         sendCategoriesToClient();
                         currentRound++;
                         //Följande är en temporär lösning. Vi behöver bygga ut logiken
