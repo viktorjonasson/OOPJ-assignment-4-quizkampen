@@ -178,7 +178,7 @@ public class GUI extends JFrame {
                 System.out.println("Panel för NEW_GAME (newGamePanel) finns bara i fantasin (men den är fin, tycker Kalle).");
                 break;
             case CHOOSE_CATEGORY:
-                cardLayout.show(mainPanel, "Score"); //Category
+                cardLayout.show(mainPanel, "Category");
                 break;
             case ANSWER_QUESTION:
                 cardLayout.show(mainPanel, "Question");
