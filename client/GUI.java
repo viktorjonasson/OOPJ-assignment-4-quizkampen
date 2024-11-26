@@ -32,10 +32,10 @@ public class GUI extends JFrame {
     //ScorePanelStuff
     JPanel scorePanel = new JPanel(new BorderLayout());
     JPanel headerPanel = new JPanel(new BorderLayout());
-    JLabel gameStatus = new JLabel("Deras tur"); //Placeholder, sätt dynamiskt sen.
-    JLabel player1Name = new JLabel("Spelare 1");
-    JLabel player2Name = new JLabel("Spelare 2");
-    JLabel totalResult = new JLabel("0 – 0");
+    JLabel gameStatus = new JLabel("Deras tur", SwingConstants.CENTER); //Placeholder x4, sätt dynamiskt sen.
+    JLabel player1Name = new JLabel("Spelare 1", SwingConstants.CENTER);
+    JLabel player2Name = new JLabel("Spelare 2", SwingConstants.CENTER);
+    JLabel totalResult = new JLabel("0 – 0", SwingConstants.CENTER);
     JPanel player1ResultsPanel = new JPanel(new GridLayout(6, 3));
     JLabel[] player1Results = new JLabel[18];
     JPanel roundIndicatorPanel = new JPanel(new GridLayout(6, 1));
@@ -93,27 +93,30 @@ public class GUI extends JFrame {
         scorePanel.setVisible(true);
         scorePanel.setBorder(outerPadding);
         scorePanel.add(headerPanel, BorderLayout.NORTH);
-        headerPanel.add(gameStatus, BorderLayout.NORTH);
-        headerPanel.add(player1Name, BorderLayout.WEST);
-        headerPanel.add(totalResult, BorderLayout.CENTER);
-        headerPanel.add(player2Name, BorderLayout.EAST);
+        headerPanel.add(gameStatus, BorderLayout.NORTH, SwingConstants.CENTER); //Centrering sätts även här, men behöver ligga där vi sätter innehållet senare, tror jag.
+        headerPanel.add(player1Name, BorderLayout.WEST, SwingConstants.CENTER);
+        headerPanel.add(totalResult, BorderLayout.CENTER, SwingConstants.CENTER);
+        headerPanel.add(player2Name, BorderLayout.EAST, SwingConstants.CENTER);
         scorePanel.add(player1ResultsPanel, BorderLayout.WEST);
         scorePanel.add(roundIndicatorPanel, BorderLayout.CENTER);
         scorePanel.add(player2ResultsPanel, BorderLayout.EAST);
         for (int i = 0; i < player1Results.length; i++) {
             player1ResultsPanel.add(player1Results[i] = new JLabel());
-            player1Results[i].setPreferredSize(new Dimension(5, 5));
+            player1Results[i].setPreferredSize(new Dimension(20, 20));
             player1Results[i].setText("O");
+            player1Results[i].setHorizontalAlignment(SwingConstants.CENTER);
         }
         for (int i = 0; i < roundIndicators.length; i++) {
             roundIndicatorPanel.add(roundIndicators[i] = new JLabel());
-            roundIndicators[i].setPreferredSize(new Dimension(5, 5));
+            //roundIndicators[i].setPreferredSize(new Dimension(20, 5));
             roundIndicators[i].setText("Round " + i + 1);
+            roundIndicators[i].setHorizontalAlignment(SwingConstants.CENTER);
         }
         for (int i = 0; i < player2Results.length; i++) {
             player2ResultsPanel.add(player2Results[i] = new JLabel());
-            player2Results[i].setPreferredSize(new Dimension(5, 5));
+            player2Results[i].setPreferredSize(new Dimension(20, 20));
             player2Results[i].setText("O");
+            player2Results[i].setHorizontalAlignment(SwingConstants.CENTER);
         }
         scorePanel.add(startRoundButton, BorderLayout.SOUTH);
     }
