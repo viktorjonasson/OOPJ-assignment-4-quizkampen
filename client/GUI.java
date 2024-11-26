@@ -103,7 +103,7 @@ public class GUI extends JFrame {
         for (int i = 0; i < player1Results.length; i++) {
             player1ResultsPanel.add(player1Results[i] = new JLabel());
             player1Results[i].setPreferredSize(new Dimension(20, 20));
-            player1Results[i].setText("O");
+            player1Results[i].setText("<html><font color='rgb(150, 150, 150)'>\u25C9</font></html>");
             player1Results[i].setHorizontalAlignment(SwingConstants.CENTER);
         }
         for (int i = 0; i < roundIndicators.length; i++) {
@@ -115,10 +115,14 @@ public class GUI extends JFrame {
         for (int i = 0; i < player2Results.length; i++) {
             player2ResultsPanel.add(player2Results[i] = new JLabel());
             player2Results[i].setPreferredSize(new Dimension(20, 20));
-            player2Results[i].setText("O");
+            player2Results[i].setText("<html><font color='rgb(150, 150, 150)'>\u25C9</font></html>");
             player2Results[i].setHorizontalAlignment(SwingConstants.CENTER);
         }
         scorePanel.add(startRoundButton, BorderLayout.SOUTH);
+
+        //Just for testing, will be removed
+        changeScoreColor(player1Results[5], true);
+        changeScoreColor(player2Results[14], false);
     }
 
 
@@ -174,7 +178,7 @@ public class GUI extends JFrame {
                 System.out.println("Panel för NEW_GAME (newGamePanel) finns bara i fantasin (men den är fin, tycker Kalle).");
                 break;
             case CHOOSE_CATEGORY:
-                cardLayout.show(mainPanel, "Category");
+                cardLayout.show(mainPanel, "Score"); //Category
                 break;
             case ANSWER_QUESTION:
                 cardLayout.show(mainPanel, "Question");
@@ -215,8 +219,10 @@ public class GUI extends JFrame {
         Color incorrectColor = new Color(225, 52, 123, 203);
         if (correctAnswer) {
             buttonToChange.setBackground(correctColor);
+            buttonToChange.setOpaque(true);
         } else {
             buttonToChange.setBackground(incorrectColor);
+            buttonToChange.setOpaque(true);
         }
 
         JFrame rootFrame = (JFrame) SwingUtilities.getWindowAncestor(buttonToChange);
@@ -225,6 +231,17 @@ public class GUI extends JFrame {
             rootFrame.setSize(currentSize.width - 1, currentSize.height);  // Shrink width by 1 pixel
             rootFrame.setSize(currentSize.width + 1, currentSize.height);  // Restore original width
         }
+    }
+
+    public void changeScoreColor(JLabel resultLabel, boolean correctAnswer) {
+        String correctAnswerLabel = "<html><font color='rgb(83, 214, 49)'>\u25C9</font></html>";
+        String wrongAnswerLabel = "<html><font color='rgb(225, 52, 123)'>\u25C9</font></html>";
+        if(correctAnswer) {
+            resultLabel.setText(correctAnswerLabel);
+        } else {
+            resultLabel.setText(wrongAnswerLabel);
+        }
+        //Logiken funkar, men hur ska metoden anropas?
     }
 
     public JButton getChosenAnswerButton(String chosenAnswer) {
