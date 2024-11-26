@@ -201,6 +201,18 @@ public class GUI extends JFrame {
         continueBtn.setText("");
     }
 
+    public void lockStartRoundButton(){
+        startRoundButton.setEnabled(false);
+    }
+
+    public void unLockStartRoundButton(){
+        startRoundButton.setEnabled(true);
+    }
+
+    public void startRoundButtonText(String text) {
+        startRoundButton.setText(text);
+    }
+
     public void unLockContinueButton() {
         continueBtn.setEnabled(true);
         continueBtn.setBackground(null);

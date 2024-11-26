@@ -34,9 +34,11 @@ public class Client {
                             //HandleCategorySet ska bara ladda in frågorna i UI. Inte visa panel
                             clientController.handleCategorySet(categorySet);
                             //Låsa upp knapp som byter skärm för ny runda
+                            clientController.scoreButtonCategoryMode();
                         }
                         if (serverReply.startsWith("QuestionSet")) {
                             //Låser upp knapp för att gå vidare i spel
+                            clientController.scoreButtonQuestionMode();
                             parts = serverReply.split(": ");
                             String questionAndAnswers = parts[1];
                             clientController.handleQuestionSet(questionAndAnswers);

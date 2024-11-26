@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.event.ActionListener;
 import java.util.Optional;
 
 public class ClientController {
@@ -31,16 +32,29 @@ public class ClientController {
         });
     }
 
-    void initializeScoreButtonListener(JButton startRoundButton) {
-        startRoundButton.addActionListener(_ -> {
-            if (true) {//Om denna spelare ska välja kategori:
+    void scoreButtonQuestionMode(){
+        gui.unLockStartRoundButton();
+        gui.startRoundButtonText("READY TO ANSWER QUESTIONS");
 
-                gui.switchPanel(GameState.CHOOSE_CATEGORY);
-                gui.updateQuestionPanel(question.get());
-                gui.lockContinueButton();
-            }else
-                gui.switchPanel(GameState.SCORE_TABLE);
+        ActionListener listener = (_ -> {
+            gui.switchPanel(GameState.ANSWER_QUESTION);
+            gui.lockStartRoundButton();
+            gui.startRoundButton.removeActionListener((ActionListener) this);
         });
+        gui.startRoundButton.addActionListener(listener);
+    }
+
+    void scoreButtonCategoryMode() {
+        gui.unLockStartRoundButton();
+        gui.startRoundButtonText("READY FOR CATEGORY CHOICE");
+
+        ActionListener listener = (_ -> {
+            gui.switchPanel(GameState.CHOOSE_CATEGORY);
+            gui.lockStartRoundButton();
+            gui.startRoundButtonText("WAITING FOR OPPONENT TO FINISH ROUND");
+            gui.startRoundButton.removeActionListener((ActionListener) this);
+        });
+        gui.startRoundButton.addActionListener(listener);
     }
 
     void initializeCategoryButtons(JButton[] categoryButtons) {
@@ -51,7 +65,6 @@ public class ClientController {
                 gui.lockButtons(categoryButtons);
             });
         }
-
     }
 
     void initializeButtonListeners(JButton[] answerButtons) {
@@ -69,8 +82,10 @@ public class ClientController {
         gameLogic.loadQuestionSet(notification);
         Optional<String[]> question = gameLogic.getNextQuestion();
         if (question.isPresent()) {
-            gui.switchPanel(GameState.ANSWER_QUESTION);
             gui.updateQuestionPanel(question.get());
+            if (gui.startRoundButton.getText().equals("WAITING FOR OPPONENT TO FINISH ROUND")){
+                gui.switchPanel(GameState.ANSWER_QUESTION);
+            }
         } else {
             System.err.println("Error loading question.");
         }
@@ -79,7 +94,6 @@ public class ClientController {
     void handleCategorySet(String notification) {
         String[] categoryChoice = notification.substring(1, notification.length() - 1).split("\\|");
         gui.updateCategoryPanel(categoryChoice);
-        gui.switchPanel(GameState.CHOOSE_CATEGORY);
     }
 
     void startNewGame() {
