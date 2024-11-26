@@ -23,6 +23,7 @@ public class Game extends Thread {
     private final DataBase db;
 
     Game(Socket player1Socket, int gameId) throws IOException {
+        readGameProperties();
         this.player1 = player1Socket;
         this.db = new DataBase();
         writerPlayer1 = new PrintWriter(player1.getOutputStream(), true);
