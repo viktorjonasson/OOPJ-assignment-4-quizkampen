@@ -1,19 +1,27 @@
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 
 public class Server {
-    private final GameHandler gameHandler;
+    private Queue<Game> pendingGames;
+    private List<Game> ongoingGames;
+    private int GameID = 0;
     private ServerSocket serverSocket;
+
     Server(int port) {
-        gameHandler = new GameHandler(this);
+        this.pendingGames = new LinkedList<>();
+        this.ongoingGames = new ArrayList<>();
         try {
             serverSocket = new ServerSocket(port);
             while (true) {
-                if (gameHandler.getPendingGames().isEmpty()) {
-                    gameHandler.createNewGame(serverSocket.accept());
+                if (pendingGames.isEmpty()) {
+                    createNewGame(serverSocket.accept());
                 } else {
-                    gameHandler.connectPlayerToGame(serverSocket.accept());
+                    connectPlayerToGame(serverSocket.accept());
                 }
             }
         } catch (IOException e) {
@@ -22,11 +30,35 @@ public class Server {
             if (serverSocket != null) {
                 try{
                     serverSocket.close();
-
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
             }
+        }
+    }
+
+    public void createNewGame(Socket incomingConnection) throws IOException {
+        ++GameID;
+        Game newGameRoom = new Game(incomingConnection, GameID);
+        pendingGames.add(newGameRoom);
+        //Send amount of rounds
+//        newGameRoom.sendGameProperties(1);
+    }
+
+    public boolean connectPlayerToGame(Socket playerConnection) {
+        try {
+            Game tempGame = pendingGames.poll();
+            if (tempGame != null) {
+                tempGame.player2 = playerConnection;
+                ongoingGames.add(tempGame);
+                tempGame.writerPlayer2 = new PrintWriter(playerConnection.getOutputStream(), true);
+                tempGame.player2Initiated = true;
+                tempGame.sendGameProperties(2);
+            }
+            //Send amount of rounds
+            return true;
+        } catch (NullPointerException | IOException e) {
+            return false;
         }
     }
 
