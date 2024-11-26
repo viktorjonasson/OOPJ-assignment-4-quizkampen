@@ -103,7 +103,7 @@ public class GUI extends JFrame {
         for (int i = 0; i < player1Results.length; i++) {
             player1ResultsPanel.add(player1Results[i] = new JLabel());
             player1Results[i].setPreferredSize(new Dimension(20, 20));
-            player1Results[i].setText("O");
+            player1Results[i].setText("<html><font color='red'>\u25C9</font></html>");
             player1Results[i].setHorizontalAlignment(SwingConstants.CENTER);
         }
         for (int i = 0; i < roundIndicators.length; i++) {
@@ -115,7 +115,7 @@ public class GUI extends JFrame {
         for (int i = 0; i < player2Results.length; i++) {
             player2ResultsPanel.add(player2Results[i] = new JLabel());
             player2Results[i].setPreferredSize(new Dimension(20, 20));
-            player2Results[i].setText("O");
+            player2Results[i].setText("<html><font color='green'>\u25C9</font></html>");
             player2Results[i].setHorizontalAlignment(SwingConstants.CENTER);
         }
         scorePanel.add(startRoundButton, BorderLayout.SOUTH);
@@ -174,7 +174,7 @@ public class GUI extends JFrame {
                 System.out.println("Panel för NEW_GAME (newGamePanel) finns bara i fantasin (men den är fin, tycker Kalle).");
                 break;
             case CHOOSE_CATEGORY:
-                cardLayout.show(mainPanel, "Category");
+                cardLayout.show(mainPanel, "Score"); //ädnra till Category
                 break;
             case ANSWER_QUESTION:
                 cardLayout.show(mainPanel, "Question");
