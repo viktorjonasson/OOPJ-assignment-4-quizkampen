@@ -26,7 +26,8 @@ public class ClientController {
             if (question.isPresent()) {
                 gui.updateQuestionPanel(question.get());
                 gui.lockContinueButton();
-            }
+            }else
+                gui.switchPanel(GameState.SCORE_TABLE);
         });
     }
 
