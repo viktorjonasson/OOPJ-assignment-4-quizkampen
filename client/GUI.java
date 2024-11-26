@@ -115,7 +115,7 @@ public class GUI extends JFrame {
         for (int i = 0; i < player2Results.length; i++) {
             player2ResultsPanel.add(player2Results[i] = new JLabel());
             player2Results[i].setPreferredSize(new Dimension(20, 20));
-            player2Results[i].setText("<html><font color='rgb(83, 214, 49)'>\u25C9</font></html>");
+            player2Results[i].setText("<html><font color='rgb(150, 150, 150)'>\u25C9</font></html>");
             player2Results[i].setHorizontalAlignment(SwingConstants.CENTER);
         }
         scorePanel.add(startRoundButton, BorderLayout.SOUTH);
