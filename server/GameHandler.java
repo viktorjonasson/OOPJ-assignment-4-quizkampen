@@ -25,15 +25,19 @@ public class GameHandler {
         Game newGameRoom = new Game(incomingConnection, GameID);
         pendingGames.add(newGameRoom);
         //Send amount of rounds
-        newGameRoom.sendCategoriesToClient();
+//        newGameRoom.sendGameProperties(1);
+
     }
 
     public boolean connectPlayerToGame(Socket playerConnection) {
         try {
             Game tempGame = pendingGames.poll();
-            tempGame.player2 = playerConnection;
-            ongoingGames.add(tempGame);
-            tempGame.writerPlayer2 = new PrintWriter(playerConnection.getOutputStream(), true);
+            if (tempGame != null) {
+                tempGame.player2 = playerConnection;
+                ongoingGames.add(tempGame);
+                tempGame.writerPlayer2 = new PrintWriter(playerConnection.getOutputStream(), true);
+                tempGame.sendGameProperties(2);
+            }
             //Send amount of rounds
             return true;
         } catch (NullPointerException | IOException e) {

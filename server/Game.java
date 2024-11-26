@@ -1,20 +1,18 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 import java.util.Arrays;
+import java.util.Properties;
 
 public class Game extends Thread {
-
+    Properties gameProperties = new Properties();
     Socket player1;
     Socket player2;
     PrintWriter writerPlayer1;
     PrintWriter writerPlayer2;
     BufferedReader readerPlayer1;
     BufferedReader readerPlayer2;
-    int gameRounds = 6; //readFromProperties()
-    int questionsPerRound = 3; //readFromProperties()
+    int gameRounds;
+    int questionsPerRound;
     int[][] player1Res = new int[gameRounds][questionsPerRound];
     int[][] player2Res = new int[gameRounds][questionsPerRound];
     final int GAME_ID;
@@ -25,6 +23,7 @@ public class Game extends Thread {
     private final DataBase db;
 
     Game(Socket player1Socket, int gameId) throws IOException {
+        readGameProperties();
         this.player1 = player1Socket;
         this.db = new DataBase();
         writerPlayer1 = new PrintWriter(player1.getOutputStream(), true);
@@ -46,11 +45,13 @@ public class Game extends Thread {
                         handleClientRequest(round);
                     }
                     if (round.answeredQuestions == questionsPerRound && !round.finished()) {
+                        //Send current player result to opponent
                         switchPlayer();
                         writeToClient(round.getQuestions());
                         round.answeredQuestions = 0;
                     }
                     if (round.finished()) {
+                        //Send player2 result to player1
                         sendCategoriesToClient();
                         currentRound++;
                         //Följande är en temporär lösning. Vi behöver bygga ut logiken
@@ -72,6 +73,16 @@ public class Game extends Thread {
         }
     }
 
+    private void readGameProperties () {
+        try (FileInputStream input = new FileInputStream("server/game-config.properties")) {
+            gameProperties.load(input);
+            gameRounds = Integer.parseInt(gameProperties.getProperty("amountOfRounds"));
+            questionsPerRound = Integer.parseInt(gameProperties.getProperty("amountOfQuestionsPerRound"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void initializePlayer2Reader() {
         try {
             readerPlayer2 = new BufferedReader(new InputStreamReader(player2.getInputStream()));
@@ -83,7 +94,7 @@ public class Game extends Thread {
     public void handleNewGame() {
         try {
             readerPlayer1 = new BufferedReader(new InputStreamReader(player1.getInputStream()));
-            sendCategoriesToClient();
+            sendGameProperties(1);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -98,6 +109,9 @@ public class Game extends Thread {
             if (currentRound.answeredQuestions != 3 &&
                 (currentPlayer == 1 && (request = readerPlayer1.readLine()) != null) ||
                 (currentPlayer == 2 && (request = readerPlayer2.readLine()) != null)) {
+                if (request.startsWith("PropertiesReceived")) {
+                    sendCategoriesToClient();
+                }
                 if (request.startsWith("Category")) {
                     parts = request.split(":");
                     currentRound.setCategory(parts[1]);
@@ -198,5 +212,14 @@ public class Game extends Thread {
     public void sendCategoriesToClient() {
         String reply = "CategorySet: " + Arrays.toString(db.getCategorySet());
         writeToClient(reply);
+    }
+
+    public void sendGameProperties(int player) {
+        String reply = "GameProperties: " + gameRounds + ", " + questionsPerRound;
+        if (player == 1) {
+            writerPlayer1.println(reply);
+        } else {
+            writerPlayer2.println(reply);
+        }
     }
 }
