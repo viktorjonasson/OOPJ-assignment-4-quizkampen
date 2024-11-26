@@ -109,7 +109,7 @@ public class GUI extends JFrame {
         for (int i = 0; i < roundIndicators.length; i++) {
             roundIndicatorPanel.add(roundIndicators[i] = new JLabel());
             //roundIndicators[i].setPreferredSize(new Dimension(20, 5));
-            roundIndicators[i].setText("Round " + i + 1);
+            roundIndicators[i].setText("Round " + (i + 1));
             roundIndicators[i].setHorizontalAlignment(SwingConstants.CENTER);
         }
         for (int i = 0; i < player2Results.length; i++) {
