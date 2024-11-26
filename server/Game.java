@@ -1,20 +1,18 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 import java.util.Arrays;
+import java.util.Properties;
 
 public class Game extends Thread {
-
+    Properties gameProperties = new Properties();
     Socket player1;
     Socket player2;
     PrintWriter writerPlayer1;
     PrintWriter writerPlayer2;
     BufferedReader readerPlayer1;
     BufferedReader readerPlayer2;
-    int gameRounds = 6; //readFromProperties()
-    int questionsPerRound = 3; //readFromProperties()
+    int gameRounds;
+    int questionsPerRound;
     int[][] player1Res = new int[gameRounds][questionsPerRound];
     int[][] player2Res = new int[gameRounds][questionsPerRound];
     final int GAME_ID;
@@ -25,6 +23,7 @@ public class Game extends Thread {
     private final DataBase db;
 
     Game(Socket player1Socket, int gameId) throws IOException {
+        readGameProperties();
         this.player1 = player1Socket;
         this.db = new DataBase();
         writerPlayer1 = new PrintWriter(player1.getOutputStream(), true);
@@ -69,6 +68,16 @@ public class Game extends Thread {
                     }
                 }
             }
+        }
+    }
+
+    private void readGameProperties () {
+        try (FileInputStream input = new FileInputStream("server/game-config.properties")) {
+            gameProperties.load(input);
+            gameRounds = Integer.parseInt(gameProperties.getProperty("amountOfRounds"));
+            questionsPerRound = Integer.parseInt(gameProperties.getProperty("amountOfQuestionsPerRound"));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
