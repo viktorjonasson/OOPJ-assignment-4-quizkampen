@@ -57,6 +57,7 @@ public class ClientController {
         Optional<String[]> question = gameLogic.getNextQuestion();
         if (question.isPresent()) {
             gui.switchPanel(GameState.ANSWER_QUESTION);
+            gui.lockContinueButton();
             gui.updateQuestionPanel(question.get());
         } else {
             System.err.println("Error loading question.");
