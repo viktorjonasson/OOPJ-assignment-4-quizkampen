@@ -243,6 +243,13 @@ public class GUI extends JFrame {
                 player2Results[i].setText(notAnsweredLabel);
             }
         }
+
+        for (int i = 0; i < roundIndicators.length; i++) {
+            roundIndicatorPanel.add(roundIndicators[i] = new JLabel());
+            //roundIndicators[i].setPreferredSize(new Dimension(20, 5));
+            roundIndicators[i].setText("Round " + (i + 1));
+            roundIndicators[i].setHorizontalAlignment(SwingConstants.CENTER);
+        }
     }
 
     public void updateLocalResultLabel(int labelIndex, boolean correctAnswer) {
@@ -310,6 +317,12 @@ public class GUI extends JFrame {
             player2Results[i].setPreferredSize(new Dimension(20, 20));
             player2Results[i].setText("<html><font color='rgb(150, 150, 150)'>\u25C9</font></html>");
             player2Results[i].setHorizontalAlignment(SwingConstants.CENTER);
+        }
+        for (int i = 0; i < roundIndicators.length; i++) {
+            roundIndicatorPanel.add(roundIndicators[i] = new JLabel());
+            //roundIndicators[i].setPreferredSize(new Dimension(20, 5));
+            roundIndicators[i].setText("Round " + (i + 1));
+            roundIndicators[i].setHorizontalAlignment(SwingConstants.CENTER);
         }
     }
 }
