@@ -41,13 +41,16 @@ public class GUI extends JFrame {
     JLabel player1Name = new JLabel("Spelare 1", SwingConstants.CENTER);
     JLabel player2Name = new JLabel("Spelare 2", SwingConstants.CENTER);
     JLabel totalResult = new JLabel("0 – 0", SwingConstants.CENTER);
+    JLabel waiting = new JLabel("WAITING FOR OPPONENT TO FINISH ROUND", SwingConstants.CENTER);
     JPanel player1ResultsPanel = new JPanel(new GridLayout(6, 3));
+    JPanel scoreButtonPanel = new JPanel(new BorderLayout());
     JLabel[] player1Results = new JLabel[18];
     JPanel roundIndicatorPanel = new JPanel(new GridLayout(6, 1));
     JLabel[] roundIndicators = new JLabel[6];
     JPanel player2ResultsPanel = new JPanel(new GridLayout(6, 3));
     JLabel[] player2Results = new JLabel[18];
-    JButton startRoundButton = new JButton("Spela"); //Denna ska döljas när det är andra spelarens tur.
+    JButton startRoundCategoryBtn = new JButton("READY FOR CATEGORY CHOICE"); //Denna ska döljas när det är andra spelarens tur.
+    JButton startRoundQuestionBtn = new JButton("READY TO ANSWER QUESTIONS");
 
     //Resources
     String correctAnswerLabel = "<html><font color='rgb(83, 214, 49)'>\u25C9</font></html>";
@@ -124,7 +127,14 @@ public class GUI extends JFrame {
             roundIndicators[i].setText("Round " + (i + 1));
             roundIndicators[i].setHorizontalAlignment(SwingConstants.CENTER);
         }
-        scorePanel.add(startRoundButton, BorderLayout.SOUTH);
+
+        waiting.setVisible(false);
+        scoreButtonPanel.add(waiting, BorderLayout.CENTER);
+        scoreButtonPanel.add(startRoundCategoryBtn, BorderLayout.NORTH);
+        scoreButtonPanel.add(startRoundQuestionBtn, BorderLayout.SOUTH);
+        scorePanel.add(scoreButtonPanel, BorderLayout.SOUTH);
+        lockScoreButton(startRoundCategoryBtn);
+        lockScoreButton(startRoundQuestionBtn);
     }
 
 
@@ -203,6 +213,20 @@ public class GUI extends JFrame {
         continueBtn.setBorder(BorderFactory.createEmptyBorder());
         continueBtn.setForeground(getContentPane().getBackground());
         continueBtn.setText("");
+    }
+
+    public void lockScoreButton(JButton button) {
+        button.setEnabled(false);
+        //button.setVisible(false);
+    }
+
+    public void unLockScoreButton(JButton button) {
+        button.setEnabled(true);
+        //button.setVisible(true);
+    }
+
+    public void scoreButtonSetText(JButton button, String text) {
+        button.setText(text);
     }
 
     public void unLockContinueButton() {

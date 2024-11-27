@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.util.Arrays;
+import java.awt.event.ActionListener;
+import java.util.Arrays;
 import java.util.Optional;
 
 import static java.util.Collections.replaceAll;
@@ -9,6 +11,7 @@ public class ClientController {
     GUI gui;
     GameLogic gameLogic;
     GameState gameState;
+    boolean isCategoryChooser;
 
     ClientController() {
         gui = new GUI();
@@ -20,6 +23,8 @@ public class ClientController {
         initializeButtonListeners(gui.getOptionButtons());
         initializeContinueButtonListener(gui.continueBtn);
         initializeCategoryButtons(gui.getCategoryButtons());
+        initializeStartRoundCategoryBtn(gui.startRoundCategoryBtn);
+        initializeStartRoundQuestionBtn(gui.startRoundQuestionBtn);
         startNewGame();
     }
 
@@ -29,8 +34,39 @@ public class ClientController {
             if (question.isPresent()) {
                 gui.updateQuestionPanel(question.get());
                 gui.lockContinueButton();
-            }
+            }else
+                gui.switchPanel(GameState.SCORE_TABLE);
         });
+    }
+
+    void initializeStartRoundCategoryBtn(JButton startRoundCategoryBtn) {
+        startRoundCategoryBtn.addActionListener(_ -> {
+            gui.switchPanel(GameState.CHOOSE_CATEGORY);
+            gui.lockScoreButton(startRoundCategoryBtn);
+            gui.waiting.setVisible(true);
+        });
+    }
+
+    void initializeStartRoundQuestionBtn(JButton startRoundQuestionBtn) {
+        startRoundQuestionBtn.addActionListener(_ -> {
+            gui.switchPanel(GameState.ANSWER_QUESTION);
+        });
+    }
+
+    void scoreButtonCategoryMode(){
+            gui.unLockScoreButton(gui.startRoundCategoryBtn);
+            gui.lockScoreButton(gui.startRoundQuestionBtn);
+            isCategoryChooser = true;
+    }
+
+    void scoreButtonQuestionMode(){
+        if (isCategoryChooser){
+            gui.lockScoreButton(gui.startRoundCategoryBtn);
+            gui.waiting.setVisible(true);
+            isCategoryChooser = false;
+        }else{
+            gui.unLockScoreButton(gui.startRoundQuestionBtn);
+        }
     }
 
     void initializeCategoryButtons(JButton[] categoryButtons) {
@@ -41,7 +77,6 @@ public class ClientController {
                 gui.lockButtons(categoryButtons);
             });
         }
-
     }
 
     void initializeButtonListeners(JButton[] answerButtons) {
@@ -59,9 +94,15 @@ public class ClientController {
         gameLogic.loadQuestionSet(notification);
         Optional<String[]> question = gameLogic.getNextQuestion();
         if (question.isPresent()) {
-            gui.switchPanel(GameState.ANSWER_QUESTION);
             gui.lockContinueButton();
             gui.updateQuestionPanel(question.get());
+            if (isCategoryChooser){
+                System.out.println("Inne i if-sats för knapptext"); //sout test
+                gui.switchPanel(GameState.ANSWER_QUESTION);
+            }
+            else{
+                gui.switchPanel(GameState.SCORE_TABLE);
+            }
         } else {
             System.err.println("Error loading question.");
         }
@@ -70,7 +111,7 @@ public class ClientController {
     void handleCategorySet(String notification) {
         String[] categoryChoice = notification.substring(1, notification.length() - 1).split("\\|");
         gui.updateCategoryPanel(categoryChoice);
-        gui.switchPanel(GameState.CHOOSE_CATEGORY);
+        isCategoryChooser = true;
     }
 
     void startNewGame() {

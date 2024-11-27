@@ -29,6 +29,8 @@ public class Client {
                         if (serverReply.startsWith("CategorySet")) {
                             parts = serverReply.split(": ");
                             String categorySet = parts[1];
+                            //Låsa upp knapp som byter skärm för ny runda
+                            clientController.scoreButtonCategoryMode();
                             //HandleCategorySet ska bara ladda in frågorna i UI. Inte visa panel
                             clientController.handleCategorySet(categorySet);
                             //Låsa upp knapp som byter skärm för ny runda
@@ -38,6 +40,8 @@ public class Client {
                             parts = serverReply.split(": ");
                             String questionAndAnswers = parts[1];
                             clientController.handleQuestionSet(questionAndAnswers);
+                            //Låser upp knapp för att gå vidare i spel
+                            clientController.scoreButtonQuestionMode();
                         }
                         if (serverReply.startsWith("Solution")) {
                             //Update score panel accordingly. UPDATE: Implemented in handleSolution/gameLogic
