@@ -21,11 +21,9 @@ public class Client {
                 String[] parts;
                 while (true) {
                     if ((serverReply = br.readLine()) != null) {
-                        //if serverReply starts with gameProperties -> load GUI accordingly
                         if (serverReply.startsWith("GameProperties")) {
-                            // Server reply -> "GameProperties: gameRounds, questionsPerRound"
-                            //int gameRounds, int questionsPerRound
-                            // Handle properties
+                            parts =  serverReply.split(":");
+                            clientController.handleProperties(parts[1].trim());
                             writeToServer("PropertiesReceived");
                         }
                         if (serverReply.startsWith("CategorySet")) {
