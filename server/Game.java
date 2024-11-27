@@ -226,9 +226,9 @@ public class Game extends Thread {
     public void sendGameProperties(int player) {
         String reply = "GameProperties: " + gameRounds + ", " + questionsPerRound;
         if (player == 1) {
-            writerPlayer1.println(reply);
+            writerPlayer1.println(reply + "|Player1");
         } else {
-            writerPlayer2.println(reply);
+            writerPlayer2.println(reply + "|Player2");
         }
     }
 

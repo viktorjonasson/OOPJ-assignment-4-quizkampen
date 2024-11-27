@@ -6,14 +6,19 @@ public class GameLogic {
     ArrayList<String[]> questions;
     private GUI gui;
     int currentQuestion = 0;
+    int player = 0;
 
     GameLogic(GUI gui) {
         this.gui = gui;
         questions = new ArrayList<>();
     }
 
+    public void setPlayer(int player) {
+        this.player = player;
+    }
+
     public void updateScorePanel(boolean correctAnswer) {
-        gui.updateLocalResultLabel(currentQuestion, correctAnswer);
+        gui.updateLocalResultLabel(currentQuestion, correctAnswer, player);
         currentQuestion++;
     }
 

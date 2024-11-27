@@ -288,11 +288,19 @@ public class GUI extends JFrame {
         }
     }
 
-    public void updateLocalResultLabel(int labelIndex, boolean correctAnswer) {
+    public void updateLocalResultLabel(int labelIndex, boolean correctAnswer, int player) {
         if (correctAnswer) {
-            player1Results[labelIndex].setText(correctAnswerLabel);
+            if (player == 1) {
+                player1Results[labelIndex].setText(correctAnswerLabel);
+            } else {
+                player2Results[labelIndex].setText(correctAnswerLabel);
+            }
         } else {
-            player1Results[labelIndex].setText(wrongAnswerLabel);
+            if (player == 1) {
+                player1Results[labelIndex].setText(wrongAnswerLabel);
+            } else {
+                player2Results[labelIndex].setText(wrongAnswerLabel);
+            }
         }
     }
 

@@ -15,11 +15,11 @@ public class ClientController {
 
     ClientController() {
         gui = new GUI();
+        gameLogic = new GameLogic(gui);
         int port = 12345;
         String address = "127.0.0.1";
         client = new Client(address, port, this);
         gui.gameBoard();
-        gameLogic = new GameLogic(gui);
         initializeButtonListeners(gui.getOptionButtons());
         initializeContinueButtonListener(gui.continueBtn);
         initializeCategoryButtons(gui.getCategoryButtons());
@@ -138,11 +138,13 @@ public class ClientController {
     }
 
     public void handleProperties(String serverReply) {
+        String[] initialPart = serverReply.split("\\|");
         int gameRounds, questionsPerRound;
-        String[] parts;
-        parts = serverReply.split(",");
-        gameRounds = Integer.parseInt(parts[0].trim());
-        questionsPerRound = Integer.parseInt(parts[1].trim());
+        String[] propertiesPart = initialPart[0].split(",");
+        String playerString = initialPart[1].replace("Player", "");
+        gameLogic.setPlayer(Integer.parseInt(playerString));
+        gameRounds = Integer.parseInt(propertiesPart[0].trim());
+        questionsPerRound = Integer.parseInt(propertiesPart[1].trim());
         gui.loadProperties(gameRounds, questionsPerRound);
     }
 
