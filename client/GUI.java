@@ -37,12 +37,14 @@ public class GUI extends JFrame {
     JLabel player2Name = new JLabel("Spelare 2", SwingConstants.CENTER);
     JLabel totalResult = new JLabel("0 – 0", SwingConstants.CENTER);
     JPanel player1ResultsPanel = new JPanel(new GridLayout(6, 3));
+    JPanel scoreButtonPanel = new JPanel(new BorderLayout());
     JLabel[] player1Results = new JLabel[18];
     JPanel roundIndicatorPanel = new JPanel(new GridLayout(6, 1));
     JLabel[] roundIndicators = new JLabel[6];
     JPanel player2ResultsPanel = new JPanel(new GridLayout(6, 3));
     JLabel[] player2Results = new JLabel[18];
-    JButton startRoundButton = new JButton("Spela"); //Denna ska döljas när det är andra spelarens tur.
+    JButton startRoundCategoryBtn = new JButton("READY FOR CATEGORY CHOICE"); //Denna ska döljas när det är andra spelarens tur.
+    JButton startRoundQuestionBtn = new JButton("WAITING FOR OPPONENT TO FINISH ROUND");
 
 
     //NewGamePanelStuff
@@ -100,6 +102,7 @@ public class GUI extends JFrame {
         scorePanel.add(player1ResultsPanel, BorderLayout.WEST);
         scorePanel.add(roundIndicatorPanel, BorderLayout.CENTER);
         scorePanel.add(player2ResultsPanel, BorderLayout.EAST);
+        scorePanel.add(scoreButtonPanel, BorderLayout.SOUTH);
         for (int i = 0; i < player1Results.length; i++) {
             player1ResultsPanel.add(player1Results[i] = new JLabel());
             player1Results[i].setPreferredSize(new Dimension(20, 20));
@@ -118,7 +121,11 @@ public class GUI extends JFrame {
             player2Results[i].setText("<html><font color='rgb(150, 150, 150)'>\u25C9</font></html>");
             player2Results[i].setHorizontalAlignment(SwingConstants.CENTER);
         }
-        scorePanel.add(startRoundButton, BorderLayout.SOUTH);
+
+        scoreButtonPanel.add(startRoundCategoryBtn, BorderLayout.NORTH);
+        scoreButtonPanel.add(startRoundQuestionBtn, BorderLayout.SOUTH);
+        lockScoreButton(startRoundCategoryBtn);
+        lockScoreButton(startRoundQuestionBtn);
 
         //Just for testing, will be removed
         changeScoreColor(player1Results[5], true);
@@ -178,14 +185,13 @@ public class GUI extends JFrame {
                 System.out.println("Panel för NEW_GAME (newGamePanel) finns bara i fantasin (men den är fin, tycker Kalle).");
                 break;
             case CHOOSE_CATEGORY:
-                cardLayout.show(mainPanel, "Score"); //Category
+                cardLayout.show(mainPanel, "Category");//"Category"
                 break;
             case ANSWER_QUESTION:
                 cardLayout.show(mainPanel, "Question");
                 break;
             case SCORE_TABLE:
                 cardLayout.show(mainPanel, "Score");
-                System.out.println("Panel för SCORE_TABLE (scorePanel) finns finns bara i fantasin (men den är fin, tycker Kalle).");
                 break;
         }
     }
@@ -205,16 +211,18 @@ public class GUI extends JFrame {
         continueBtn.setText("");
     }
 
-    public void lockStartRoundButton(){
-        startRoundButton.setEnabled(false);
+    public void lockScoreButton(JButton button) {
+        button.setEnabled(false);
+        button.setVisible(false);
     }
 
-    public void unLockStartRoundButton(){
-        startRoundButton.setEnabled(true);
+    public void unLockScoreButton(JButton button) {
+        button.setEnabled(true);
+        button.setVisible(true);
     }
 
-    public void startRoundButtonText(String text) {
-        startRoundButton.setText(text);
+    public void scoreButtonSetText(JButton button, String text) {
+        button.setText(text);
     }
 
     public void unLockContinueButton() {
