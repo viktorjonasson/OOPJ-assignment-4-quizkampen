@@ -222,10 +222,6 @@ public class GUI extends JFrame {
     }
 
     public void changeScoreColor(int[] player1IncomingRes, int[] player2IncomingRes) {
-//        String correctAnswerLabel = "<html><font color='rgb(83, 214, 49)'>\u25C9</font></html>";
-//        String wrongAnswerLabel = "<html><font color='rgb(225, 52, 123)'>\u25C9</font></html>";
-//        String notAnsweredLabel = "<html><font color='rgb(150, 150, 150)'>\u25C9</font></html>";
-
         assert player1Results.length == player1IncomingRes.length;
 
         for (int i = 0; i < player1Results.length; i++) {
@@ -252,6 +248,14 @@ public class GUI extends JFrame {
             //roundIndicators[i].setPreferredSize(new Dimension(20, 5));
             roundIndicators[i].setText("Round " + (i + 1));
             roundIndicators[i].setHorizontalAlignment(SwingConstants.CENTER);
+        }
+    }
+
+    public void updateLocalResultLabel(int labelIndex, boolean correctAnswer) {
+        if (correctAnswer) {
+            player1Results[labelIndex].setText(correctAnswerLabel);
+        } else {
+            player1Results[labelIndex].setText(wrongAnswerLabel);
         }
     }
 
@@ -312,14 +316,6 @@ public class GUI extends JFrame {
             player2Results[i].setPreferredSize(new Dimension(20, 20));
             player2Results[i].setText("<html><font color='rgb(150, 150, 150)'>\u25C9</font></html>");
             player2Results[i].setHorizontalAlignment(SwingConstants.CENTER);
-        }
-    }
-
-    public void updateLocalResultLabel(int labelIndex, boolean correctAnswer) {
-        if (correctAnswer) {
-            player1Results[labelIndex].setText(correctAnswerLabel);
-        } else {
-            player1Results[labelIndex].setText(wrongAnswerLabel);
         }
     }
 }
