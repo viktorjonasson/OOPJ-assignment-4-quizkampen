@@ -49,6 +49,7 @@ public class GUI extends JFrame {
 
     //NewGamePanelStuff
     JPanel newGamePanel = new JPanel(new BorderLayout());
+    JButton joinGameBtn = new JButton("JOIN GAME");
 
     //Getter for buttons
     public Optional<JButton> getButton(String buttonText) {
