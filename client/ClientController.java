@@ -16,7 +16,7 @@ public class ClientController {
         String address = "127.0.0.1";
         client = new Client(address, port, this);
         gui.gameBoard();
-        gameLogic = new GameLogic();
+        gameLogic = new GameLogic(gui);
         initializeButtonListeners(gui.getOptionButtons());
         initializeContinueButtonListener(gui.continueBtn);
         initializeCategoryButtons(gui.getCategoryButtons());
@@ -85,6 +85,7 @@ public class ClientController {
         if (parts[1].trim().equalsIgnoreCase("true")) {
             correctAnswer = true;
         }
+        gameLogic.updateScorePanel(correctAnswer);
         Optional<JButton> pressedButton = gui.getButton(parts[0]);
         if (pressedButton.isPresent()) {
             gui.changeColor(pressedButton.get(), correctAnswer);
