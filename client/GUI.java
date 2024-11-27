@@ -104,6 +104,12 @@ public class GUI extends JFrame {
         scorePanel.add(player1ResultsPanel, BorderLayout.WEST);
         scorePanel.add(roundIndicatorPanel, BorderLayout.CENTER);
         scorePanel.add(player2ResultsPanel, BorderLayout.EAST);
+        for (int i = 0; i < player1Results.length; i++) {
+            player1Results[i] = new JLabel();
+        }
+        for (int i = 0; i < player2Results.length; i++) {
+            player2Results[i] = new JLabel();
+        }
         for (int i = 0; i < roundIndicators.length; i++) {
             roundIndicatorPanel.add(roundIndicators[i] = new JLabel());
             //roundIndicators[i].setPreferredSize(new Dimension(20, 5));
