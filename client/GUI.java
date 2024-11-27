@@ -243,12 +243,6 @@ public class GUI extends JFrame {
                 player2Results[i].setText(notAnsweredLabel);
             }
         }
-        for (int i = 0; i < roundIndicators.length; i++) {
-            roundIndicatorPanel.add(roundIndicators[i] = new JLabel());
-            //roundIndicators[i].setPreferredSize(new Dimension(20, 5));
-            roundIndicators[i].setText("Round " + (i + 1));
-            roundIndicators[i].setHorizontalAlignment(SwingConstants.CENTER);
-        }
     }
 
     public void updateLocalResultLabel(int labelIndex, boolean correctAnswer) {
