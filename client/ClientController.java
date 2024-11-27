@@ -91,4 +91,13 @@ public class ClientController {
     public static void main(String[] args) {
         new ClientController();
     }
+
+    public void handleProperties(String serverReply) {
+        int gameRounds, questionsPerRound;
+        String[] parts;
+        parts = serverReply.split(",");
+        gameRounds = Integer.parseInt(parts[0].trim());
+        questionsPerRound = Integer.parseInt(parts[1].trim());
+        gui.loadProperties(gameRounds, questionsPerRound);
+    }
 }

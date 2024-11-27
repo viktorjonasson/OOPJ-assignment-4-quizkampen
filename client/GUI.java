@@ -36,12 +36,12 @@ public class GUI extends JFrame {
     JLabel player1Name = new JLabel("Spelare 1", SwingConstants.CENTER);
     JLabel player2Name = new JLabel("Spelare 2", SwingConstants.CENTER);
     JLabel totalResult = new JLabel("0 – 0", SwingConstants.CENTER);
-    JPanel player1ResultsPanel = new JPanel(new GridLayout(6, 3));
-    JLabel[] player1Results = new JLabel[18];
-    JPanel roundIndicatorPanel = new JPanel(new GridLayout(6, 1));
-    JLabel[] roundIndicators = new JLabel[6];
-    JPanel player2ResultsPanel = new JPanel(new GridLayout(6, 3));
-    JLabel[] player2Results = new JLabel[18];
+    JPanel player1ResultsPanel;// = new JPanel(new GridLayout(6, 3));
+    JLabel[] player1Results;// = new JLabel[18];
+    JPanel roundIndicatorPanel;// = new JPanel(new GridLayout(6, 1));
+    JLabel[] roundIndicators;// = new JLabel[6];
+    JPanel player2ResultsPanel;// = new JPanel(new GridLayout(6, 3));
+    JLabel[] player2Results;// = new JLabel[18];
     JButton startRoundButton = new JButton("Spela"); //Denna ska döljas när det är andra spelarens tur.
 
 
@@ -120,9 +120,9 @@ public class GUI extends JFrame {
         }
         scorePanel.add(startRoundButton, BorderLayout.SOUTH);
 
-        //Just for testing, will be removed
-        changeScoreColor(player1Results[5], true);
-        changeScoreColor(player2Results[14], false);
+//        //Just for testing, will be removed
+//        changeScoreColor(player1Results[5], true);
+//        changeScoreColor(player2Results[14], false);
     }
 
 
@@ -178,7 +178,7 @@ public class GUI extends JFrame {
                 System.out.println("Panel för NEW_GAME (newGamePanel) finns bara i fantasin (men den är fin, tycker Kalle).");
                 break;
             case CHOOSE_CATEGORY:
-                cardLayout.show(mainPanel, "Category");
+                cardLayout.show(mainPanel, "Score"); //category
                 break;
             case ANSWER_QUESTION:
                 cardLayout.show(mainPanel, "Question");
@@ -236,7 +236,7 @@ public class GUI extends JFrame {
     public void changeScoreColor(JLabel resultLabel, boolean correctAnswer) {
         String correctAnswerLabel = "<html><font color='rgb(83, 214, 49)'>\u25C9</font></html>";
         String wrongAnswerLabel = "<html><font color='rgb(225, 52, 123)'>\u25C9</font></html>";
-        if(correctAnswer) {
+        if (correctAnswer) {
             resultLabel.setText(correctAnswerLabel);
         } else {
             resultLabel.setText(wrongAnswerLabel);
@@ -280,5 +280,14 @@ public class GUI extends JFrame {
         for (JButton button : buttons) {
             button.setBackground(null);
         }
+    }
+
+    public void loadProperties(int gameRounds, int questionsPerRound) {
+        player1ResultsPanel = new JPanel(new GridLayout(gameRounds, questionsPerRound));
+        player2ResultsPanel = new JPanel(new GridLayout(gameRounds, questionsPerRound));
+        player1Results = new JLabel[gameRounds * questionsPerRound];
+        player2Results = new JLabel[gameRounds * questionsPerRound];
+        roundIndicatorPanel = new JPanel(new GridLayout(gameRounds, 1));
+        roundIndicators = new JLabel[gameRounds];
     }
 }
