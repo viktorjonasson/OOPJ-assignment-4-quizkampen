@@ -66,6 +66,7 @@ public class ClientController {
             isCategoryChooser = false;
         }else{
             gui.unLockScoreButton(gui.startRoundQuestionBtn);
+            gui.waiting.setVisible(false);
         }
     }
 
@@ -97,10 +98,8 @@ public class ClientController {
             gui.lockContinueButton();
             gui.updateQuestionPanel(question.get());
             if (isCategoryChooser){
-                System.out.println("Inne i if-sats för knapptext"); //sout test
                 gui.switchPanel(GameState.ANSWER_QUESTION);
-            }
-            else{
+            }else{
                 gui.switchPanel(GameState.SCORE_TABLE);
             }
         } else {
@@ -130,10 +129,6 @@ public class ClientController {
         if (pressedButton.isPresent()) {
             gui.changeColor(pressedButton.get(), correctAnswer);
         }
-    }
-
-    public static void main(String[] args) {
-        new ClientController();
     }
 
     public void handleProperties(String serverReply) {
@@ -171,5 +166,9 @@ public class ClientController {
                 .toArray();
 
         gui.changeScoreColor(player1Results, player2Results);
+    }
+
+    public static void main(String[] args) {
+        new ClientController();
     }
 }

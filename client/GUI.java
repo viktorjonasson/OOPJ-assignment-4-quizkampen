@@ -120,7 +120,6 @@ public class GUI extends JFrame {
         lockScoreButton(startRoundQuestionBtn);
     }
 
-
     private void setupCategoryPanel() {
         //CategoryPanel – Placement
 //        mainPanel.add(categoryPanel);
@@ -165,7 +164,6 @@ public class GUI extends JFrame {
         }
     }
 
-    //Antopas nu från ClientController.handleQuestionSet() resp. handleCategorySet()
     public void switchPanel(GameState state) {
         switch (state) {
             case NEW_GAME:
@@ -201,16 +199,12 @@ public class GUI extends JFrame {
 
     public void lockScoreButton(JButton button) {
         button.setEnabled(false);
-        //button.setVisible(false);
+        button.setVisible(false);
     }
 
     public void unLockScoreButton(JButton button) {
         button.setEnabled(true);
-        //button.setVisible(true);
-    }
-
-    public void scoreButtonSetText(JButton button, String text) {
-        button.setText(text);
+        button.setVisible(true);
     }
 
     public void unLockContinueButton() {
@@ -275,6 +269,7 @@ public class GUI extends JFrame {
         }
     }
 
+    //Ska den här metoden bort nu?
     public JButton getChosenAnswerButton(String chosenAnswer) {
         for (JButton button : optionButtons) {
             if (button.getText().equals(chosenAnswer))
