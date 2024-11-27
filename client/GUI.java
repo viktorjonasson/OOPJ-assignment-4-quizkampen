@@ -36,6 +36,7 @@ public class GUI extends JFrame {
     JLabel player1Name = new JLabel("Spelare 1", SwingConstants.CENTER);
     JLabel player2Name = new JLabel("Spelare 2", SwingConstants.CENTER);
     JLabel totalResult = new JLabel("0 – 0", SwingConstants.CENTER);
+    JLabel waiting = new JLabel("WAITING FOR OPPONENT TO FINISH ROUND", SwingConstants.CENTER);
     JPanel player1ResultsPanel = new JPanel(new GridLayout(6, 3));
     JPanel scoreButtonPanel = new JPanel(new BorderLayout());
     JLabel[] player1Results = new JLabel[18];
@@ -44,7 +45,7 @@ public class GUI extends JFrame {
     JPanel player2ResultsPanel = new JPanel(new GridLayout(6, 3));
     JLabel[] player2Results = new JLabel[18];
     JButton startRoundCategoryBtn = new JButton("READY FOR CATEGORY CHOICE"); //Denna ska döljas när det är andra spelarens tur.
-    JButton startRoundQuestionBtn = new JButton("WAITING FOR OPPONENT TO FINISH ROUND");
+    JButton startRoundQuestionBtn = new JButton("READY TO ANSWER QUESTIONS");
 
 
     //NewGamePanelStuff
@@ -110,8 +111,11 @@ public class GUI extends JFrame {
             roundIndicators[i].setHorizontalAlignment(SwingConstants.CENTER);
         }
 
+        waiting.setVisible(false);
+        scoreButtonPanel.add(waiting, BorderLayout.CENTER);
         scoreButtonPanel.add(startRoundCategoryBtn, BorderLayout.NORTH);
         scoreButtonPanel.add(startRoundQuestionBtn, BorderLayout.SOUTH);
+        scorePanel.add(scoreButtonPanel, BorderLayout.SOUTH);
         lockScoreButton(startRoundCategoryBtn);
         lockScoreButton(startRoundQuestionBtn);
     }
@@ -197,12 +201,12 @@ public class GUI extends JFrame {
 
     public void lockScoreButton(JButton button) {
         button.setEnabled(false);
-        button.setVisible(false);
+        //button.setVisible(false);
     }
 
     public void unLockScoreButton(JButton button) {
         button.setEnabled(true);
-        button.setVisible(true);
+        //button.setVisible(true);
     }
 
     public void scoreButtonSetText(JButton button, String text) {
