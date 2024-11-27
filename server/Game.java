@@ -50,15 +50,18 @@ public class Game extends Thread {
                         handleClientRequest(round);
                     }
                     if (round.answeredQuestions == questionsPerRound && !round.finished()) {
+                        //Send PassivePlayer indication to currentplayer
                         switchPlayer();
                         writeToClient(round.getQuestions());
                         round.answeredQuestions = 0;
                     }
                     if (round.finished()) {
+                        //Now: Player 2
                         //Switch player
-                        //Send result
-                        //switch player
-                        //Send player2 result to player1
+                        //Now: Player 1
+                        //Send result from P2 to P1
+                        //Switch player
+                        //Now: Player 2
                         sendCategoriesToClient();
                         currentRound++;
                         //Följande är en temporär lösning. Vi behöver bygga ut logiken
