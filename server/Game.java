@@ -49,18 +49,15 @@ public class Game extends Thread {
                         handleClientRequest(round);
                     }
                     if (round.answeredQuestions == questionsPerRound && !round.finished()) {
-                        //Send PassivePlayer indication to currentplayer
+                        sendResults();
                         switchPlayer();
                         writeToClient(round.getQuestions());
                         round.answeredQuestions = 0;
                     }
                     if (round.finished()) {
-                        //Now: Player 2
-                        //Switch player
-                        //Now: Player 1
-                        //Send result from P2 to P1
-                        //Switch player
-                        //Now: Player 2
+                        switchPlayer();
+                        sendResults();
+                        switchPlayer();
                         sendCategoriesToClient();
                         currentRound++;
                         //Följande är en temporär lösning. Vi behöver bygga ut logiken
@@ -229,17 +226,15 @@ public class Game extends Thread {
     public void sendGameProperties(int player) {
         String reply = "GameProperties: " + gameRounds + ", " + questionsPerRound;
         if (player == 1) {
-            writerPlayer1.println(reply);
+            writerPlayer1.println(reply + "|Player1");
         } else {
-            writerPlayer2.println(reply);
+            writerPlayer2.println(reply + "|Player2");
         }
     }
 
     public void sendResults() {
-        //[[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]]
         String player1Result = "Player1Res: " + Arrays.deepToString(player1Res);
         String player2Result = "Player2Res: " + Arrays.deepToString(player2Res);
         writeToClient("PlayerResults: " + player1Result + player2Result);
-        System.out.println("PlayerResults: " + player1Result + player2Result);
     }
 }

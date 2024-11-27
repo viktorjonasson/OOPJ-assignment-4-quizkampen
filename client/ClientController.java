@@ -15,11 +15,11 @@ public class ClientController {
 
     ClientController() {
         gui = new GUI();
+        gameLogic = new GameLogic(gui);
         int port = 12345;
         String address = "127.0.0.1";
         client = new Client(address, port, this);
         gui.gameBoard();
-        gameLogic = new GameLogic();
         initializeButtonListeners(gui.getOptionButtons());
         initializeContinueButtonListener(gui.continueBtn);
         initializeCategoryButtons(gui.getCategoryButtons());
@@ -125,6 +125,7 @@ public class ClientController {
         if (parts[1].trim().equalsIgnoreCase("true")) {
             correctAnswer = true;
         }
+        gameLogic.updateScorePanel(correctAnswer);
         Optional<JButton> pressedButton = gui.getButton(parts[0]);
         if (pressedButton.isPresent()) {
             gui.changeColor(pressedButton.get(), correctAnswer);
@@ -132,18 +133,19 @@ public class ClientController {
     }
 
     public void handleProperties(String serverReply) {
+        String[] initialPart = serverReply.split("\\|");
         int gameRounds, questionsPerRound;
-        String[] parts;
-        parts = serverReply.split(",");
-        gameRounds = Integer.parseInt(parts[0].trim());
-        questionsPerRound = Integer.parseInt(parts[1].trim());
+        String[] propertiesPart = initialPart[0].split(",");
+        String playerString = initialPart[1].replace("Player", "");
+        gameLogic.setPlayer(Integer.parseInt(playerString));
+        gameRounds = Integer.parseInt(propertiesPart[0].trim());
+        questionsPerRound = Integer.parseInt(propertiesPart[1].trim());
         gui.loadProperties(gameRounds, questionsPerRound);
     }
 
     public void handlePlayerResults(String serverReply) {
         String[] parts = serverReply.split("Player2Res:");
 
-        // Remove prefixes and split into rows
         String player1ResultsStr = parts[0]
                 .replace("Player1Res: ", "")
                 .replace("[[", "")
@@ -156,7 +158,6 @@ public class ClientController {
                 .replace("], [", ", ")
                 .replaceAll("\\s+", "");
 
-        // Split and convert to int array
         int[] player1Results = Arrays.stream(player1ResultsStr.split(","))
                 .mapToInt(Integer::parseInt)
                 .toArray();
