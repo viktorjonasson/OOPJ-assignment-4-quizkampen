@@ -1,6 +1,9 @@
 import javax.swing.*;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 import java.util.Optional;
+
+import static java.util.Collections.replaceAll;
 
 public class ClientController {
     Client client;
@@ -127,5 +130,42 @@ public class ClientController {
 
     public static void main(String[] args) {
         new ClientController();
+    }
+
+    public void handleProperties(String serverReply) {
+        int gameRounds, questionsPerRound;
+        String[] parts;
+        parts = serverReply.split(",");
+        gameRounds = Integer.parseInt(parts[0].trim());
+        questionsPerRound = Integer.parseInt(parts[1].trim());
+        gui.loadProperties(gameRounds, questionsPerRound);
+    }
+
+    public void handlePlayerResults(String serverReply) {
+        String[] parts = serverReply.split("Player2Res:");
+
+        // Remove prefixes and split into rows
+        String player1ResultsStr = parts[0]
+                .replace("Player1Res: ", "")
+                .replace("[[", "")
+                .replace("]]", "")
+                .replace("], [", ", ")
+                .replaceAll("\\s+", "");
+        String player2ResultsStr = parts[1]
+                .replace("[[", "")
+                .replace("]]", "")
+                .replace("], [", ", ")
+                .replaceAll("\\s+", "");
+
+        // Split and convert to int array
+        int[] player1Results = Arrays.stream(player1ResultsStr.split(","))
+                .mapToInt(Integer::parseInt)
+                .toArray();
+
+        int[] player2Results = Arrays.stream(player2ResultsStr.split(","))
+                .mapToInt(Integer::parseInt)
+                .toArray();
+
+        gui.changeScoreColor(player1Results, player2Results);
     }
 }

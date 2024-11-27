@@ -33,6 +33,7 @@ public class Game extends Thread {
         writerPlayer1 = new PrintWriter(player1.getOutputStream(), true);
         GAME_ID = gameId;
         start();
+        sendResults();
     }
 
     public void run() {
@@ -49,13 +50,18 @@ public class Game extends Thread {
                         handleClientRequest(round);
                     }
                     if (round.answeredQuestions == questionsPerRound && !round.finished()) {
-                        //Send current player result to opponent
+                        //Send PassivePlayer indication to currentplayer
                         switchPlayer();
                         writeToClient(round.getQuestions());
                         round.answeredQuestions = 0;
                     }
                     if (round.finished()) {
-                        //Send player2 result to player1
+                        //Now: Player 2
+                        //Switch player
+                        //Now: Player 1
+                        //Send result from P2 to P1
+                        //Switch player
+                        //Now: Player 2
                         sendCategoriesToClient();
                         currentRound++;
                         //Följande är en temporär lösning. Vi behöver bygga ut logiken
@@ -228,5 +234,13 @@ public class Game extends Thread {
         } else {
             writerPlayer2.println(reply);
         }
+    }
+
+    public void sendResults() {
+        //[[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]]
+        String player1Result = "Player1Res: " + Arrays.deepToString(player1Res);
+        String player2Result = "Player2Res: " + Arrays.deepToString(player2Res);
+        writeToClient("PlayerResults: " + player1Result + player2Result);
+        System.out.println("PlayerResults: " + player1Result + player2Result);
     }
 }

@@ -35,8 +35,10 @@ public class Client {
                             clientController.scoreButtonCategoryMode();
                             //HandleCategorySet ska bara ladda in frågorna i UI. Inte visa panel
                             clientController.handleCategorySet(categorySet);
+                            //Låsa upp knapp som byter skärm för ny runda
                         }
-                        if (serverReply.startsWith("QuestionSet")) {
+                        if (serverReply.startsWith("QuestionSet")) { //+CurrentPlayer
+                            //Låser upp knapp för att gå vidare i spel
                             parts = serverReply.split(": ");
                             String questionAndAnswers = parts[1];
                             //Låser upp knapp för att gå vidare i spel
@@ -44,8 +46,14 @@ public class Client {
                             clientController.handleQuestionSet(questionAndAnswers);
                         }
                         if (serverReply.startsWith("Solution")) {
+                            //Update score panel accordingly
                             parts = serverReply.split(":");
                             clientController.handleSolution(parts[1].trim());
+                        }
+                        if (serverReply.startsWith("PlayerResults")) {
+                            parts = serverReply.split(":", 2);
+                            clientController.handlePlayerResults(parts[1].trim());
+                            //Ylva: Ändra score-skärm
                         }
                     }
                 }
