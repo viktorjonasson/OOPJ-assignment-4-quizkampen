@@ -12,7 +12,12 @@ public class GUI extends JFrame {
     CardLayout cardLayout = new CardLayout();
     JPanel mainPanel = new JPanel(cardLayout);
 
-    //GUI QuestionPanelStuff
+    //NewGamePanelStuff
+    JPanel newGamePanel = new JPanel(new BorderLayout(0, 40));
+    JLabel welcomeMessage = new JLabel("<html>Välkommen till Quizkampen!</html>", SwingConstants.CENTER);
+    JButton startGameButton = new JButton("Starta nytt spel");
+
+    //QuestionPanelStuff
     JPanel questionPanel = new JPanel(new BorderLayout(0, 40));
     JPanel quizContentPanel = new JPanel(new BorderLayout());
     JPanel quizOptionPanel = new JPanel(new GridLayout(2, 2));
@@ -44,9 +49,6 @@ public class GUI extends JFrame {
     JLabel[] player2Results = new JLabel[18];
     JButton startRoundButton = new JButton("Spela"); //Denna ska döljas när det är andra spelarens tur.
 
-    //NewGamePanelStuff
-    JPanel newGamePanel = new JPanel(new BorderLayout());
-
     //Resources
     String correctAnswerLabel = "<html><font color='rgb(83, 214, 49)'>\u25C9</font></html>";
     String wrongAnswerLabel = "<html><font color='rgb(225, 52, 123)'>\u25C9</font></html>";
@@ -76,19 +78,25 @@ public class GUI extends JFrame {
         setupCategoryPanel();
         setupQuestionPanel();
         setupScorePanel();
+        setupNewGamePanel();
         mainPanel.add(questionPanel, "Question");
         mainPanel.add(categoryPanel, "Category");
         mainPanel.add(scorePanel, "Score");
         mainPanel.add(newGamePanel, "New Game");
-
-        //Ska förhoppningsvis kunna tas bort. Annars sätt annat default-värde.
-        //question.setText("<HTML>Hur många YH-poäng är Nackademins utbildning i Javaprogrammering?</HTML>");
 
         //GUI – Display it
         setSize(500, 700);
         setVisible(true);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+    }
+
+    private void setupNewGamePanel() {
+        newGamePanel.setVisible(true);
+        newGamePanel.setBorder(outerPadding);
+        newGamePanel.add(welcomeMessage, BorderLayout.NORTH, SwingConstants.CENTER);
+        newGamePanel.add(startGameButton, BorderLayout.CENTER);
+        startGameButton.setPreferredSize(new Dimension(100, 100));
     }
 
     private void setupScorePanel() {
@@ -169,7 +177,6 @@ public class GUI extends JFrame {
         switch (state) {
             case NEW_GAME:
                 cardLayout.show(mainPanel, "New Game");
-                System.out.println("Panel för NEW_GAME (newGamePanel) finns bara i fantasin (men den är fin, tycker Kalle).");
                 break;
             case CHOOSE_CATEGORY:
                 cardLayout.show(mainPanel, "Category");
@@ -179,7 +186,6 @@ public class GUI extends JFrame {
                 break;
             case SCORE_TABLE:
                 cardLayout.show(mainPanel, "Score");
-                System.out.println("Panel för SCORE_TABLE (scorePanel) finns finns bara i fantasin (men den är fin, tycker Kalle).");
                 break;
         }
     }
