@@ -36,12 +36,12 @@ public class GUI extends JFrame {
     JLabel player1Name = new JLabel("Spelare 1", SwingConstants.CENTER);
     JLabel player2Name = new JLabel("Spelare 2", SwingConstants.CENTER);
     JLabel totalResult = new JLabel("0 – 0", SwingConstants.CENTER);
-    JPanel player1ResultsPanel;// = new JPanel(new GridLayout(6, 3));
-    JLabel[] player1Results;// = new JLabel[18];
-    JPanel roundIndicatorPanel;// = new JPanel(new GridLayout(6, 1));
-    JLabel[] roundIndicators;// = new JLabel[6];
-    JPanel player2ResultsPanel;// = new JPanel(new GridLayout(6, 3));
-    JLabel[] player2Results;// = new JLabel[18];
+    JPanel player1ResultsPanel = new JPanel(new GridLayout(6, 3));
+    JLabel[] player1Results = new JLabel[18];
+    JPanel roundIndicatorPanel = new JPanel(new GridLayout(6, 1));
+    JLabel[] roundIndicators = new JLabel[6];
+    JPanel player2ResultsPanel = new JPanel(new GridLayout(6, 3));
+    JLabel[] player2Results = new JLabel[18];
     JButton startRoundButton = new JButton("Spela"); //Denna ska döljas när det är andra spelarens tur.
 
 
@@ -100,29 +100,13 @@ public class GUI extends JFrame {
         scorePanel.add(player1ResultsPanel, BorderLayout.WEST);
         scorePanel.add(roundIndicatorPanel, BorderLayout.CENTER);
         scorePanel.add(player2ResultsPanel, BorderLayout.EAST);
-        for (int i = 0; i < player1Results.length; i++) {
-            player1ResultsPanel.add(player1Results[i] = new JLabel());
-            player1Results[i].setPreferredSize(new Dimension(20, 20));
-            player1Results[i].setText("<html><font color='rgb(150, 150, 150)'>\u25C9</font></html>");
-            player1Results[i].setHorizontalAlignment(SwingConstants.CENTER);
-        }
         for (int i = 0; i < roundIndicators.length; i++) {
             roundIndicatorPanel.add(roundIndicators[i] = new JLabel());
             //roundIndicators[i].setPreferredSize(new Dimension(20, 5));
             roundIndicators[i].setText("Round " + (i + 1));
             roundIndicators[i].setHorizontalAlignment(SwingConstants.CENTER);
         }
-        for (int i = 0; i < player2Results.length; i++) {
-            player2ResultsPanel.add(player2Results[i] = new JLabel());
-            player2Results[i].setPreferredSize(new Dimension(20, 20));
-            player2Results[i].setText("<html><font color='rgb(150, 150, 150)'>\u25C9</font></html>");
-            player2Results[i].setHorizontalAlignment(SwingConstants.CENTER);
-        }
         scorePanel.add(startRoundButton, BorderLayout.SOUTH);
-
-//        //Just for testing, will be removed
-//        changeScoreColor(player1Results[5], true);
-//        changeScoreColor(player2Results[14], false);
     }
 
 
@@ -233,15 +217,38 @@ public class GUI extends JFrame {
         }
     }
 
-    public void changeScoreColor(JLabel resultLabel, boolean correctAnswer) {
+    public void changeScoreColor(int[] player1IncomingRes, int[] player2IncomingRes) {
         String correctAnswerLabel = "<html><font color='rgb(83, 214, 49)'>\u25C9</font></html>";
         String wrongAnswerLabel = "<html><font color='rgb(225, 52, 123)'>\u25C9</font></html>";
-        if (correctAnswer) {
-            resultLabel.setText(correctAnswerLabel);
-        } else {
-            resultLabel.setText(wrongAnswerLabel);
+        String notAnsweredLabel = "<html><font color='rgb(150, 150, 150)'>\u25C9</font></html>";
+
+        assert player1Results.length == player1IncomingRes.length;
+
+        for (int i = 0; i < player1Results.length; i++) {
+            if (player1IncomingRes[i] == 1) {
+                player1Results[i].setText(correctAnswerLabel);
+            } else if (player1IncomingRes[i] == -1) {
+                player1Results[i].setText(wrongAnswerLabel);
+            } else {
+                player1Results[i].setText(notAnsweredLabel);
+            }
         }
-        //Logiken funkar, men hur ska metoden anropas?
+
+        for (int i = 0; i < player2Results.length; i++) {
+            if (player2IncomingRes[i] == 1) {
+                player2Results[i].setText(correctAnswerLabel);
+            } else if (player2IncomingRes[i] == -1) {
+                player2Results[i].setText(wrongAnswerLabel);
+            } else {
+                player2Results[i].setText(notAnsweredLabel);
+            }
+        }
+        for (int i = 0; i < roundIndicators.length; i++) {
+            roundIndicatorPanel.add(roundIndicators[i] = new JLabel());
+            //roundIndicators[i].setPreferredSize(new Dimension(20, 5));
+            roundIndicators[i].setText("Round " + (i + 1));
+            roundIndicators[i].setHorizontalAlignment(SwingConstants.CENTER);
+        }
     }
 
     public JButton getChosenAnswerButton(String chosenAnswer) {
@@ -283,11 +290,24 @@ public class GUI extends JFrame {
     }
 
     public void loadProperties(int gameRounds, int questionsPerRound) {
+        roundIndicatorPanel = new JPanel(new GridLayout(gameRounds, 1));
+        roundIndicators = new JLabel[gameRounds];
         player1ResultsPanel = new JPanel(new GridLayout(gameRounds, questionsPerRound));
         player2ResultsPanel = new JPanel(new GridLayout(gameRounds, questionsPerRound));
         player1Results = new JLabel[gameRounds * questionsPerRound];
         player2Results = new JLabel[gameRounds * questionsPerRound];
-        roundIndicatorPanel = new JPanel(new GridLayout(gameRounds, 1));
-        roundIndicators = new JLabel[gameRounds];
+
+        for (int i = 0; i < player1Results.length; i++) {
+            player1ResultsPanel.add(player1Results[i] = new JLabel());
+            player1Results[i].setPreferredSize(new Dimension(20, 20));
+            player1Results[i].setText("<html><font color='rgb(150, 150, 150)'>\u25C9</font></html>");
+            player1Results[i].setHorizontalAlignment(SwingConstants.CENTER);
+        }
+        for (int i = 0; i < player2Results.length; i++) {
+            player2ResultsPanel.add(player2Results[i] = new JLabel());
+            player2Results[i].setPreferredSize(new Dimension(20, 20));
+            player2Results[i].setText("<html><font color='rgb(150, 150, 150)'>\u25C9</font></html>");
+            player2Results[i].setHorizontalAlignment(SwingConstants.CENTER);
+        }
     }
 }

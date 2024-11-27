@@ -44,6 +44,10 @@ public class Client {
                             parts = serverReply.split(":");
                             clientController.handleSolution(parts[1].trim());
                         }
+                        if (serverReply.startsWith("PlayerResults")) {
+                            parts = serverReply.split(":", 2);
+                            clientController.handlePlayerResults(parts[1].trim());
+                        }
                     }
                 }
             } catch (IOException e) {
