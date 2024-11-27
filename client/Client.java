@@ -39,9 +39,9 @@ public class Client {
                             //Låser upp knapp för att gå vidare i spel
                             parts = serverReply.split(": ");
                             String questionAndAnswers = parts[1];
+                            clientController.handleQuestionSet(questionAndAnswers);
                             //Låser upp knapp för att gå vidare i spel
                             clientController.scoreButtonQuestionMode();
-                            clientController.handleQuestionSet(questionAndAnswers);
                         }
                         if (serverReply.startsWith("Solution")) {
                             //Update score panel accordingly

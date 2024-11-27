@@ -61,9 +61,11 @@ public class ClientController {
 
     void scoreButtonQuestionMode(){
         if (isCategoryChooser){
-            gui.unLockScoreButton(gui.startRoundQuestionBtn);
             gui.lockScoreButton(gui.startRoundCategoryBtn);
-            gui.waiting.setVisible(false);
+            gui.waiting.setVisible(true);
+            isCategoryChooser = false;
+        }else{
+            gui.unLockScoreButton(gui.startRoundQuestionBtn);
         }
     }
 
@@ -98,7 +100,6 @@ public class ClientController {
             if (isCategoryChooser){
                 System.out.println("Inne i if-sats för knapptext"); //sout test
                 gui.switchPanel(GameState.ANSWER_QUESTION);
-                isCategoryChooser = false;
             }
         } else {
             System.err.println("Error loading question.");
