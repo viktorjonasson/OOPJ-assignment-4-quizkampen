@@ -5,7 +5,7 @@ public class DataBase {
     private final Set<Integer> usedCategories = new HashSet<>();
     private final Random random = new Random();
     private int amountOfQuestions = 0;
-    private final String API_URL = "https://opentdb.com/api.php?amount=" + amountOfQuestions + "&difficulty=medium";
+    private final String API_URL_QUESTIONS = "https://opentdb.com/api.php?amount=" + amountOfQuestions + "&difficulty=medium";
     private record TriviaCategory(int id, String name) { }
 
     DataBase (int amountOfQuestions) {
