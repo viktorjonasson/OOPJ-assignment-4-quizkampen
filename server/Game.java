@@ -33,7 +33,6 @@ public class Game extends Thread {
         writerPlayer1 = new PrintWriter(player1.getOutputStream(), true);
         GAME_ID = gameId;
         start();
-        sendResults();
     }
 
     public void run() {

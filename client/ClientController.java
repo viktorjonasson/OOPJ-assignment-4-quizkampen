@@ -94,12 +94,14 @@ public class ClientController {
         gameLogic.loadQuestionSet(notification);
         Optional<String[]> question = gameLogic.getNextQuestion();
         if (question.isPresent()) {
-            gui.switchPanel(GameState.ANSWER_QUESTION);
             gui.lockContinueButton();
             gui.updateQuestionPanel(question.get());
             if (isCategoryChooser){
                 System.out.println("Inne i if-sats för knapptext"); //sout test
                 gui.switchPanel(GameState.ANSWER_QUESTION);
+            }
+            else{
+                gui.switchPanel(GameState.SCORE_TABLE);
             }
         } else {
             System.err.println("Error loading question.");
