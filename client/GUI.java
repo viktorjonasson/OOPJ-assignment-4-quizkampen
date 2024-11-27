@@ -120,12 +120,6 @@ public class GUI extends JFrame {
         for (int i = 0; i < player2Results.length; i++) {
             player2Results[i] = new JLabel();
         }
-        for (int i = 0; i < roundIndicators.length; i++) {
-            roundIndicatorPanel.add(roundIndicators[i] = new JLabel());
-            //roundIndicators[i].setPreferredSize(new Dimension(20, 5));
-            roundIndicators[i].setText("Round " + (i + 1));
-            roundIndicators[i].setHorizontalAlignment(SwingConstants.CENTER);
-        }
 
         waiting.setVisible(false);
         scoreButtonPanel.add(waiting, BorderLayout.NORTH);
@@ -272,13 +266,6 @@ public class GUI extends JFrame {
                 player2Results[i].setText(notAnsweredLabel);
             }
         }
-
-        for (int i = 0; i < roundIndicators.length; i++) {
-            roundIndicatorPanel.add(roundIndicators[i] = new JLabel());
-            //roundIndicators[i].setPreferredSize(new Dimension(20, 5));
-            roundIndicators[i].setText("Round " + (i + 1));
-            roundIndicators[i].setHorizontalAlignment(SwingConstants.CENTER);
-        }
     }
 
     public void updateLocalResultLabel(int labelIndex, boolean correctAnswer, int player) {
@@ -356,9 +343,10 @@ public class GUI extends JFrame {
             player2Results[i].setText("<html><font color='rgb(150, 150, 150)'>\u25C9</font></html>");
             player2Results[i].setHorizontalAlignment(SwingConstants.CENTER);
         }
+        roundIndicators = new JLabel[gameRounds];
         for (int i = 0; i < roundIndicators.length; i++) {
             roundIndicatorPanel.add(roundIndicators[i] = new JLabel());
-            //roundIndicators[i].setPreferredSize(new Dimension(20, 5));
+            roundIndicators[i].setPreferredSize(new Dimension(20, 5));
             roundIndicators[i].setText("Round " + (i + 1));
             roundIndicators[i].setHorizontalAlignment(SwingConstants.CENTER);
         }
