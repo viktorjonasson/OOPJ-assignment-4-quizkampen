@@ -36,7 +36,7 @@ public class GUI extends JFrame {
     JLabel player1Name = new JLabel("Spelare 1", SwingConstants.CENTER);
     JLabel player2Name = new JLabel("Spelare 2", SwingConstants.CENTER);
     JLabel totalResult = new JLabel("0 – 0", SwingConstants.CENTER);
-    JLabel waiting = new JLabel("WAITING FOR OPPONENT TO FINISH ROUND", SwingConstants.CENTER);
+    JLabel waiting = new JLabel("Snart din tur att spela ...", SwingConstants.CENTER);
     JPanel player1ResultsPanel = new JPanel(new GridLayout(6, 3));
     JPanel scoreButtonPanel = new JPanel(new BorderLayout());
     JLabel[] player1Results = new JLabel[18];
@@ -44,13 +44,12 @@ public class GUI extends JFrame {
     JLabel[] roundIndicators = new JLabel[6];
     JPanel player2ResultsPanel = new JPanel(new GridLayout(6, 3));
     JLabel[] player2Results = new JLabel[18];
-    JButton startRoundCategoryBtn = new JButton("READY FOR CATEGORY CHOICE"); //Denna ska döljas när det är andra spelarens tur.
-    JButton startRoundQuestionBtn = new JButton("READY TO ANSWER QUESTIONS");
+    JButton startRoundCategoryBtn = new JButton("Redo att välja kategori?"); //Denna ska döljas när det är andra spelarens tur.
+    JButton startRoundQuestionBtn = new JButton("Redo att quizza?");
 
 
     //NewGamePanelStuff
     JPanel newGamePanel = new JPanel(new BorderLayout());
-    JButton joinGameBtn = new JButton("JOIN GAME");
 
     //Getter for buttons
     public Optional<JButton> getButton(String buttonText) {
