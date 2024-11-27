@@ -29,7 +29,7 @@ public class Game extends Thread {
         player1Res = new int[gameRounds][questionsPerRound];
         player2Res = new int[gameRounds][questionsPerRound];
         this.player1 = player1Socket;
-        this.db = new DataBase();
+        this.db = new DataBase(questionsPerRound);
         writerPlayer1 = new PrintWriter(player1.getOutputStream(), true);
         GAME_ID = gameId;
         start();
@@ -80,7 +80,7 @@ public class Game extends Thread {
     }
 
     private void readGameProperties() {
-        try (FileInputStream input = new FileInputStream("server/game-config.properties")) {
+        try (FileInputStream input = new FileInputStream("server/src/game-config.properties")) {
             gameProperties.load(input);
             gameRounds = Integer.parseInt(gameProperties.getProperty("amountOfRounds"));
             questionsPerRound = Integer.parseInt(gameProperties.getProperty("amountOfQuestionsPerRound"));
@@ -138,14 +138,6 @@ public class Game extends Thread {
         }
     }
 
-    public void updateCounters() {
-        ++currentQuestion;
-        if (currentQuestion < 3) {
-            currentQuestion = 1;
-            ++currentRound;
-        }
-    }
-
     public void setPlayerResult(boolean correctAnswer) {
         if (correctAnswer) {
             if (currentPlayer == 1) {
@@ -158,45 +150,6 @@ public class Game extends Thread {
                 player1Res[currentRound][currentQuestion] = -1;
             } else {
                 player2Res[currentRound][currentQuestion] = -1;
-            }
-        }
-        /*  OBS!
-            Detta är bara för demonstration av score keeping och tar väldigt mycket plats.
-            Ta bort när alla vet hur det funkar
-         */
-        if (currentPlayer == 1) {
-            System.out.println();
-            System.out.println("Player 1 score:");
-            for (int[] row : player1Res) {
-                for (int res : row) {
-                    if (res == -1) {
-                        System.out.print("W ");
-                    }
-                    if (res == 1) {
-                        System.out.print("R ");
-                    }
-                    if (res == 0) {
-                        System.out.print("N/A ");
-                    }
-                }
-                System.out.println();
-            }
-        } else {
-            System.out.println();
-            System.out.println("Player 2 score:");
-            for (int[] row : player2Res) {
-                for (int res : row) {
-                    if (res == -1) {
-                        System.out.print("W ");
-                    }
-                    if (res == 1) {
-                        System.out.print("R ");
-                    }
-                    if (res == 0) {
-                        System.out.print("N/A ");
-                    }
-                }
-                System.out.println();
             }
         }
     }

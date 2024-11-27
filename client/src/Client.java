@@ -8,7 +8,6 @@ public class Client {
     PrintWriter printWriter;
     ClientController clientController;
 
-    //develop
     Client(String address, int port, ClientController clientController) {
         this.clientController = clientController;
         new Thread(() -> {

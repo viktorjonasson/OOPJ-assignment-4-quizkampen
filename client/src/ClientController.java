@@ -1,24 +1,17 @@
 import javax.swing.*;
 import java.util.Arrays;
-import java.awt.event.ActionListener;
-import java.util.Arrays;
 import java.util.Optional;
-
-import static java.util.Collections.replaceAll;
 
 public class ClientController {
     Client client;
     GUI gui;
     GameLogic gameLogic;
-    GameState gameState;
     boolean isCategoryChooser;
 
-    ClientController() {
-        gui = new GUI();
-        gameLogic = new GameLogic(gui);
-        int port = 12345;
-        String address = "127.0.0.1";
-        client = new Client(address, port, this);
+    ClientController(GUI gui, GameLogic gameLogic, String IP, int port) {
+        this.gui = gui;
+        this.gameLogic = gameLogic;
+        this.client = new Client(IP, port,this);
         gui.gameBoard();
         initializeButtonListeners(gui.getOptionButtons());
         initializeContinueButtonListener(gui.continueBtn);
@@ -48,9 +41,7 @@ public class ClientController {
     }
 
     void initializeStartRoundQuestionBtn(JButton startRoundQuestionBtn) {
-        startRoundQuestionBtn.addActionListener(_ -> {
-            gui.switchPanel(GameState.ANSWER_QUESTION);
-        });
+        startRoundQuestionBtn.addActionListener(_ -> gui.switchPanel(GameState.ANSWER_QUESTION));
     }
 
     void scoreButtonCategoryMode(){
@@ -167,9 +158,5 @@ public class ClientController {
                 .toArray();
 
         gui.changeScoreColor(player1Results, player2Results);
-    }
-
-    public static void main(String[] args) {
-        new ClientController();
     }
 }

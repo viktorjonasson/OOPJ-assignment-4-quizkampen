@@ -8,7 +8,8 @@ public class GUI extends JFrame {
     //GUI Setup
     Border outerPadding = BorderFactory.createEmptyBorder(20, 40, 30, 40);
     Border optionButtonsPadding = BorderFactory.createEmptyBorder(20, 0, 20, 0);
-    //NYTT NU: Vi använder CardLayout för att panel.
+
+    //CardLayout används för byte av spelskärm
     CardLayout cardLayout = new CardLayout();
     JPanel mainPanel = new JPanel(cardLayout);
 
@@ -53,11 +54,10 @@ public class GUI extends JFrame {
     JButton startRoundQuestionBtn = new JButton("Redo att quizza?");
 
     //Resources
-    String correctAnswerLabel = "<html><font color='rgb(83, 214, 49)'>\u25C9</font></html>";
-    String wrongAnswerLabel = "<html><font color='rgb(225, 52, 123)'>\u25C9</font></html>";
-    String notAnsweredLabel = "<html><font color='rgb(150, 150, 150)'>\u25C9</font></html>";
+    String correctAnswerLabel = "<html><font color='rgb(83, 214, 49)'>◉</font></html>";
+    String wrongAnswerLabel = "<html><font color='rgb(225, 52, 123)'>◉</font></html>";
+    String notAnsweredLabel = "<html><font color='rgb(150, 150, 150)'>◉</font></html>";
 
-    //Getter for buttons
     public Optional<JButton> getButton(String buttonText) {
         for (JButton button : optionButtons) {
             if (button.getText().equals(buttonText)) {
@@ -76,7 +76,6 @@ public class GUI extends JFrame {
     }
 
     public void gameBoard() {
-        //GUI – Set content
         this.add(mainPanel);
         setupCategoryPanel();
         setupQuestionPanel();
@@ -87,7 +86,6 @@ public class GUI extends JFrame {
         mainPanel.add(scorePanel, "Score");
         mainPanel.add(newGamePanel, "New Game");
 
-        //GUI – Display it
         setSize(500, 700);
         setVisible(true);
         setLocationRelativeTo(null);
@@ -111,22 +109,6 @@ public class GUI extends JFrame {
         headerPanel.add(player1Name, BorderLayout.WEST, SwingConstants.CENTER);
         headerPanel.add(totalResult, BorderLayout.CENTER, SwingConstants.CENTER);
         headerPanel.add(player2Name, BorderLayout.EAST, SwingConstants.CENTER);
-        scorePanel.add(player1ResultsPanel, BorderLayout.WEST);
-        scorePanel.add(roundIndicatorPanel, BorderLayout.CENTER);
-        scorePanel.add(player2ResultsPanel, BorderLayout.EAST);
-        for (int i = 0; i < player1Results.length; i++) {
-            player1Results[i] = new JLabel();
-        }
-        for (int i = 0; i < player2Results.length; i++) {
-            player2Results[i] = new JLabel();
-        }
-        for (int i = 0; i < roundIndicators.length; i++) {
-            roundIndicatorPanel.add(roundIndicators[i] = new JLabel());
-            //roundIndicators[i].setPreferredSize(new Dimension(20, 5));
-            roundIndicators[i].setText("Round " + (i + 1));
-            roundIndicators[i].setHorizontalAlignment(SwingConstants.CENTER);
-        }
-
         waiting.setVisible(false);
         scoreButtonPanel.add(waiting, BorderLayout.NORTH);
         scoreButtonPanel.add(startRoundCategoryBtn, BorderLayout.CENTER);
@@ -138,7 +120,6 @@ public class GUI extends JFrame {
 
     private void setupCategoryPanel() {
         //CategoryPanel – Placement
-//        mainPanel.add(categoryPanel);
         for (int i = 0; i < categoryButtons.length; i++) {
             catOptionPanel.add(categoryButtons[i] = new JButton());
             categoryButtons[i].setPreferredSize(new Dimension(100, 50));
@@ -156,7 +137,6 @@ public class GUI extends JFrame {
 
     private void setupQuestionPanel() {
         //QuestionPanel – Placement
-//        mainPanel.add(questionPanel);
         questionPanel.setVisible(true);
         questionPanel.setBorder(outerPadding);
         questionPanel.add(header, BorderLayout.NORTH);
@@ -252,8 +232,10 @@ public class GUI extends JFrame {
 
     public void changeScoreColor(int[] player1IncomingRes, int[] player2IncomingRes) {
         assert player1Results.length == player1IncomingRes.length;
+        assert player1Results.length == player2Results.length;
 
         for (int i = 0; i < player1Results.length; i++) {
+            // Player 1
             if (player1IncomingRes[i] == 1) {
                 player1Results[i].setText(correctAnswerLabel);
             } else if (player1IncomingRes[i] == -1) {
@@ -261,9 +243,8 @@ public class GUI extends JFrame {
             } else {
                 player1Results[i].setText(notAnsweredLabel);
             }
-        }
 
-        for (int i = 0; i < player2Results.length; i++) {
+            // Player 2
             if (player2IncomingRes[i] == 1) {
                 player2Results[i].setText(correctAnswerLabel);
             } else if (player2IncomingRes[i] == -1) {
@@ -271,13 +252,6 @@ public class GUI extends JFrame {
             } else {
                 player2Results[i].setText(notAnsweredLabel);
             }
-        }
-
-        for (int i = 0; i < roundIndicators.length; i++) {
-            roundIndicatorPanel.add(roundIndicators[i] = new JLabel());
-            //roundIndicators[i].setPreferredSize(new Dimension(20, 5));
-            roundIndicators[i].setText("Round " + (i + 1));
-            roundIndicators[i].setHorizontalAlignment(SwingConstants.CENTER);
         }
     }
 
@@ -344,23 +318,28 @@ public class GUI extends JFrame {
         player1Results = new JLabel[gameRounds * questionsPerRound];
         player2Results = new JLabel[gameRounds * questionsPerRound];
 
+        assert player1Results.length == player2Results.length;
         for (int i = 0; i < player1Results.length; i++) {
+            // Player1
             player1ResultsPanel.add(player1Results[i] = new JLabel());
             player1Results[i].setPreferredSize(new Dimension(20, 20));
-            player1Results[i].setText("<html><font color='rgb(150, 150, 150)'>\u25C9</font></html>");
+            player1Results[i].setText(notAnsweredLabel);
             player1Results[i].setHorizontalAlignment(SwingConstants.CENTER);
-        }
-        for (int i = 0; i < player2Results.length; i++) {
+            // Player 2
             player2ResultsPanel.add(player2Results[i] = new JLabel());
             player2Results[i].setPreferredSize(new Dimension(20, 20));
-            player2Results[i].setText("<html><font color='rgb(150, 150, 150)'>\u25C9</font></html>");
+            player2Results[i].setText(notAnsweredLabel);
             player2Results[i].setHorizontalAlignment(SwingConstants.CENTER);
         }
+
         for (int i = 0; i < roundIndicators.length; i++) {
             roundIndicatorPanel.add(roundIndicators[i] = new JLabel());
-            //roundIndicators[i].setPreferredSize(new Dimension(20, 5));
             roundIndicators[i].setText("Round " + (i + 1));
             roundIndicators[i].setHorizontalAlignment(SwingConstants.CENTER);
         }
+
+        scorePanel.add(player1ResultsPanel, BorderLayout.WEST);
+        scorePanel.add(roundIndicatorPanel, BorderLayout.CENTER);
+        scorePanel.add(player2ResultsPanel, BorderLayout.EAST);
     }
 }

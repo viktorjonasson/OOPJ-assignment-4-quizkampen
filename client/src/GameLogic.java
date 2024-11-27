@@ -23,12 +23,10 @@ public class GameLogic {
     }
 
     public void loadQuestionSet(String serverResponse) {
-        System.out.println(serverResponse);
         String[] categorySet = serverResponse.substring(1, serverResponse.length() - 1).split("\\|");
 
         for (String category : categorySet) {
             String[] questionSet = category.trim().replaceAll("^,\\s*|\\s*,$", "").split(",\\s*");
-            System.out.println(Arrays.toString(questionSet));
             questions.add(questionSet);
         }
     }

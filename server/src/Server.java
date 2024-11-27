@@ -1,20 +1,16 @@
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 
 public class Server {
-    private Queue<Game> pendingGames;
-    private List<Game> ongoingGames;
+    private final Queue<Game> pendingGames;
     private int GameID = 0;
     private ServerSocket serverSocket;
 
     Server(int port) {
         this.pendingGames = new LinkedList<>();
-        this.ongoingGames = new ArrayList<>();
         try {
             serverSocket = new ServerSocket(port);
             while (true) {
@@ -50,7 +46,6 @@ public class Server {
             Game tempGame = pendingGames.poll();
             if (tempGame != null) {
                 tempGame.player2 = playerConnection;
-                ongoingGames.add(tempGame);
                 tempGame.writerPlayer2 = new PrintWriter(playerConnection.getOutputStream(), true);
                 tempGame.player2Initiated = true;
                 tempGame.sendGameProperties(2);
