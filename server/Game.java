@@ -50,15 +50,15 @@ public class Game extends Thread {
                         handleClientRequest(round);
                     }
                     if (round.answeredQuestions == questionsPerRound && !round.finished()) {
+                        sendResults();
                         switchPlayer();
                         writeToClient(round.getQuestions());
                         round.answeredQuestions = 0;
                     }
                     if (round.finished()) {
-                        //Switch player
-                        //Send result
-                        //switch player
-                        //Send player2 result to player1
+                        switchPlayer();
+                        sendResults();
+                        switchPlayer();
                         sendCategoriesToClient();
                         currentRound++;
                         //Följande är en temporär lösning. Vi behöver bygga ut logiken
@@ -234,10 +234,8 @@ public class Game extends Thread {
     }
 
     public void sendResults() {
-        //[[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]]
         String player1Result = "Player1Res: " + Arrays.deepToString(player1Res);
         String player2Result = "Player2Res: " + Arrays.deepToString(player2Res);
         writeToClient("PlayerResults: " + player1Result + player2Result);
-        System.out.println("PlayerResults: " + player1Result + player2Result);
     }
 }

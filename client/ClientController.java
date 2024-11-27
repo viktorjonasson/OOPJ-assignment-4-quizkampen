@@ -107,7 +107,6 @@ public class ClientController {
     public void handlePlayerResults(String serverReply) {
         String[] parts = serverReply.split("Player2Res:");
 
-        // Remove prefixes and split into rows
         String player1ResultsStr = parts[0]
                 .replace("Player1Res: ", "")
                 .replace("[[", "")
@@ -120,7 +119,6 @@ public class ClientController {
                 .replace("], [", ", ")
                 .replaceAll("\\s+", "");
 
-        // Split and convert to int array
         int[] player1Results = Arrays.stream(player1ResultsStr.split(","))
                 .mapToInt(Integer::parseInt)
                 .toArray();
