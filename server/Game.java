@@ -55,6 +55,9 @@ public class Game extends Thread {
                         round.answeredQuestions = 0;
                     }
                     if (round.finished()) {
+                        //Switch player
+                        //Send result
+                        //switch player
                         //Send player2 result to player1
                         sendCategoriesToClient();
                         currentRound++;

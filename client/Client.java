@@ -42,6 +42,7 @@ public class Client {
                             clientController.handleQuestionSet(questionAndAnswers);
                         }
                         if (serverReply.startsWith("Solution")) {
+                            //Update score panel accordingly
                             parts = serverReply.split(":");
                             clientController.handleSolution(parts[1].trim());
                         }
