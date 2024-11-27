@@ -92,7 +92,6 @@ public class GUI extends JFrame {
 
     private void setupScorePanel() {
         //ScorePanel – Placement
-//        mainPanel.add(scorePanel);
         scorePanel.setVisible(true);
         scorePanel.setBorder(outerPadding);
         scorePanel.add(headerPanel, BorderLayout.NORTH);
@@ -109,10 +108,9 @@ public class GUI extends JFrame {
             roundIndicators[i].setText("Round " + (i + 1));
             roundIndicators[i].setHorizontalAlignment(SwingConstants.CENTER);
         }
-
         waiting.setVisible(false);
-        scoreButtonPanel.add(waiting, BorderLayout.CENTER);
-        scoreButtonPanel.add(startRoundCategoryBtn, BorderLayout.NORTH);
+        scoreButtonPanel.add(waiting, BorderLayout.NORTH);
+        scoreButtonPanel.add(startRoundCategoryBtn, BorderLayout.CENTER);
         scoreButtonPanel.add(startRoundQuestionBtn, BorderLayout.SOUTH);
         scorePanel.add(scoreButtonPanel, BorderLayout.SOUTH);
         lockScoreButton(startRoundCategoryBtn);
@@ -268,7 +266,7 @@ public class GUI extends JFrame {
         }
     }
 
-    //Ska den här metoden bort nu?
+    //Ska den här metoden bort nu? Verkar inte användas.
     public JButton getChosenAnswerButton(String chosenAnswer) {
         for (JButton button : optionButtons) {
             if (button.getText().equals(chosenAnswer))
