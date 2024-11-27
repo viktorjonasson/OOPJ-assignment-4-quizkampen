@@ -4,9 +4,17 @@ import java.util.Optional;
 
 public class GameLogic {
     ArrayList<String[]> questions;
+    private GUI gui;
+    int currentQuestion = 0;
 
-    GameLogic() {
+    GameLogic(GUI gui) {
+        this.gui = gui;
         questions = new ArrayList<>();
+    }
+
+    public void updateScorePanel(boolean correctAnswer) {
+        gui.updateLocalResultLabel(currentQuestion, correctAnswer);
+        currentQuestion++;
     }
 
     public void loadQuestionSet(String serverResponse) {

@@ -33,20 +33,21 @@ public class Client {
                             clientController.handleCategorySet(categorySet);
                             //Låsa upp knapp som byter skärm för ny runda
                         }
-                        if (serverReply.startsWith("QuestionSet")) {
+                        if (serverReply.startsWith("QuestionSet")) { //+CurrentPlayer
                             //Låser upp knapp för att gå vidare i spel
                             parts = serverReply.split(": ");
                             String questionAndAnswers = parts[1];
                             clientController.handleQuestionSet(questionAndAnswers);
                         }
                         if (serverReply.startsWith("Solution")) {
-                            //Update score panel accordingly
+                            //Update score panel accordingly. UPDATE: Implemented in handleSolution/gameLogic
                             parts = serverReply.split(":");
                             clientController.handleSolution(parts[1].trim());
                         }
                         if (serverReply.startsWith("PlayerResults")) {
                             parts = serverReply.split(":", 2);
                             clientController.handlePlayerResults(parts[1].trim());
+                            //Ylva: Ändra score-skärm
                         }
                     }
                 }
