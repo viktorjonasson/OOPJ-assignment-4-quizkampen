@@ -1,5 +1,15 @@
 import java.util.*;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonArray;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.stream.Collectors;
+
 
 public class DataBase {
     private final Map<Integer, TriviaCategory> triviaCategories;
@@ -15,6 +25,76 @@ public class DataBase {
         addTriviaCategories();
         this.amountOfQuestions = amountOfQuestions;
     }
+
+    public ArrayList<String> getQuestionSet(int categoryId) throws Exception {
+        // Fetch questions from API
+        String apiUrl = "https://opentdb.com/api.php?amount=" + amountOfQuestions +
+                "&category=" + categoryId +
+                "&difficulty=medium";
+
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(apiUrl))
+                .GET()
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        // Parse JSON response
+        Gson gson = new Gson();
+        JsonObject jsonResponse = gson.fromJson(response.body(), JsonObject.class);
+        JsonArray results = jsonResponse.getAsJsonArray("results");
+
+        ArrayList<String> combinedQuestionSet = new ArrayList<>();
+
+        for (int i = 0; i < results.size(); i++) {
+            JsonObject questionObj = results.get(i).getAsJsonObject();
+
+            // Extract question details
+            String question = unescapeHtml(questionObj.get("question").getAsString());
+            String correctAnswer = unescapeHtml(questionObj.get("correct_answer").getAsString());
+            JsonArray incorrectAnswersJson = questionObj.getAsJsonArray("incorrect_answers");
+
+            // Convert incorrect answers
+            ArrayList<String> incorrectAnswers = new ArrayList<>();
+            for (int j = 0; j < incorrectAnswersJson.size(); j++) {
+                incorrectAnswers.add(unescapeHtml(incorrectAnswersJson.get(j).getAsString()));
+            }
+
+            // Create a list of all answers
+            ArrayList<String> allAnswers = new ArrayList<>(incorrectAnswers);
+            allAnswers.add(correctAnswer);
+
+            // Shuffle the answers
+            Collections.shuffle(allAnswers);
+
+            // Prepare the shuffled answers list
+            ArrayList<String> shuffledAnswers = new ArrayList<>();
+            shuffledAnswers.add(question);
+            shuffledAnswers.addAll(allAnswers);
+
+            // Add separator
+            shuffledAnswers.add("|");
+
+            // Combine the current question's shuffled answers
+            combinedQuestionSet.addAll(shuffledAnswers);
+        }
+
+        return combinedQuestionSet;
+    }
+
+    // Helper method to unescape HTML entities
+    private String unescapeHtml(String input) {
+        return input
+                .replace("&quot;", "\"")
+                .replace("&#039;", "'")
+                .replace("&amp;", "&")
+                .replace("&lt;", "<")
+                .replace("&gt;", ">");
+    }
+
+
+
 
     public ArrayList<String> getQuestionSet() {
         String category = "Category";
