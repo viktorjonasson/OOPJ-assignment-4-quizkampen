@@ -1,4 +1,6 @@
 import javax.swing.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -11,7 +13,7 @@ public class ClientController {
     ClientController(GUI gui, GameLogic gameLogic, String IP, int port) {
         this.gui = gui;
         this.gameLogic = gameLogic;
-        this.client = new Client(IP, port,this);
+        this.client = new Client(IP, port, this);
         gui.gameBoard();
         initializeButtonListeners(gui.getOptionButtons());
         initializeContinueButtonListener(gui.continueBtn);
@@ -19,7 +21,23 @@ public class ClientController {
         initializeStartRoundCategoryBtn(gui.startRoundCategoryBtn);
         initializeStartRoundQuestionBtn(gui.startRoundQuestionBtn);
         initializeNewGameButtonListener(gui.startGameButton);
+        initializeWindowListener();
         gui.switchPanel(GameState.NEW_GAME);
+    }
+
+    void initializeWindowListener() {
+        gui.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                int response = JOptionPane.showConfirmDialog(gui, "Are you sure you want to leave?");
+                if (response == JOptionPane.YES_OPTION) {
+                    client.shutdown();
+                    SwingUtilities.invokeLater(()->{
+                        gui.dispose();
+                    });
+                }
+            }
+        });
     }
 
     void initializeNewGameButtonListener(JButton newGameBtn) {
