@@ -1,14 +1,15 @@
 import java.util.*;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonArray;
+
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.stream.Collectors;
 
 
 public class DataBase {
@@ -16,25 +17,48 @@ public class DataBase {
     private final Set<Integer> usedCategories = new HashSet<>();
     private final Random random = new Random();
     private int amountOfQuestions = 0;
+    private Game game;
     private final String API_URL_QUESTIONS =
             "https://opentdb.com/api.php?amount=" + amountOfQuestions + "&difficulty=medium";
+
     private record TriviaCategory(int id, String name) {
         public String getName() {
             return name;
         }
     }
 
-    DataBase (int amountOfQuestions) {
+    DataBase(int amountOfQuestions, Game game) {
+        this.game = game;
         triviaCategories = new HashMap<>();
         addTriviaCategories();
         this.amountOfQuestions = amountOfQuestions;
     }
 
-    public ArrayList<String> getQuestionSet(int categoryId) throws Exception {
+//    public ArrayList<String> getQuestionSetCorrect() {
+//        String category = "Category";
+//        Question question_1 = generateQuestion(category);
+//        Question question_2 = generateQuestion(category);
+//        Question question_3 = generateQuestion(category);
+//        ArrayList<String> question1Shuffled = question_1.getShuffled();
+//        question1Shuffled.add("|");
+//        ArrayList<String> question2Shuffled = question_2.getShuffled();
+//        question2Shuffled.add("|");
+//        ArrayList<String> question3Shuffled = question_3.getShuffled();
+//
+//        return new ArrayList<>() {{
+//            addAll(question1Shuffled);
+//            addAll(question2Shuffled);
+//            addAll(question3Shuffled);
+//        }};
+//    }
+
+
+    public void loadQuestions(String category) throws Exception {
+        int categoryId = getCategoryID(category);
         // Fetch questions from API
         String apiUrl = "https://opentdb.com/api.php?amount=" + amountOfQuestions +
-                "&category=" + categoryId +
-                "&difficulty=medium";
+                        "&category=" + categoryId +
+                        "&difficulty=medium&type=multiple";
 
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
@@ -50,13 +74,15 @@ public class DataBase {
         JsonArray results = jsonResponse.getAsJsonArray("results");
 
         ArrayList<String> combinedQuestionSet = new ArrayList<>();
-
         for (int i = 0; i < results.size(); i++) {
             JsonObject questionObj = results.get(i).getAsJsonObject();
 
             // Extract question details
             String question = unescapeHtml(questionObj.get("question").getAsString());
+
+
             String correctAnswer = unescapeHtml(questionObj.get("correct_answer").getAsString());
+
             JsonArray incorrectAnswersJson = questionObj.getAsJsonArray("incorrect_answers");
 
             // Convert incorrect answers
@@ -64,6 +90,7 @@ public class DataBase {
             for (int j = 0; j < incorrectAnswersJson.size(); j++) {
                 incorrectAnswers.add(unescapeHtml(incorrectAnswersJson.get(j).getAsString()));
             }
+            game.round.questions[i] = new Question(category, question, incorrectAnswers, correctAnswer);
 
             // Create a list of all answers
             ArrayList<String> allAnswers = new ArrayList<>(incorrectAnswers);
@@ -78,13 +105,16 @@ public class DataBase {
             shuffledAnswers.addAll(allAnswers);
 
             // Add separator
-            shuffledAnswers.add("|");
+            if (i < 2) {
+                shuffledAnswers.add("|");
+            }
+
 
             // Combine the current question's shuffled answers
             combinedQuestionSet.addAll(shuffledAnswers);
         }
 
-        return combinedQuestionSet;
+//        return combinedQuestionSet;
     }
 
     // Helper method to unescape HTML entities
@@ -98,7 +128,8 @@ public class DataBase {
     }
 
     public int getCategoryID(String category) {
-       Map<TriviaCategory, Integer> triviaCategoryToKey = new HashMap<>();
+        game.round.category = category;
+        Map<TriviaCategory, Integer> triviaCategoryToKey = new HashMap<>();
 
         for (Map.Entry<Integer, TriviaCategory> entry : triviaCategories.entrySet()) {
             triviaCategoryToKey.put(entry.getValue(), entry.getKey());
@@ -118,25 +149,6 @@ public class DataBase {
         // Return null if no matching category is found
         return null;
     }
-
-
-//    public ArrayList<String> getQuestionSet() {
-//        String category = "Category";
-//        Question question_1 = generateQuestion(category);
-//        Question question_2 = generateQuestion(category);
-//        Question question_3 = generateQuestion(category);
-//        ArrayList<String> question1Shuffled = question_1.getShuffled();
-//        question1Shuffled.add("|");
-//        ArrayList<String> question2Shuffled = question_2.getShuffled();
-//        question2Shuffled.add("|");
-//        ArrayList<String> question3Shuffled = question_3.getShuffled();
-//
-//        return new ArrayList<>() {{
-//            addAll(question1Shuffled);
-//            addAll(question2Shuffled);
-//            addAll(question3Shuffled);
-//        }};
-//    }
 
     public String[] getCategorySet() {
         Set<Integer> availableCategories = new HashSet<>(triviaCategories.keySet());

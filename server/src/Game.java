@@ -23,20 +23,21 @@ public class Game extends Thread {
     boolean player1Initiated = false;
     boolean player2Initiated = false;
     private final DataBase db;
+    Round round;
 
     Game(Socket player1Socket, int gameId) throws IOException {
         readGameProperties();
         player1Res = new int[gameRounds][questionsPerRound];
         player2Res = new int[gameRounds][questionsPerRound];
         this.player1 = player1Socket;
-        this.db = new DataBase(questionsPerRound);
+        this.db = new DataBase(questionsPerRound, this);
         writerPlayer1 = new PrintWriter(player1.getOutputStream(), true);
         GAME_ID = gameId;
+        this.round = new Round(db, this);
         start();
     }
 
     public void run() {
-        Round round = new Round(db, this);
         while (true) {
             if (player1 != null && player2 != null) {
                 if (!gameStarted) {

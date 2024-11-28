@@ -16,19 +16,24 @@ public class Question {
     }
 
     public String getQuestion() {
-        return question;
+        return category;
     }
 
     public String getRightAnswer() {
         return rightAnswer;
     }
 
-    public ArrayList<String> getShuffled() {
-        ArrayList<String> shuffledQuestions = wrongAnswers;
-        shuffledQuestions.add(rightAnswer);
+    public String getShuffled() {
+        ArrayList<String> shuffledQuestions = new ArrayList<>();
+        for (String wrong : wrongAnswers) {
+            shuffledQuestions.add(wrong + "≈");
+        }
+        shuffledQuestions.add(rightAnswer + "≈");
         Collections.shuffle(shuffledQuestions);
-        shuffledQuestions.addFirst(category);
-
-        return shuffledQuestions;
+        shuffledQuestions.addFirst(question + "≈");
+        String output = shuffledQuestions.toString();
+        output = output.substring(1, output.length() - 1);
+        System.out.println(output);
+        return output;
     }
 }

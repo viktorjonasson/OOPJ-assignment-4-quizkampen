@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class GameLogic {
@@ -25,8 +26,20 @@ public class GameLogic {
         String[] categorySet = serverResponse.substring(1, serverResponse.length() - 1).split("\\|");
 
         for (String category : categorySet) {
-            String[] questionSet = category.trim().replaceAll("^,\\s*|\\s*,$", "").split(",\\s*");
-            questions.add(questionSet);
+            // Split by "≈" and remove any extraneous spaces or commas
+            String[] questionSet = category.trim().replaceAll("^≈\\s*|\\s*≈$", "").split("≈");
+
+            // Trim each question and remove any leading commas and spaces
+            List<String> cleanedQuestions = new ArrayList<>();
+            for (String question : questionSet) {
+                String cleaned = question.trim().replaceAll("^,\\s*", "");  // Remove leading commas and spaces
+                if (!cleaned.isEmpty()) {  // Skip empty strings
+                    cleanedQuestions.add(cleaned);
+                }
+            }
+
+            // Add the cleaned question set to the main list
+            questions.add(cleanedQuestions.toArray(new String[0]));  // Assuming 'questions' is a List of String arrays
         }
     }
 

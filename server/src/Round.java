@@ -12,17 +12,27 @@ public class Round {
     public Round(DataBase db, Game game) {
         this.db = db;
         this.game = game;
+        this.questions = new Question[game.questionsPerRound];
     }
 
-    public void setCategory(String category) {
-
+    public void setCategory(String category) throws Exception {
         this.category = category;
+        db.loadQuestions(category);
     }
 
     public String getQuestions() throws Exception {
-        ArrayList<String> questionSet = db.getQuestionSet(db.getCategoryID(category));
-        //getresult()
-        return "QuestionSet: " + questionSet.toString();
+        StringBuilder temp = new StringBuilder();
+        String questionSet = "QuestionSet≡ [";
+        for (int i = 0; i < questions.length; i++) {
+            temp.append(questions[i].getShuffled());
+            if (i < questions.length - 1) {
+                temp.append(", |, ");
+            }
+        }
+        questionSet += temp + "]";
+        String output = questionSet;
+        System.out.println(output);
+        return output;
     }
 
     public void incrementAnsweredQuestions() {
