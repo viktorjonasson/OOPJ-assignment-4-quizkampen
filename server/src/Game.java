@@ -47,10 +47,12 @@ public class Game extends Thread {
                     if (readerPlayer2 == null) {
                         initializePlayer2Reader();
                     }
+                    if (currentRound == amountOfGameRounds) {
+                        break;
+                    }
                     if (round.answeredQuestions != questionsPerRound) {
                         handleClientRequest(round);
-                    }
-                    if (round.answeredQuestions == questionsPerRound && !round.finished()) {
+                    } else if (!round.finished()) {
                         sendResults(); //To P1
                         switchPlayer();
                         try {
@@ -59,8 +61,7 @@ public class Game extends Thread {
                             throw new RuntimeException(e);
                         }
                         round.answeredQuestions = 0;
-                    }
-                    if (round.finished()) {
+                    } else if (round.finished()) {
                         switchPlayer();
                         sendResults();
                         switchPlayer();
@@ -69,9 +70,6 @@ public class Game extends Thread {
                         currentRound++;
                         currentQuestion = 0;
                         round.resetCounters();
-                    }
-                    if (currentRound == amountOfGameRounds) {
-                        break;
                     }
                 }
             } else {
@@ -84,6 +82,8 @@ public class Game extends Thread {
                 }
             }
         }
+
+        // Game room shutting down
         if (writerPlayer1 != null) {
             writerPlayer1.println("GameEnded");
         }
@@ -132,32 +132,26 @@ public class Game extends Thread {
             if (currentRound.answeredQuestions != questionsPerRound &&
                 (currentPlayer == 1 && (request = readerPlayer1.readLine()) != null) ||
                 (currentPlayer == 2 && (request = readerPlayer2.readLine()) != null)) {
-                if (request.startsWith("PropertiesReceived")) {
-                    if (!player1Initiated) {
-                        writerPlayer1.println("CategorySet: " + Arrays.toString(db.getCategorySet()));
-                        player1Initiated = true;
-                    }
-                }
-                if (request.startsWith("Category")) {
-                    parts = request.split(":");
-                    String cleanedString = addPrefixToCategory(parts[1].trim());
-                    currentRound.setCategory(cleanedString);
-                    //
-                    writeToClient(currentRound.getQuestions());
-                }
-                if (request.startsWith("NewGame")) {
-                    sendGameProperties(1);
-                }
                 if (request.startsWith("Answer") && currentRound.answeredQuestions < questionsPerRound) {
                     parts = request.split(":");
                     reply = currentRound.checkAnswer(parts[1].trim());
                     writeToClient(reply);
                     currentRound.incrementAnsweredQuestions();
-                }
-                if (request.startsWith("ClientClosing")) {
+                } else if (request.startsWith("Category")) {
+                    parts = request.split(":");
+                    String cleanedString = addPrefixToCategory(parts[1].trim());
+                    currentRound.setCategory(cleanedString);
+                    writeToClient(currentRound.getQuestions());
+                } else if (request.startsWith("PropertiesReceived")) {
+                    if (!player1Initiated) {
+                        writerPlayer1.println("CategorySet: " + Arrays.toString(db.getCategorySet()));
+                        player1Initiated = true;
+                    }
+                } else if (request.startsWith("NewGame")) {
+                    sendGameProperties(1);
+                } else if (request.startsWith("ClientClosing")) {
                     shutdown();
                 }
-
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -217,7 +211,7 @@ public class Game extends Thread {
         writeToClient("PlayerResults: " + player1Result + player2Result);
     }
 
-    public String addPrefixToCategory (String inputCategory) {
+    public String addPrefixToCategory(String inputCategory) {
         String[] entertainmentCategories = {
                 "Books", "Film", "Music", "Musicals & Theatres", "Television",
                 "Video Games", "Board Games", "Japanese Anime & Manga", "Cartoon & Animations", "Comics"
