@@ -1,4 +1,6 @@
 import javax.swing.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -20,6 +22,15 @@ public class ClientController {
         initializeStartRoundQuestionBtn(gui.startRoundQuestionBtn);
         initializeNewGameButtonListener(gui.startGameButton);
         gui.switchPanel(GameState.NEW_GAME);
+    }
+
+    void initializeWindowListener() {
+        gui.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                client.writeToServer("ClientClosing");
+            }
+        });
     }
 
     void initializeNewGameButtonListener(JButton newGameBtn) {

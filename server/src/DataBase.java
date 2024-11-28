@@ -18,8 +18,6 @@ public class DataBase {
     private final Random random = new Random();
     private int amountOfQuestions = 0;
     private Game game;
-    private final String API_URL_QUESTIONS =
-            "https://opentdb.com/api.php?amount=" + amountOfQuestions + "&difficulty=medium";
 
     private record TriviaCategory(int id, String name) {
         public String getName() {
@@ -194,7 +192,6 @@ public class DataBase {
         triviaCategories.put(27, new TriviaCategory(27, "Animals"));
         triviaCategories.put(28, new TriviaCategory(28, "Vehicles"));
         triviaCategories.put(29, new TriviaCategory(29, "Entertainment: Comics"));
-        triviaCategories.put(30, new TriviaCategory(30, "Science: Gadgets"));
         triviaCategories.put(31, new TriviaCategory(31, "Entertainment: Japanese Anime & Manga"));
         triviaCategories.put(32, new TriviaCategory(32, "Entertainment: Cartoon & Animations"));
     }
