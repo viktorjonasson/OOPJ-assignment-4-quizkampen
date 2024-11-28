@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Round {
     DataBase db;
     Game game;
@@ -28,7 +30,9 @@ public class Round {
             }
         }
         questionSet += temp + "]";
-        return questionSet;
+        String output = questionSet;
+        System.out.println(output);
+        return output;
     }
 
     public void incrementAnsweredQuestions() {

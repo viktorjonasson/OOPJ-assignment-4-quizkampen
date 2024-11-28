@@ -16,18 +16,17 @@ public class GUI extends JFrame {
 
     //NewGamePanelStuff
     JPanel newGamePanel = new JPanel(new BorderLayout(0, 40));
-    JLabel welcomeMessage = new JLabel("<html>Välkommen till Quizkampen!</html>", SwingConstants.CENTER);
-    JButton startGameButton = new JButton("Starta nytt spel");
+    JLabel welcomeMessage = new JLabel("<html>Welcome to Quizkampen!</html>", SwingConstants.CENTER);
+    JButton startGameButton = new JButton("New game");
 
     //QuestionPanelStuff
     JPanel questionPanel = new JPanel(new BorderLayout(0, 40));
     JPanel quizContentPanel = new JPanel(new BorderLayout());
     JPanel quizOptionPanel = new JPanel(new GridLayout(2, 2));
 
-    JLabel header = new JLabel("This kategori – Fråga N", SwingConstants.CENTER);
     JLabel question = new JLabel();
     JButton[] optionButtons = new JButton[4];
-    JButton continueBtn = new JButton("Fortsätt");
+    JButton continueBtn = new JButton("Continue");
 
     //CategoryPanelStuff
     JPanel categoryPanel = new JPanel(new BorderLayout(0, 40));
@@ -37,31 +36,27 @@ public class GUI extends JFrame {
     JLabel choseCategory = new JLabel();
 
     //ScorePanelStuff
-    JPanel scorePanel = new JPanel(new BorderLayout());
-    JPanel headerPanel = new JPanel(new BorderLayout());
-    JLabel gameStatus = new JLabel("Deras tur", SwingConstants.CENTER); //Placeholder x4, sätt dynamiskt sen.
-    JLabel player1Name = new JLabel("Spelare 1", SwingConstants.CENTER);
-    JLabel player2Name = new JLabel("Spelare 2", SwingConstants.CENTER);
-
-    //totalResultStuff
-
-    JPanel totalResult = new JPanel();
     int totResPlayer = 0;
     int totResOpponent = 0;
+    JPanel roundIndicatorPanel = new JPanel(new GridLayout(6, 1));
+    JPanel scorePanel = new JPanel(new BorderLayout());
+    JPanel headerPanel = new JPanel(new BorderLayout());
+    JLabel gameStatus = new JLabel(" ", SwingConstants.CENTER); //Placeholder x4, sätt dynamiskt sen.
+    JLabel player1Name = new JLabel("Player 1", SwingConstants.CENTER);
+    JLabel player2Name = new JLabel("Player 2", SwingConstants.CENTER);
+    JPanel totalResult = new JPanel();
     JLabel totalResultPlayer = new JLabel(String.valueOf(totResPlayer), SwingConstants.CENTER);
     JLabel totalResultOpponent = new JLabel(String.valueOf(totResOpponent), SwingConstants.CENTER);
     JLabel totalResultText = new JLabel("–", SwingConstants.CENTER);
-
-    JLabel waiting = new JLabel("Snart din tur att spela ...", SwingConstants.CENTER);
+    JLabel waiting = new JLabel("Waiting for them to finish ...", SwingConstants.CENTER);
     JPanel player1ResultsPanel = new JPanel(new GridLayout(6, 3));
     JPanel scoreButtonPanel = new JPanel(new BorderLayout());
     JLabel[] player1Results = new JLabel[18];
-    JPanel roundIndicatorPanel = new JPanel(new GridLayout(6, 1));
     JLabel[] roundIndicators = new JLabel[6];
     JPanel player2ResultsPanel = new JPanel(new GridLayout(6, 3));
     JLabel[] player2Results = new JLabel[18];
-    JButton startRoundCategoryBtn = new JButton("Redo att välja kategori?"); //Denna ska döljas när det är andra spelarens tur.
-    JButton startRoundQuestionBtn = new JButton("Redo att quizza?");
+    JButton startRoundCategoryBtn = new JButton("Ready to choose a category?"); //Denna ska döljas när det är andra spelarens tur.
+    JButton startRoundQuestionBtn = new JButton("Ready to do your quizzness?");
 
     //Resources
     String correctAnswerLabel = "<html><font color='rgb(83, 214, 49)'>◉</font></html>";
@@ -139,7 +134,7 @@ public class GUI extends JFrame {
         categoryPanel.setBorder(outerPadding);
         categoryPanel.add(catContentPanel, BorderLayout.CENTER);
 
-        choseCategory.setText("Välj kategori:");
+        choseCategory.setText("Choose a category:");
         catContentPanel.add(choseCategory, BorderLayout.NORTH);
         catContentPanel.add(catOptionPanel, BorderLayout.CENTER);
         catOptionPanel.setBorder(optionButtonsPadding);
@@ -149,7 +144,6 @@ public class GUI extends JFrame {
         //QuestionPanel – Placement
         questionPanel.setVisible(true);
         questionPanel.setBorder(outerPadding);
-        questionPanel.add(header, BorderLayout.NORTH);
         questionPanel.add(quizContentPanel, BorderLayout.CENTER);
 
         quizContentPanel.add(question, BorderLayout.NORTH);
@@ -218,7 +212,7 @@ public class GUI extends JFrame {
         continueBtn.setOpaque(false);
         continueBtn.setBorder(BorderFactory.createLineBorder(null));
         continueBtn.setForeground(null);
-        continueBtn.setText("Fortsätt");
+        continueBtn.setText("Continue");
     }
 
     public void changeColor(JButton buttonToChange, boolean correctAnswer) {
@@ -268,9 +262,9 @@ public class GUI extends JFrame {
                 player2Results[i].setText(notAnsweredLabel);
             }
         }
-        if (playerID==1){
+        if (playerID == 1) {
             totResOpponent = player2;
-        }else{
+        } else {
             totResOpponent = player1;
         }
         updateTotalResultPanel();
@@ -304,7 +298,7 @@ public class GUI extends JFrame {
     public void updateQuestionPanel(String[] questionSet) {
         if (questionSet.length - 1 == optionButtons.length) {
             resetButtonColor(optionButtons);
-            question.setText(questionSet[0].trim());
+            question.setText("<html>" + questionSet[0].trim() + "</html>");
             for (int i = 0; i < optionButtons.length; i++) {
                 optionButtons[i].setEnabled(true);
                 optionButtons[i].setText(questionSet[i + 1].trim());
@@ -341,6 +335,11 @@ public class GUI extends JFrame {
         player2ResultsPanel = new JPanel(new GridLayout(gameRounds, questionsPerRound));
         player1Results = new JLabel[gameRounds * questionsPerRound];
         player2Results = new JLabel[gameRounds * questionsPerRound];
+        if (playerID == 1) {
+            gameStatus.setText("Your turn");
+        } else {
+            gameStatus.setText("Their turn");
+        }
 
         assert player1Results.length == player2Results.length;
         for (int i = 0; i < player1Results.length; i++) {
@@ -367,19 +366,19 @@ public class GUI extends JFrame {
         scorePanel.add(player2ResultsPanel, BorderLayout.EAST);
     }
 
-    public void setTotalResultPanel(int player){
-        if (player==1){
+    public void setTotalResultPanel(int player) {
+        if (player == 1) {
             totalResult.add(totalResultPlayer);
             totalResult.add(totalResultText);
             totalResult.add(totalResultOpponent);
-        }else{
+        } else {
             totalResult.add(totalResultOpponent);
             totalResult.add(totalResultText);
             totalResult.add(totalResultPlayer);
         }
     }
 
-    public void updateTotalResultPanel(){
+    public void updateTotalResultPanel() {
         totalResultPlayer.setText(String.valueOf(totResPlayer));
         totalResultOpponent.setText(String.valueOf(totResOpponent));
     }

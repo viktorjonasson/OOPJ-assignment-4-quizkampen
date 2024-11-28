@@ -20,20 +20,12 @@ public class Client {
                 String[] parts;
                 while (true) {
                     if ((serverReply = br.readLine()) != null) {
-                        if (serverReply.startsWith("Solution")) {
-                            //Update score panel accordingly.
-                            parts = serverReply.split(":");
-                            clientController.handleSolution(parts[1].trim());
+                        if (serverReply.startsWith("GameProperties")) {
+                            parts =  serverReply.split(":");
+                            clientController.handleProperties(parts[1].trim());
+                            writeToServer("PropertiesReceived");
                         }
-                        else if (serverReply.startsWith("QuestionSet")) { //+CurrentPlayer
-                            //Låser upp knapp för att gå vidare i spel
-                            parts = serverReply.split("≡ ");
-                            String questionAndAnswers = parts[1];
-                            clientController.handleQuestionSet(questionAndAnswers);
-                            //Låser upp knapp för att gå vidare i spel
-                            clientController.scoreButtonQuestionMode();
-                        }
-                        else if (serverReply.startsWith("CategorySet")) {
+                        if (serverReply.startsWith("CategorySet")) {
                             parts = serverReply.split(": ");
                             String categorySet = parts[1];
                             //Låsa upp knapp som byter skärm för ny runda
@@ -42,28 +34,26 @@ public class Client {
                             clientController.handleCategorySet(categorySet);
                             //Låsa upp knapp som byter skärm för ny runda
                         }
-                        else if (serverReply.startsWith("PlayerResults")) {
+                        if (serverReply.startsWith("QuestionSet")) { //+CurrentPlayer
+                            //Låser upp knapp för att gå vidare i spel
+                            parts = serverReply.split("≡ ");
+                            String questionAndAnswers = parts[1];
+                            clientController.handleQuestionSet(questionAndAnswers);
+                            //Låser upp knapp för att gå vidare i spel
+                            clientController.scoreButtonQuestionMode();
+                        }
+                        if (serverReply.startsWith("Solution")) {
+                            //Update score panel accordingly. UPDATE: Implemented in handleSolution/gameLogic
+                            parts = serverReply.split(":");
+                            clientController.handleSolution(parts[1].trim());
+                        }
+                        if (serverReply.startsWith("PlayerResults")) {
                             parts = serverReply.split(":", 2);
                             clientController.handlePlayerResults(parts[1].trim());
                             //Ylva: Ändra score-skärm
                         }
-                        else if (serverReply.startsWith("GameProperties")) {
-                            parts =  serverReply.split(":");
-                            clientController.handleProperties(parts[1].trim());
-                            writeToServer("PropertiesReceived");
-                        }
-                        else if (serverReply.startsWith("GameEnded")) {
-                            break;
-                        }
                     }
                 }
-                if (printWriter != null) {
-                    printWriter.close();
-                }
-                socket.close();
-                clientController.gui.switchPanel(GameState.SCORE_TABLE);
-                clientController.gui.lockScoreButton(clientController.gui.startRoundCategoryBtn);
-                clientController.gui.waiting.setVisible(false);
             } catch (IOException e) {
                 System.err.println("IO Error: " + e.getMessage());
             } finally {
@@ -72,13 +62,6 @@ public class Client {
                 }
             }
         }).start();
-    }
-
-    public void shutdown() {
-        printWriter.println("ClientClosing");
-        if (printWriter != null) {
-            printWriter.close();
-        }
     }
 
     public void writeToServer(String data) {
