@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.Optional;
 
 public class GUI extends JFrame {
-
+    int playerID;
     //GUI Setup
     Border outerPadding = BorderFactory.createEmptyBorder(20, 40, 30, 40);
     Border optionButtonsPadding = BorderFactory.createEmptyBorder(20, 0, 20, 0);
@@ -42,7 +42,16 @@ public class GUI extends JFrame {
     JLabel gameStatus = new JLabel("Deras tur", SwingConstants.CENTER); //Placeholder x4, sätt dynamiskt sen.
     JLabel player1Name = new JLabel("Spelare 1", SwingConstants.CENTER);
     JLabel player2Name = new JLabel("Spelare 2", SwingConstants.CENTER);
-    JLabel totalResult = new JLabel("0 – 0", SwingConstants.CENTER);
+
+        //totalResultStuff
+
+        JPanel totalResult = new JPanel();
+        int totResPlayer = 0;
+        int totResOpponent = 0;
+        JLabel totalResultPlayer = new JLabel(String.valueOf(totResPlayer), SwingConstants.CENTER);
+        JLabel totalResultOpponent = new JLabel(String.valueOf(totResOpponent), SwingConstants.CENTER);
+        JLabel totalResultText = new JLabel("–", SwingConstants.CENTER);
+
     JLabel waiting = new JLabel("Snart din tur att spela ...", SwingConstants.CENTER);
     JPanel player1ResultsPanel = new JPanel(new GridLayout(6, 3));
     JPanel scoreButtonPanel = new JPanel(new BorderLayout());
@@ -235,10 +244,14 @@ public class GUI extends JFrame {
         assert player1Results.length == player1IncomingRes.length;
         assert player1Results.length == player2Results.length;
 
+        int player1 = 0;
+        int player2 = 0;
+
         for (int i = 0; i < player1Results.length; i++) {
             // Player 1
             if (player1IncomingRes[i] == 1) {
                 player1Results[i].setText(correctAnswerLabel);
+                player1++;
             } else if (player1IncomingRes[i] == -1) {
                 player1Results[i].setText(wrongAnswerLabel);
             } else {
@@ -248,12 +261,19 @@ public class GUI extends JFrame {
             // Player 2
             if (player2IncomingRes[i] == 1) {
                 player2Results[i].setText(correctAnswerLabel);
+                player2++;
             } else if (player2IncomingRes[i] == -1) {
                 player2Results[i].setText(wrongAnswerLabel);
             } else {
                 player2Results[i].setText(notAnsweredLabel);
             }
         }
+        if (playerID==1){
+            totResOpponent = player2;
+        }else{
+            totResOpponent = player1;
+        }
+        updateTotalResultPanel();
     }
 
     public void updateLocalResultLabel(int labelIndex, boolean correctAnswer, int player) {
@@ -345,5 +365,22 @@ public class GUI extends JFrame {
         scorePanel.add(player1ResultsPanel, BorderLayout.WEST);
         scorePanel.add(roundIndicatorPanel, BorderLayout.CENTER);
         scorePanel.add(player2ResultsPanel, BorderLayout.EAST);
+    }
+
+    public void setTotalResultPanel(int player){
+        if (player==1){
+            totalResult.add(totalResultPlayer);
+            totalResult.add(totalResultText);
+            totalResult.add(totalResultOpponent);
+        }else{
+            totalResult.add(totalResultOpponent);
+            totalResult.add(totalResultText);
+            totalResult.add(totalResultPlayer);
+        }
+    }
+
+    public void updateTotalResultPanel(){
+        totalResultPlayer.setText(String.valueOf(totResPlayer));
+        totalResultOpponent.setText(String.valueOf(totResOpponent));
     }
 }

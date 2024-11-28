@@ -121,12 +121,14 @@ public class ClientController {
         String[] parts = solution.split(",");
         if (parts[1].trim().equalsIgnoreCase("true")) {
             correctAnswer = true;
+            gui.totResPlayer++;
         }
         gameLogic.updateScorePanel(correctAnswer);
         Optional<JButton> pressedButton = gui.getButton(parts[0]);
         if (pressedButton.isPresent()) {
             gui.changeColor(pressedButton.get(), correctAnswer);
         }
+        gui.updateTotalResultPanel();
     }
 
     public void handleProperties(String serverReply) {
@@ -136,6 +138,8 @@ public class ClientController {
         String playerString = initialPart[1].replace("Player", "");
         int player = Integer.parseInt(playerString);
         gameLogic.setPlayer(player);
+        gui.playerID = player;
+        gui.setTotalResultPanel(player);
         gameRounds = Integer.parseInt(propertiesPart[0].trim());
         questionsPerRound = Integer.parseInt(propertiesPart[1].trim());
         gui.loadProperties(gameRounds, questionsPerRound);
