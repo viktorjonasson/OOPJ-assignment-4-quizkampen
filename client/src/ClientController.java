@@ -105,7 +105,7 @@ public class ClientController {
     }
 
     void startNewGame() {
-        gui.switchPanel(GameState.NEW_GAME);
+        gui.switchPanel(GameState.CHOOSE_CATEGORY);
         String request = "NewGame";
         client.writeToServer(request);
     }

@@ -49,16 +49,17 @@ public class Game extends Thread {
                         handleClientRequest(round);
                     }
                     if (round.answeredQuestions == questionsPerRound && !round.finished()) {
-                        sendResults();
+                        sendResults(); //To P1
                         switchPlayer();
-                        writeToClient(round.getQuestions());
+                        writeToClient(round.getQuestions()); //To P2
                         round.answeredQuestions = 0;
                     }
                     if (round.finished()) {
-                        switchPlayer();
-                        sendResults();
-                        switchPlayer();
-                        sendCategoriesToClient();
+                        switchPlayer();  //To P1
+                        sendResults(); //To P1
+                        switchPlayer(); //To P2
+                        sendResults(); //To P2
+                        sendCategoriesToClient(); //To P2
                         currentRound++;
                         currentQuestion = 0;
                         round.resetCounters();
