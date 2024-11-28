@@ -160,6 +160,7 @@ public class ClientController {
         questionsPerRound = Integer.parseInt(propertiesPart[1].trim());
         gui.loadProperties(gameRounds, questionsPerRound);
         if (player == 2) {
+            gui.waiting.setVisible(true);
             gui.startGameButton.removeActionListener(gui.startGameButton.getActionListeners()[0]);
             gui.startGameButton.addActionListener(_ -> gui.switchPanel(GameState.SCORE_TABLE));
         } else {
