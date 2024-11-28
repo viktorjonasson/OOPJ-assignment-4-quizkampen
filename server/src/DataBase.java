@@ -17,9 +17,7 @@ public class DataBase {
     private final Set<Integer> usedCategories = new HashSet<>();
     private final Random random = new Random();
     private int amountOfQuestions = 0;
-    private Game game;
-    private final String API_URL_QUESTIONS =
-            "https://opentdb.com/api.php?amount=" + amountOfQuestions + "&difficulty=medium";
+    private final Game game;
 
     private record TriviaCategory(int id, String name) {
         public String getName() {
@@ -94,8 +92,6 @@ public class DataBase {
             // Combine the current question's shuffled answers
             combinedQuestionSet.addAll(shuffledAnswers);
         }
-
-//        return combinedQuestionSet;
     }
 
     // Helper method to unescape HTML entities
@@ -161,16 +157,6 @@ public class DataBase {
         return categories;
     }
 
-    public Question generateQuestion(String category) {
-        String wrongAnswer_1 = "Option 1";
-        String wrongAnswer_2 = "Option 2";
-        String wrongAnswer_3 = "Option 3";
-        String rightAnswer = "Right answer";
-        ArrayList<String> wrongAnswers = new ArrayList<>(
-                Arrays.asList(wrongAnswer_1, wrongAnswer_2, wrongAnswer_3));
-        return new Question(category, "Question 1", wrongAnswers, rightAnswer);
-    }
-
     // https://opentdb.com/api_category.php
     public void addTriviaCategories() {
         triviaCategories.put(9, new TriviaCategory(9, "General Knowledge"));
@@ -194,7 +180,6 @@ public class DataBase {
         triviaCategories.put(27, new TriviaCategory(27, "Animals"));
         triviaCategories.put(28, new TriviaCategory(28, "Vehicles"));
         triviaCategories.put(29, new TriviaCategory(29, "Entertainment: Comics"));
-        triviaCategories.put(30, new TriviaCategory(30, "Science: Gadgets"));
         triviaCategories.put(31, new TriviaCategory(31, "Entertainment: Japanese Anime & Manga"));
         triviaCategories.put(32, new TriviaCategory(32, "Entertainment: Cartoon & Animations"));
     }

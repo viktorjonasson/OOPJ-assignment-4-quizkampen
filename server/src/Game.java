@@ -11,7 +11,7 @@ public class Game extends Thread {
     PrintWriter writerPlayer2;
     BufferedReader readerPlayer1;
     BufferedReader readerPlayer2;
-    int gameRounds;
+    int amountOfGameRounds;
     int questionsPerRound;
     int[][] player1Res;
     int[][] player2Res;
@@ -22,13 +22,14 @@ public class Game extends Thread {
     boolean gameStarted = false;
     boolean player1Initiated = false;
     boolean player2Initiated = false;
+    boolean activeGame = true;
     private final DataBase db;
     Round round;
 
     Game(Socket player1Socket, int gameId) throws IOException {
         readGameProperties();
-        player1Res = new int[gameRounds][questionsPerRound];
-        player2Res = new int[gameRounds][questionsPerRound];
+        player1Res = new int[amountOfGameRounds][questionsPerRound];
+        player2Res = new int[amountOfGameRounds][questionsPerRound];
         this.player1 = player1Socket;
         this.db = new DataBase(questionsPerRound, this);
         writerPlayer1 = new PrintWriter(player1.getOutputStream(), true);
@@ -38,7 +39,7 @@ public class Game extends Thread {
     }
 
     public void run() {
-        while (true) {
+        while (activeGame) {
             if (player1 != null && player2 != null) {
                 if (!gameStarted) {
                     handleNewGame();
@@ -53,21 +54,24 @@ public class Game extends Thread {
                         sendResults(); //To P1
                         switchPlayer();
                         try {
-                            writeToClient(round.getQuestions()); //To P2
+                            writeToClient(round.getQuestions());
                         } catch (Exception e) {
                             throw new RuntimeException(e);
                         }
                         round.answeredQuestions = 0;
                     }
                     if (round.finished()) {
-                        switchPlayer();  //To P1
-                        sendResults(); //To P1
-                        switchPlayer(); //To P2
-                        sendResults(); //To P2
-                        sendCategoriesToClient(); //To P2
+                        switchPlayer();
+                        sendResults();
+                        switchPlayer();
+                        sendResults();
+                        sendCategoriesToClient();
                         currentRound++;
                         currentQuestion = 0;
                         round.resetCounters();
+                    }
+                    if (currentRound == amountOfGameRounds) {
+                        break;
                     }
                 }
             } else {
@@ -80,12 +84,23 @@ public class Game extends Thread {
                 }
             }
         }
+        if (writerPlayer1 != null) {
+            writerPlayer1.println("GameEnded");
+        }
+        if (writerPlayer2 != null) {
+            writerPlayer2.println("GameEnded");
+        }
+        endGame();
+    }
+
+    private void shutdown() {
+        activeGame = false;
     }
 
     private void readGameProperties() {
         try (FileInputStream input = new FileInputStream("server/src/game-config.properties")) {
             gameProperties.load(input);
-            gameRounds = Integer.parseInt(gameProperties.getProperty("amountOfRounds"));
+            amountOfGameRounds = Integer.parseInt(gameProperties.getProperty("amountOfRounds"));
             questionsPerRound = Integer.parseInt(gameProperties.getProperty("amountOfQuestionsPerRound"));
         } catch (IOException e) {
             e.printStackTrace();
@@ -114,7 +129,7 @@ public class Game extends Thread {
         String reply;
         String[] parts;
         try {
-            if (currentRound.answeredQuestions != 3 &&
+            if (currentRound.answeredQuestions != questionsPerRound &&
                 (currentPlayer == 1 && (request = readerPlayer1.readLine()) != null) ||
                 (currentPlayer == 2 && (request = readerPlayer2.readLine()) != null)) {
                 if (request.startsWith("PropertiesReceived")) {
@@ -133,15 +148,17 @@ public class Game extends Thread {
                 if (request.startsWith("NewGame")) {
                     sendGameProperties(1);
                 }
-                if (request.startsWith("Answer") && currentRound.answeredQuestions < 3) {
+                if (request.startsWith("Answer") && currentRound.answeredQuestions < questionsPerRound) {
                     parts = request.split(":");
                     reply = currentRound.checkAnswer(parts[1].trim());
                     writeToClient(reply);
                     currentRound.incrementAnsweredQuestions();
                 }
+                if (request.startsWith("ClientClosing")) {
+                    shutdown();
+                }
+
             }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -186,7 +203,7 @@ public class Game extends Thread {
     }
 
     public void sendGameProperties(int player) {
-        String reply = "GameProperties: " + gameRounds + ", " + questionsPerRound;
+        String reply = "GameProperties: " + amountOfGameRounds + ", " + questionsPerRound;
         if (player == 1) {
             writerPlayer1.println(reply + "|Player1");
         } else {
@@ -201,7 +218,6 @@ public class Game extends Thread {
     }
 
     public String addPrefixToCategory (String inputCategory) {
-        // Define the categories and their corresponding prefixes
         String[] entertainmentCategories = {
                 "Books", "Film", "Music", "Musicals & Theatres", "Television",
                 "Video Games", "Board Games", "Japanese Anime & Manga", "Cartoon & Animations", "Comics"
@@ -211,10 +227,8 @@ public class Game extends Thread {
                 "Computers", "Mathematics"
         };
 
-        // Check if the category matches any of the predefined ones
         boolean matched = false;
 
-        // Check if it's an entertainment category
         for (String category : entertainmentCategories) {
             if (inputCategory.equalsIgnoreCase(category)) {
                 inputCategory = "Entertainment: " + category;
@@ -223,16 +237,40 @@ public class Game extends Thread {
             }
         }
 
-        // Check if it's a science category
         if (!matched) {
             for (String category : scienceCategories) {
                 if (inputCategory.equalsIgnoreCase(category)) {
                     inputCategory = "Science: " + category;
-                    matched = true;
                     break;
                 }
             }
         }
         return inputCategory;
+    }
+
+    public void endGame() {
+        try {
+            if (player1 != null) {
+                player1.close();
+            }
+            if (player2 != null) {
+                player2.close();
+            }
+            if (writerPlayer1 != null) {
+                writerPlayer1.close();
+            }
+            if (writerPlayer2 != null) {
+                writerPlayer2.close();
+            }
+            if (readerPlayer1 != null) {
+                readerPlayer1.close();
+            }
+            if (readerPlayer2 != null) {
+                readerPlayer2.close();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException();
+        }
+
     }
 }
