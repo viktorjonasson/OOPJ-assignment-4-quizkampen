@@ -74,6 +74,13 @@ public class Client {
         }).start();
     }
 
+    public void shutdown() {
+        printWriter.println("ClientClosing");
+        if (printWriter != null) {
+            printWriter.close();
+        }
+    }
+
     public void writeToServer(String data) {
         printWriter.println(data);
     }

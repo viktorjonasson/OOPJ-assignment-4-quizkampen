@@ -84,8 +84,12 @@ public class Game extends Thread {
                 }
             }
         }
-        writerPlayer1.println("GameEnded");
-        writerPlayer2.println("GameEnded");
+        if (writerPlayer1 != null) {
+            writerPlayer1.println("GameEnded");
+        }
+        if (writerPlayer2 != null) {
+            writerPlayer2.println("GameEnded");
+        }
         endGame();
     }
 
@@ -125,7 +129,7 @@ public class Game extends Thread {
         String reply;
         String[] parts;
         try {
-            if (currentRound.answeredQuestions != 3 &&
+            if (currentRound.answeredQuestions != questionsPerRound &&
                 (currentPlayer == 1 && (request = readerPlayer1.readLine()) != null) ||
                 (currentPlayer == 2 && (request = readerPlayer2.readLine()) != null)) {
                 if (request.startsWith("PropertiesReceived")) {
@@ -144,7 +148,7 @@ public class Game extends Thread {
                 if (request.startsWith("NewGame")) {
                     sendGameProperties(1);
                 }
-                if (request.startsWith("Answer") && currentRound.answeredQuestions < 3) {
+                if (request.startsWith("Answer") && currentRound.answeredQuestions < questionsPerRound) {
                     parts = request.split(":");
                     reply = currentRound.checkAnswer(parts[1].trim());
                     writeToClient(reply);
@@ -155,8 +159,6 @@ public class Game extends Thread {
                 }
 
             }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -239,7 +241,6 @@ public class Game extends Thread {
             for (String category : scienceCategories) {
                 if (inputCategory.equalsIgnoreCase(category)) {
                     inputCategory = "Science: " + category;
-                    matched = true;
                     break;
                 }
             }

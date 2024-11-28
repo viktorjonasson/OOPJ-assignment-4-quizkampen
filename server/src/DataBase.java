@@ -17,7 +17,7 @@ public class DataBase {
     private final Set<Integer> usedCategories = new HashSet<>();
     private final Random random = new Random();
     private int amountOfQuestions = 0;
-    private Game game;
+    private final Game game;
 
     private record TriviaCategory(int id, String name) {
         public String getName() {
@@ -92,8 +92,6 @@ public class DataBase {
             // Combine the current question's shuffled answers
             combinedQuestionSet.addAll(shuffledAnswers);
         }
-
-//        return combinedQuestionSet;
     }
 
     // Helper method to unescape HTML entities
@@ -157,16 +155,6 @@ public class DataBase {
         }
 
         return categories;
-    }
-
-    public Question generateQuestion(String category) {
-        String wrongAnswer_1 = "Option 1";
-        String wrongAnswer_2 = "Option 2";
-        String wrongAnswer_3 = "Option 3";
-        String rightAnswer = "Right answer";
-        ArrayList<String> wrongAnswers = new ArrayList<>(
-                Arrays.asList(wrongAnswer_1, wrongAnswer_2, wrongAnswer_3));
-        return new Question(category, "Question 1", wrongAnswers, rightAnswer);
     }
 
     // https://opentdb.com/api_category.php

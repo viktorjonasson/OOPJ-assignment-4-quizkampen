@@ -13,7 +13,7 @@ public class ClientController {
     ClientController(GUI gui, GameLogic gameLogic, String IP, int port) {
         this.gui = gui;
         this.gameLogic = gameLogic;
-        this.client = new Client(IP, port,this);
+        this.client = new Client(IP, port, this);
         gui.gameBoard();
         initializeButtonListeners(gui.getOptionButtons());
         initializeContinueButtonListener(gui.continueBtn);
@@ -21,6 +21,7 @@ public class ClientController {
         initializeStartRoundCategoryBtn(gui.startRoundCategoryBtn);
         initializeStartRoundQuestionBtn(gui.startRoundQuestionBtn);
         initializeNewGameButtonListener(gui.startGameButton);
+        initializeWindowListener();
         gui.switchPanel(GameState.NEW_GAME);
     }
 
@@ -28,15 +29,17 @@ public class ClientController {
         gui.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                client.writeToServer("ClientClosing");
+                int response = JOptionPane.showConfirmDialog(gui, "Are you sure you want to leave?");
+                if (response == JOptionPane.YES_OPTION) {
+                    client.shutdown();
+                    gui.dispose();
+                }
             }
         });
     }
 
     void initializeNewGameButtonListener(JButton newGameBtn) {
-        newGameBtn.addActionListener(_ -> {
-            startNewGame();
-        });
+        newGameBtn.addActionListener(_ -> startNewGame());
     }
 
     void initializeContinueButtonListener(JButton continueBtn) {
@@ -45,7 +48,7 @@ public class ClientController {
             if (question.isPresent()) {
                 gui.updateQuestionPanel(question.get());
                 gui.lockContinueButton();
-            }else
+            } else
                 gui.switchPanel(GameState.SCORE_TABLE);
         });
     }
@@ -62,18 +65,18 @@ public class ClientController {
         startRoundQuestionBtn.addActionListener(_ -> gui.switchPanel(GameState.ANSWER_QUESTION));
     }
 
-    void scoreButtonCategoryMode(){
-            gui.unLockScoreButton(gui.startRoundCategoryBtn);
-            gui.lockScoreButton(gui.startRoundQuestionBtn);
-            isCategoryChooser = true;
+    void scoreButtonCategoryMode() {
+        gui.unLockScoreButton(gui.startRoundCategoryBtn);
+        gui.lockScoreButton(gui.startRoundQuestionBtn);
+        isCategoryChooser = true;
     }
 
-    void scoreButtonQuestionMode(){
-        if (isCategoryChooser){
+    void scoreButtonQuestionMode() {
+        if (isCategoryChooser) {
             gui.lockScoreButton(gui.startRoundCategoryBtn);
             gui.waiting.setVisible(true);
             isCategoryChooser = false;
-        }else{
+        } else {
             gui.unLockScoreButton(gui.startRoundQuestionBtn);
             gui.waiting.setVisible(false);
         }
@@ -106,9 +109,9 @@ public class ClientController {
         if (question.isPresent()) {
             gui.lockContinueButton();
             gui.updateQuestionPanel(question.get());
-            if (isCategoryChooser){
+            if (isCategoryChooser) {
                 gui.switchPanel(GameState.ANSWER_QUESTION);
-            }else{
+            } else {
                 gui.switchPanel(GameState.SCORE_TABLE);
             }
         } else {
@@ -156,9 +159,7 @@ public class ClientController {
         gui.loadProperties(gameRounds, questionsPerRound);
         if (player == 2) {
             gui.startGameButton.removeActionListener(gui.startGameButton.getActionListeners()[0]);
-            gui.startGameButton.addActionListener(_ -> {
-                gui.switchPanel(GameState.SCORE_TABLE);
-            });
+            gui.startGameButton.addActionListener(_ -> gui.switchPanel(GameState.SCORE_TABLE));
         } else {
             gui.switchPanel(GameState.SCORE_TABLE);
         }
