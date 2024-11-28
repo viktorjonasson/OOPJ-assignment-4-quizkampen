@@ -1,6 +1,8 @@
 # Ignore IntelliJ IDEA specific files
 .idea/
 
+.libs/
+
 # Ignore project-specific module files
 *.iml
 
