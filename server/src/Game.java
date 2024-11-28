@@ -120,6 +120,42 @@ public class Game extends Thread {
                 }
                 if (request.startsWith("Category")) {
                     parts = request.split(":");
+
+                    String str = parts[1].trim();
+
+                    // Define the categories and their corresponding prefixes
+                    String[] entertainmentCategories = {
+                            "Books", "Film", "Music", "Musicals & Theatres", "Television",
+                            "Video Games", "Board Games", "Japanese Anime & Manga", "Cartoon & Animations", "Comics"
+                    };
+
+                    String[] scienceCategories = {
+                            "Computers", "Mathematics"
+                    };
+
+                    // Check if the category matches any of the predefined ones
+                    boolean matched = false;
+
+                    // Check if it's an entertainment category
+                    for (String category : entertainmentCategories) {
+                        if (str.equalsIgnoreCase(category)) {
+                            str = "Entertainment: " + category;
+                            matched = true;
+                            break;
+                        }
+                    }
+
+                    // Check if it's a science category
+                    if (!matched) {
+                        for (String category : scienceCategories) {
+                            if (str.equalsIgnoreCase(category)) {
+                                str = "Science: " + category;
+                                matched = true;
+                                break;
+                            }
+                        }
+                    }
+
                     currentRound.setCategory(parts[1]);
                     writeToClient(currentRound.getQuestions());
                 }
