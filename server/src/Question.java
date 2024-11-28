@@ -49,6 +49,7 @@ public class Question {
         shuffledQuestions.addFirst(question + "≈");
         String output = shuffledQuestions.toString();
         output = output.substring(1, output.length() - 1);
+        System.out.println(output);
         return output;
     }
 }
