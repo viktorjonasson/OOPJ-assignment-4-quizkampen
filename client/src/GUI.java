@@ -1,6 +1,7 @@
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.util.Arrays;
 import java.util.Optional;
 
 public class GUI extends JFrame {
@@ -296,7 +297,10 @@ public class GUI extends JFrame {
     public void updateCategoryPanel(String[] categoryChoice) {
         if (categoryButtons.length == categoryChoice.length) {
             for (int i = 0; i < categoryChoice.length; i++) {
-                categoryButtons[i].setText(categoryChoice[i]);
+                String[] cleanedCategoryChoice = Arrays.stream(categoryChoice)
+                        .map(s -> s.replaceAll("^\\s*,?\\s*|\\s*$", ""))
+                        .toArray(String[]::new);
+                categoryButtons[i].setText(cleanedCategoryChoice[i]);
                 categoryButtons[i].setEnabled(true);
             }
         } else {

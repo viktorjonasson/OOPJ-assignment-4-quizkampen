@@ -120,43 +120,8 @@ public class Game extends Thread {
                 }
                 if (request.startsWith("Category")) {
                     parts = request.split(":");
-
-                    String str = parts[1].trim();
-
-                    // Define the categories and their corresponding prefixes
-                    String[] entertainmentCategories = {
-                            "Books", "Film", "Music", "Musicals & Theatres", "Television",
-                            "Video Games", "Board Games", "Japanese Anime & Manga", "Cartoon & Animations", "Comics"
-                    };
-
-                    String[] scienceCategories = {
-                            "Computers", "Mathematics"
-                    };
-
-                    // Check if the category matches any of the predefined ones
-                    boolean matched = false;
-
-                    // Check if it's an entertainment category
-                    for (String category : entertainmentCategories) {
-                        if (str.equalsIgnoreCase(category)) {
-                            str = "Entertainment: " + category;
-                            matched = true;
-                            break;
-                        }
-                    }
-
-                    // Check if it's a science category
-                    if (!matched) {
-                        for (String category : scienceCategories) {
-                            if (str.equalsIgnoreCase(category)) {
-                                str = "Science: " + category;
-                                matched = true;
-                                break;
-                            }
-                        }
-                    }
-
-                    currentRound.setCategory(parts[1]);
+                    String cleanedString = addPrefixToCategory(parts[1].trim());
+                    currentRound.setCategory(cleanedString);
                     writeToClient(currentRound.getQuestions());
                 }
                 if (request.startsWith("NewGame")) {
@@ -225,5 +190,41 @@ public class Game extends Thread {
         String player1Result = "Player1Res: " + Arrays.deepToString(player1Res);
         String player2Result = "Player2Res: " + Arrays.deepToString(player2Res);
         writeToClient("PlayerResults: " + player1Result + player2Result);
+    }
+
+    public String addPrefixToCategory (String inputCategory) {
+        // Define the categories and their corresponding prefixes
+        String[] entertainmentCategories = {
+                "Books", "Film", "Music", "Musicals & Theatres", "Television",
+                "Video Games", "Board Games", "Japanese Anime & Manga", "Cartoon & Animations", "Comics"
+        };
+
+        String[] scienceCategories = {
+                "Computers", "Mathematics"
+        };
+
+        // Check if the category matches any of the predefined ones
+        boolean matched = false;
+
+        // Check if it's an entertainment category
+        for (String category : entertainmentCategories) {
+            if (inputCategory.equalsIgnoreCase(category)) {
+                inputCategory = "Entertainment: " + category;
+                matched = true;
+                break;
+            }
+        }
+
+        // Check if it's a science category
+        if (!matched) {
+            for (String category : scienceCategories) {
+                if (inputCategory.equalsIgnoreCase(category)) {
+                    inputCategory = "Science: " + category;
+                    matched = true;
+                    break;
+                }
+            }
+        }
+        return inputCategory;
     }
 }
