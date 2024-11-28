@@ -255,7 +255,6 @@ public class GUI extends JFrame {
             // Player 2
             if (player2IncomingRes[i] == 1) {
                 player2Results[i].setText(correctAnswerLabel);
-                totResO++;  //Provar poängräkning här ...
             } else if (player2IncomingRes[i] == -1) {
                 player2Results[i].setText(wrongAnswerLabel);
             } else {
