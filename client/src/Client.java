@@ -36,7 +36,7 @@ public class Client {
                         }
                         if (serverReply.startsWith("QuestionSet")) { //+CurrentPlayer
                             //Låser upp knapp för att gå vidare i spel
-                            parts = serverReply.split(": ");
+                            parts = serverReply.split("≡ ");
                             String questionAndAnswers = parts[1];
                             clientController.handleQuestionSet(questionAndAnswers);
                             //Låser upp knapp för att gå vidare i spel

@@ -23,20 +23,21 @@ public class Game extends Thread {
     boolean player1Initiated = false;
     boolean player2Initiated = false;
     private final DataBase db;
+    Round round;
 
     Game(Socket player1Socket, int gameId) throws IOException {
         readGameProperties();
         player1Res = new int[gameRounds][questionsPerRound];
         player2Res = new int[gameRounds][questionsPerRound];
         this.player1 = player1Socket;
-        this.db = new DataBase(questionsPerRound);
+        this.db = new DataBase(questionsPerRound, this);
         writerPlayer1 = new PrintWriter(player1.getOutputStream(), true);
         GAME_ID = gameId;
+        this.round = new Round(db, this);
         start();
     }
 
     public void run() {
-        Round round = new Round(db, this);
         while (true) {
             if (player1 != null && player2 != null) {
                 if (!gameStarted) {
@@ -51,7 +52,11 @@ public class Game extends Thread {
                     if (round.answeredQuestions == questionsPerRound && !round.finished()) {
                         sendResults(); //To P1
                         switchPlayer();
-                        writeToClient(round.getQuestions()); //To P2
+                        try {
+                            writeToClient(round.getQuestions()); //To P2
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
                         round.answeredQuestions = 0;
                     }
                     if (round.finished()) {
@@ -120,7 +125,9 @@ public class Game extends Thread {
                 }
                 if (request.startsWith("Category")) {
                     parts = request.split(":");
-                    currentRound.setCategory(parts[1]);
+                    String cleanedString = addPrefixToCategory(parts[1].trim());
+                    currentRound.setCategory(cleanedString);
+                    //
                     writeToClient(currentRound.getQuestions());
                 }
                 if (request.startsWith("NewGame")) {
@@ -134,6 +141,8 @@ public class Game extends Thread {
                 }
             }
         } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
@@ -189,5 +198,41 @@ public class Game extends Thread {
         String player1Result = "Player1Res: " + Arrays.deepToString(player1Res);
         String player2Result = "Player2Res: " + Arrays.deepToString(player2Res);
         writeToClient("PlayerResults: " + player1Result + player2Result);
+    }
+
+    public String addPrefixToCategory (String inputCategory) {
+        // Define the categories and their corresponding prefixes
+        String[] entertainmentCategories = {
+                "Books", "Film", "Music", "Musicals & Theatres", "Television",
+                "Video Games", "Board Games", "Japanese Anime & Manga", "Cartoon & Animations", "Comics"
+        };
+
+        String[] scienceCategories = {
+                "Computers", "Mathematics"
+        };
+
+        // Check if the category matches any of the predefined ones
+        boolean matched = false;
+
+        // Check if it's an entertainment category
+        for (String category : entertainmentCategories) {
+            if (inputCategory.equalsIgnoreCase(category)) {
+                inputCategory = "Entertainment: " + category;
+                matched = true;
+                break;
+            }
+        }
+
+        // Check if it's a science category
+        if (!matched) {
+            for (String category : scienceCategories) {
+                if (inputCategory.equalsIgnoreCase(category)) {
+                    inputCategory = "Science: " + category;
+                    matched = true;
+                    break;
+                }
+            }
+        }
+        return inputCategory;
     }
 }
