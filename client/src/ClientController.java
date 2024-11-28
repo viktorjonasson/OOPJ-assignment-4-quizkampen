@@ -18,7 +18,14 @@ public class ClientController {
         initializeCategoryButtons(gui.getCategoryButtons());
         initializeStartRoundCategoryBtn(gui.startRoundCategoryBtn);
         initializeStartRoundQuestionBtn(gui.startRoundQuestionBtn);
-        startNewGame();
+        initializeNewGameButtonListener(gui.startGameButton);
+        gui.switchPanel(GameState.NEW_GAME);
+    }
+
+    void initializeNewGameButtonListener(JButton newGameBtn) {
+        newGameBtn.addActionListener(_ -> {
+            startNewGame();
+        });
     }
 
     void initializeContinueButtonListener(JButton continueBtn) {
@@ -105,7 +112,7 @@ public class ClientController {
     }
 
     void startNewGame() {
-        gui.switchPanel(GameState.NEW_GAME);
+//        gui.switchPanel(GameState.CHOOSE_CATEGORY);
         String request = "NewGame";
         client.writeToServer(request);
     }
@@ -132,6 +139,7 @@ public class ClientController {
         gameRounds = Integer.parseInt(propertiesPart[0].trim());
         questionsPerRound = Integer.parseInt(propertiesPart[1].trim());
         gui.loadProperties(gameRounds, questionsPerRound);
+        gui.switchPanel(GameState.SCORE_TABLE);
     }
 
     public void handlePlayerResults(String serverReply) {
