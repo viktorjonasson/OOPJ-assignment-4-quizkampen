@@ -43,11 +43,12 @@ public class GUI extends JFrame {
     JLabel player2Name = new JLabel("Spelare 2", SwingConstants.CENTER);
 
         //totalResultStuff
+
         JPanel totalResult = new JPanel();
-        int totResP = 0;
-        int totResO = 0;
-        JLabel totalResultPlayer = new JLabel(String.valueOf(totResP), SwingConstants.CENTER);
-        JLabel totalResultOpponent = new JLabel(String.valueOf(totResP), SwingConstants.CENTER);
+        int totResPlayer = 0;
+        int totResOpponent = 0;
+        JLabel totalResultPlayer = new JLabel(String.valueOf(totResPlayer), SwingConstants.CENTER);
+        JLabel totalResultOpponent = new JLabel(String.valueOf(totResOpponent), SwingConstants.CENTER);
         JLabel totalResultText = new JLabel("–", SwingConstants.CENTER);
 
     JLabel waiting = new JLabel("Snart din tur att spela ...", SwingConstants.CENTER);
@@ -281,8 +282,8 @@ public class GUI extends JFrame {
     }
 
     public void updateTotalResultPanel(){
-        totalResultPlayer.setText(String.valueOf(totResP));
-        totalResultOpponent.setText(String.valueOf(totResO));
+        totalResultPlayer.setText(String.valueOf(totResPlayer));
+        totalResultOpponent.setText(String.valueOf(totResOpponent));
     }
 
     //Ska den här metoden bort nu? Verkar inte användas.
@@ -352,11 +353,22 @@ public class GUI extends JFrame {
             roundIndicators[i].setHorizontalAlignment(SwingConstants.CENTER);
         }
 
-        totalResult.add(totalResultPlayer);
-        totalResult.add(totalResultText);
-        totalResult.add(totalResultOpponent);
         scorePanel.add(player1ResultsPanel, BorderLayout.WEST);
         scorePanel.add(roundIndicatorPanel, BorderLayout.CENTER);
         scorePanel.add(player2ResultsPanel, BorderLayout.EAST);
     }
+
+    public void setTotalResultPanel(int player){
+        if (player==1){
+            totalResult.add(totalResultPlayer);
+            totalResult.add(totalResultText);
+            totalResult.add(totalResultOpponent);
+        }else{
+            totalResult.add(totalResultOpponent);
+            totalResult.add(totalResultText);
+            totalResult.add(totalResultPlayer);
+        }
+
+    }
+
 }
