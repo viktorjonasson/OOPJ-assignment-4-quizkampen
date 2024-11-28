@@ -300,7 +300,7 @@ public class GUI extends JFrame {
     public void updateQuestionPanel(String[] questionSet) {
         if (questionSet.length - 1 == optionButtons.length) {
             resetButtonColor(optionButtons);
-            question.setText(questionSet[0].trim());
+            question.setText("<html>" + questionSet[0].trim() + "</html>");
             for (int i = 0; i < optionButtons.length; i++) {
                 optionButtons[i].setEnabled(true);
                 optionButtons[i].setText(questionSet[i + 1].trim());

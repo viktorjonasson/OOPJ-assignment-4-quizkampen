@@ -15,6 +15,22 @@ public class Question {
         this.rightAnswer = rightAnswer;
     }
 
+    public void setQuestion(String question) {
+        this.question = question;
+    }
+
+    public void setWrongAnswers(ArrayList<String> wrongAnswers) {
+        this.wrongAnswers = wrongAnswers;
+    }
+
+    public void setRightAnswer(String rightAnswer) {
+        this.rightAnswer = rightAnswer;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
     public String getQuestion() {
         return category;
     }
