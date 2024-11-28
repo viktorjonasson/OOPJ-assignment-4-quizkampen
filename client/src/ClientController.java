@@ -112,7 +112,6 @@ public class ClientController {
     }
 
     void startNewGame() {
-//        gui.switchPanel(GameState.CHOOSE_CATEGORY);
         String request = "NewGame";
         client.writeToServer(request);
     }
@@ -135,11 +134,19 @@ public class ClientController {
         int gameRounds, questionsPerRound;
         String[] propertiesPart = initialPart[0].split(",");
         String playerString = initialPart[1].replace("Player", "");
-        gameLogic.setPlayer(Integer.parseInt(playerString));
+        int player = Integer.parseInt(playerString);
+        gameLogic.setPlayer(player);
         gameRounds = Integer.parseInt(propertiesPart[0].trim());
         questionsPerRound = Integer.parseInt(propertiesPart[1].trim());
         gui.loadProperties(gameRounds, questionsPerRound);
-        gui.switchPanel(GameState.SCORE_TABLE);
+        if (player == 2) {
+            gui.startGameButton.removeActionListener(gui.startGameButton.getActionListeners()[0]);
+            gui.startGameButton.addActionListener(_ -> {
+                gui.switchPanel(GameState.SCORE_TABLE);
+            });
+        } else {
+            gui.switchPanel(GameState.SCORE_TABLE);
+        }
     }
 
     public void handlePlayerResults(String serverReply) {
