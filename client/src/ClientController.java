@@ -32,18 +32,14 @@ public class ClientController {
                 int response = JOptionPane.showConfirmDialog(gui, "Are you sure you want to leave?");
                 if (response == JOptionPane.YES_OPTION) {
                     client.shutdown();
-                    SwingUtilities.invokeLater(()->{
-                        gui.dispose();
-                    });
+                    SwingUtilities.invokeLater(()-> gui.dispose());
                 }
             }
         });
     }
 
     void initializeNewGameButtonListener(JButton newGameBtn) {
-        newGameBtn.addActionListener(_ -> {
-            startNewGame();
-        });
+        newGameBtn.addActionListener(_ -> startNewGame());
     }
 
     void initializeContinueButtonListener(JButton continueBtn) {
@@ -165,9 +161,7 @@ public class ClientController {
         gui.loadProperties(gameRounds, questionsPerRound);
         if (player == 2) {
             gui.startGameButton.removeActionListener(gui.startGameButton.getActionListeners()[0]);
-            gui.startGameButton.addActionListener(_ -> {
-                gui.switchPanel(GameState.SCORE_TABLE);
-            });
+            gui.startGameButton.addActionListener(_ -> gui.switchPanel(GameState.SCORE_TABLE));
         } else {
             gui.switchPanel(GameState.SCORE_TABLE);
         }
