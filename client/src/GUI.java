@@ -39,7 +39,7 @@ public class GUI extends JFrame {
     //ScorePanelStuff
     JPanel scorePanel = new JPanel(new BorderLayout());
     JPanel headerPanel = new JPanel(new BorderLayout());
-    JLabel gameStatus = new JLabel("Deras tur", SwingConstants.CENTER); //Placeholder x4, sätt dynamiskt sen.
+    JLabel gameStatus = new JLabel("", SwingConstants.CENTER); //Placeholder x4, sätt dynamiskt sen.
     JLabel player1Name = new JLabel("Spelare 1", SwingConstants.CENTER);
     JLabel player2Name = new JLabel("Spelare 2", SwingConstants.CENTER);
 
@@ -341,6 +341,11 @@ public class GUI extends JFrame {
         player2ResultsPanel = new JPanel(new GridLayout(gameRounds, questionsPerRound));
         player1Results = new JLabel[gameRounds * questionsPerRound];
         player2Results = new JLabel[gameRounds * questionsPerRound];
+        if (playerID == 1) {
+            gameStatus.setText("Your turn");
+        } else {
+            gameStatus.setText("Their turn");
+        }
 
         assert player1Results.length == player2Results.length;
         for (int i = 0; i < player1Results.length; i++) {

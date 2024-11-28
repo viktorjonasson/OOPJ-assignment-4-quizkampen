@@ -60,10 +60,12 @@ public class ClientController {
     void scoreButtonQuestionMode(){
         if (isCategoryChooser){
             gui.lockScoreButton(gui.startRoundCategoryBtn);
+            gui.gameStatus.setText("Their turn");
             gui.waiting.setVisible(true);
             isCategoryChooser = false;
         }else{
             gui.unLockScoreButton(gui.startRoundQuestionBtn);
+            gui.gameStatus.setText("Your turn");
             gui.waiting.setVisible(false);
         }
     }
