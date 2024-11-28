@@ -337,6 +337,11 @@ public class GUI extends JFrame {
         player2ResultsPanel = new JPanel(new GridLayout(gameRounds, questionsPerRound));
         player1Results = new JLabel[gameRounds * questionsPerRound];
         player2Results = new JLabel[gameRounds * questionsPerRound];
+        if (playerID == 1) {
+            gameStatus.setText("Your turn");
+        } else {
+            gameStatus.setText("Their turn");
+        }
 
         assert player1Results.length == player2Results.length;
         for (int i = 0; i < player1Results.length; i++) {
