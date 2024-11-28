@@ -271,6 +271,5 @@ public class Game extends Thread {
         } catch (IOException e) {
             throw new RuntimeException();
         }
-
     }
 }

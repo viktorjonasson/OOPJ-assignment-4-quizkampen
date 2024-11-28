@@ -157,7 +157,6 @@ public class DataBase {
         return categories;
     }
 
-    // https://opentdb.com/api_category.php
     public void addTriviaCategories() {
         triviaCategories.put(9, new TriviaCategory(9, "General Knowledge"));
         triviaCategories.put(10, new TriviaCategory(10, "Entertainment: Books"));

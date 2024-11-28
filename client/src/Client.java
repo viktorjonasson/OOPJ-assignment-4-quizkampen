@@ -43,7 +43,7 @@ public class Client {
                             clientController.scoreButtonQuestionMode();
                         }
                         if (serverReply.startsWith("Solution")) {
-                            //Update score panel accordingly. UPDATE: Implemented in handleSolution/gameLogic
+                            //Update score panel accordingly.
                             parts = serverReply.split(":");
                             clientController.handleSolution(parts[1].trim());
                         }

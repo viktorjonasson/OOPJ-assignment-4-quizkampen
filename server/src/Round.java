@@ -28,8 +28,7 @@ public class Round {
             }
         }
         questionSet += temp + "]";
-        String output = questionSet;
-        return output;
+        return questionSet;
     }
 
     public void incrementAnsweredQuestions() {

@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Question {
-    String category;
+    private final String category;
     String question;
     ArrayList<String> wrongAnswers;
     String rightAnswer;

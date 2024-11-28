@@ -3,10 +3,10 @@ import java.util.List;
 import java.util.Optional;
 
 public class GameLogic {
-    ArrayList<String[]> questions;
-    private GUI gui;
-    int currentQuestion = 0;
-    int player = 0;
+    private ArrayList<String[]> questions;
+    private final GUI gui;
+    private int currentQuestion = 0;
+    private int player = 0;
 
     GameLogic(GUI gui) {
         this.gui = gui;
