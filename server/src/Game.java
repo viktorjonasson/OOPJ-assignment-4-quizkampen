@@ -60,11 +60,8 @@ public class Game extends Thread {
                         switchPlayer();
                         sendCategoriesToClient();
                         currentRound++;
-                        //Följande är en temporär lösning. Vi behöver bygga ut logiken
                         currentQuestion = 0;
-                        round.answeredQuestions = 0;
-                        round.player1AnsweredQuestions = 0;
-                        round.player2AnsweredQuestions = 0;
+                        round.resetCounters();
                     }
                 }
             } else {

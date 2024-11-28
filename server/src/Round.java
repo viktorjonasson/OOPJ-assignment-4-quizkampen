@@ -47,6 +47,12 @@ public class Round {
         return reply;
     }
 
+    public void resetCounters() {
+        answeredQuestions = 0;
+        player1AnsweredQuestions = 0;
+        player2AnsweredQuestions = 0;
+    }
+
     public boolean finished() {
         return player1AnsweredQuestions == game.questionsPerRound
                && player2AnsweredQuestions == game.questionsPerRound;

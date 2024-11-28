@@ -37,8 +37,6 @@ public class Server {
         ++GameID;
         Game newGameRoom = new Game(incomingConnection, GameID);
         pendingGames.add(newGameRoom);
-        //Send amount of rounds
-//        newGameRoom.sendGameProperties(1);
     }
 
     public boolean connectPlayerToGame(Socket playerConnection) {
@@ -50,7 +48,6 @@ public class Server {
                 tempGame.player2Initiated = true;
                 tempGame.sendGameProperties(2);
             }
-            //Send amount of rounds
             return true;
         } catch (NullPointerException | IOException e) {
             return false;
