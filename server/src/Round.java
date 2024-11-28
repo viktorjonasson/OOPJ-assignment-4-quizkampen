@@ -15,11 +15,12 @@ public class Round {
     }
 
     public void setCategory(String category) {
+
         this.category = category;
     }
 
-    public String getQuestions() {
-        ArrayList<String> questionSet = db.getQuestionSet();
+    public String getQuestions() throws Exception {
+        ArrayList<String> questionSet = db.getQuestionSet(db.getCategoryID(category));
         //getresult()
         return "QuestionSet: " + questionSet.toString();
     }

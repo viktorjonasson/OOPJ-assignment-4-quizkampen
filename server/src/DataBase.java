@@ -18,7 +18,11 @@ public class DataBase {
     private int amountOfQuestions = 0;
     private final String API_URL_QUESTIONS =
             "https://opentdb.com/api.php?amount=" + amountOfQuestions + "&difficulty=medium";
-    private record TriviaCategory(int id, String name) { }
+    private record TriviaCategory(int id, String name) {
+        public String getName() {
+            return name;
+        }
+    }
 
     DataBase (int amountOfQuestions) {
         triviaCategories = new HashMap<>();
@@ -93,26 +97,46 @@ public class DataBase {
                 .replace("&gt;", ">");
     }
 
+    public int getCategoryID(String category) {
+       Map<TriviaCategory, Integer> triviaCategoryToKey = new HashMap<>();
 
+        for (Map.Entry<Integer, TriviaCategory> entry : triviaCategories.entrySet()) {
+            triviaCategoryToKey.put(entry.getValue(), entry.getKey());
+        }
 
-
-    public ArrayList<String> getQuestionSet() {
-        String category = "Category";
-        Question question_1 = generateQuestion(category);
-        Question question_2 = generateQuestion(category);
-        Question question_3 = generateQuestion(category);
-        ArrayList<String> question1Shuffled = question_1.getShuffled();
-        question1Shuffled.add("|");
-        ArrayList<String> question2Shuffled = question_2.getShuffled();
-        question2Shuffled.add("|");
-        ArrayList<String> question3Shuffled = question_3.getShuffled();
-
-        return new ArrayList<>() {{
-            addAll(question1Shuffled);
-            addAll(question2Shuffled);
-            addAll(question3Shuffled);
-        }};
+        TriviaCategory triviaCategory = getTriviaCategory(category);
+        return triviaCategoryToKey.get(triviaCategory);
     }
+
+    public TriviaCategory getTriviaCategory(String categoryName) {
+        // Iterate over the map to find the TriviaCategory by name
+        for (Map.Entry<Integer, TriviaCategory> entry : triviaCategories.entrySet()) {
+            if (entry.getValue().getName().equalsIgnoreCase(categoryName)) {
+                return entry.getValue();
+            }
+        }
+        // Return null if no matching category is found
+        return null;
+    }
+
+
+//    public ArrayList<String> getQuestionSet() {
+//        String category = "Category";
+//        Question question_1 = generateQuestion(category);
+//        Question question_2 = generateQuestion(category);
+//        Question question_3 = generateQuestion(category);
+//        ArrayList<String> question1Shuffled = question_1.getShuffled();
+//        question1Shuffled.add("|");
+//        ArrayList<String> question2Shuffled = question_2.getShuffled();
+//        question2Shuffled.add("|");
+//        ArrayList<String> question3Shuffled = question_3.getShuffled();
+//
+//        return new ArrayList<>() {{
+//            addAll(question1Shuffled);
+//            addAll(question2Shuffled);
+//            addAll(question3Shuffled);
+//        }};
+//    }
 
     public String[] getCategorySet() {
         Set<Integer> availableCategories = new HashSet<>(triviaCategories.keySet());

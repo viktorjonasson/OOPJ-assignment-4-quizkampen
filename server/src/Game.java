@@ -51,7 +51,11 @@ public class Game extends Thread {
                     if (round.answeredQuestions == questionsPerRound && !round.finished()) {
                         sendResults(); //To P1
                         switchPlayer();
-                        writeToClient(round.getQuestions()); //To P2
+                        try {
+                            writeToClient(round.getQuestions()); //To P2
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
                         round.answeredQuestions = 0;
                     }
                     if (round.finished()) {
@@ -122,6 +126,7 @@ public class Game extends Thread {
                     parts = request.split(":");
                     String cleanedString = addPrefixToCategory(parts[1].trim());
                     currentRound.setCategory(cleanedString);
+                    //
                     writeToClient(currentRound.getQuestions());
                 }
                 if (request.startsWith("NewGame")) {
@@ -135,6 +140,8 @@ public class Game extends Thread {
                 }
             }
         } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
