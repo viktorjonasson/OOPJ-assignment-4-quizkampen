@@ -41,7 +41,15 @@ public class GUI extends JFrame {
     JLabel gameStatus = new JLabel("Deras tur", SwingConstants.CENTER); //Placeholder x4, sätt dynamiskt sen.
     JLabel player1Name = new JLabel("Spelare 1", SwingConstants.CENTER);
     JLabel player2Name = new JLabel("Spelare 2", SwingConstants.CENTER);
-    JLabel totalResult = new JLabel("0 – 0", SwingConstants.CENTER);
+
+        //totalResultStuff
+        JPanel totalResult = new JPanel();
+        int totResP = 0;
+        int totResO = 0;
+        JLabel totalResultPlayer = new JLabel(String.valueOf(totResP), SwingConstants.CENTER);
+        JLabel totalResultOpponent = new JLabel(String.valueOf(totResP), SwingConstants.CENTER);
+        JLabel totalResultText = new JLabel("–", SwingConstants.CENTER);
+
     JLabel waiting = new JLabel("Snart din tur att spela ...", SwingConstants.CENTER);
     JPanel player1ResultsPanel = new JPanel(new GridLayout(6, 3));
     JPanel scoreButtonPanel = new JPanel(new BorderLayout());
@@ -247,12 +255,14 @@ public class GUI extends JFrame {
             // Player 2
             if (player2IncomingRes[i] == 1) {
                 player2Results[i].setText(correctAnswerLabel);
+                totResO++;  //Provar poängräkning här ...
             } else if (player2IncomingRes[i] == -1) {
                 player2Results[i].setText(wrongAnswerLabel);
             } else {
                 player2Results[i].setText(notAnsweredLabel);
             }
         }
+        updateTotalResultPanel();
     }
 
     public void updateLocalResultLabel(int labelIndex, boolean correctAnswer, int player) {
@@ -269,6 +279,11 @@ public class GUI extends JFrame {
                 player2Results[labelIndex].setText(wrongAnswerLabel);
             }
         }
+    }
+
+    public void updateTotalResultPanel(){
+        totalResultPlayer.setText(String.valueOf(totResP));
+        totalResultOpponent.setText(String.valueOf(totResO));
     }
 
     //Ska den här metoden bort nu? Verkar inte användas.
@@ -338,6 +353,9 @@ public class GUI extends JFrame {
             roundIndicators[i].setHorizontalAlignment(SwingConstants.CENTER);
         }
 
+        totalResult.add(totalResultPlayer);
+        totalResult.add(totalResultText);
+        totalResult.add(totalResultOpponent);
         scorePanel.add(player1ResultsPanel, BorderLayout.WEST);
         scorePanel.add(roundIndicatorPanel, BorderLayout.CENTER);
         scorePanel.add(player2ResultsPanel, BorderLayout.EAST);

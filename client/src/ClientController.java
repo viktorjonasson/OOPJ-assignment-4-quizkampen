@@ -121,12 +121,14 @@ public class ClientController {
         String[] parts = solution.split(",");
         if (parts[1].trim().equalsIgnoreCase("true")) {
             correctAnswer = true;
+            gui.totResP++;
         }
         gameLogic.updateScorePanel(correctAnswer);
         Optional<JButton> pressedButton = gui.getButton(parts[0]);
         if (pressedButton.isPresent()) {
             gui.changeColor(pressedButton.get(), correctAnswer);
         }
+        gui.updateTotalResultPanel();
     }
 
     public void handleProperties(String serverReply) {
