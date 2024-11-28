@@ -52,8 +52,18 @@ public class Client {
                             clientController.handlePlayerResults(parts[1].trim());
                             //Ylva: Ändra score-skärm
                         }
+                        if (serverReply.startsWith("GameEnded")) {
+                            break;
+                        }
                     }
                 }
+                if (printWriter != null) {
+                    printWriter.close();
+                }
+                socket.close();
+                clientController.gui.switchPanel(GameState.SCORE_TABLE);
+                clientController.gui.lockScoreButton(clientController.gui.startRoundCategoryBtn);
+                clientController.gui.waiting.setVisible(false);
             } catch (IOException e) {
                 System.err.println("IO Error: " + e.getMessage());
             } finally {
@@ -62,6 +72,13 @@ public class Client {
                 }
             }
         }).start();
+    }
+
+    public void shutdown() {
+        printWriter.println("ClientClosing");
+        if (printWriter != null) {
+            printWriter.close();
+        }
     }
 
     public void writeToServer(String data) {
