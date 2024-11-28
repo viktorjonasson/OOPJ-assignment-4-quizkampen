@@ -43,7 +43,7 @@ public class Round {
     public String checkAnswer(String answer) {
         boolean rightAnswer;
         String reply = "Solution: ";
-        if (answer.equals("Right answer")) {
+        if (answer.equals(questions[game.currentQuestion].rightAnswer)) {
             reply += answer + ", true";
             rightAnswer = true;
         } else {
