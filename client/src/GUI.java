@@ -4,7 +4,7 @@ import java.awt.*;
 import java.util.Optional;
 
 public class GUI extends JFrame {
-
+    int playerID;
     //GUI Setup
     Border outerPadding = BorderFactory.createEmptyBorder(20, 40, 30, 40);
     Border optionButtonsPadding = BorderFactory.createEmptyBorder(20, 0, 20, 0);
@@ -243,10 +243,14 @@ public class GUI extends JFrame {
         assert player1Results.length == player1IncomingRes.length;
         assert player1Results.length == player2Results.length;
 
+        int player1 = 0;
+        int player2 = 0;
+
         for (int i = 0; i < player1Results.length; i++) {
             // Player 1
             if (player1IncomingRes[i] == 1) {
                 player1Results[i].setText(correctAnswerLabel);
+                player1++;
             } else if (player1IncomingRes[i] == -1) {
                 player1Results[i].setText(wrongAnswerLabel);
             } else {
@@ -256,11 +260,17 @@ public class GUI extends JFrame {
             // Player 2
             if (player2IncomingRes[i] == 1) {
                 player2Results[i].setText(correctAnswerLabel);
+                player2++;
             } else if (player2IncomingRes[i] == -1) {
                 player2Results[i].setText(wrongAnswerLabel);
             } else {
                 player2Results[i].setText(notAnsweredLabel);
             }
+        }
+        if (playerID==1){
+            totResOpponent = player2;
+        }else{
+            totResOpponent = player1;
         }
         updateTotalResultPanel();
     }
@@ -279,11 +289,6 @@ public class GUI extends JFrame {
                 player2Results[labelIndex].setText(wrongAnswerLabel);
             }
         }
-    }
-
-    public void updateTotalResultPanel(){
-        totalResultPlayer.setText(String.valueOf(totResPlayer));
-        totalResultOpponent.setText(String.valueOf(totResOpponent));
     }
 
     //Ska den här metoden bort nu? Verkar inte användas.
@@ -368,7 +373,10 @@ public class GUI extends JFrame {
             totalResult.add(totalResultText);
             totalResult.add(totalResultPlayer);
         }
-
     }
 
+    public void updateTotalResultPanel(){
+        totalResultPlayer.setText(String.valueOf(totResPlayer));
+        totalResultOpponent.setText(String.valueOf(totResOpponent));
+    }
 }
