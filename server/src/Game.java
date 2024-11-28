@@ -114,7 +114,7 @@ public class Game extends Thread {
         String reply;
         String[] parts;
         try {
-            if (currentRound.answeredQuestions != 3 &&
+            if (currentRound.answeredQuestions != questionsPerRound &&
                 (currentPlayer == 1 && (request = readerPlayer1.readLine()) != null) ||
                 (currentPlayer == 2 && (request = readerPlayer2.readLine()) != null)) {
                 if (request.startsWith("PropertiesReceived")) {
@@ -133,7 +133,7 @@ public class Game extends Thread {
                 if (request.startsWith("NewGame")) {
                     sendGameProperties(1);
                 }
-                if (request.startsWith("Answer") && currentRound.answeredQuestions < 3) {
+                if (request.startsWith("Answer") && currentRound.answeredQuestions < questionsPerRound) {
                     parts = request.split(":");
                     reply = currentRound.checkAnswer(parts[1].trim());
                     writeToClient(reply);

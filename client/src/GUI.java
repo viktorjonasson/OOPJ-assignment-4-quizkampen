@@ -24,7 +24,6 @@ public class GUI extends JFrame {
     JPanel quizContentPanel = new JPanel(new BorderLayout());
     JPanel quizOptionPanel = new JPanel(new GridLayout(2, 2));
 
-    JLabel header = new JLabel("This kategori – Fråga N", SwingConstants.CENTER);
     JLabel question = new JLabel();
     JButton[] optionButtons = new JButton[4];
     JButton continueBtn = new JButton("Continue");
@@ -145,7 +144,6 @@ public class GUI extends JFrame {
         //QuestionPanel – Placement
         questionPanel.setVisible(true);
         questionPanel.setBorder(outerPadding);
-        questionPanel.add(header, BorderLayout.NORTH);
         questionPanel.add(quizContentPanel, BorderLayout.CENTER);
 
         quizContentPanel.add(question, BorderLayout.NORTH);
