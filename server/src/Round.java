@@ -20,6 +20,7 @@ public class Round {
 
     public String getQuestions() {
         ArrayList<String> questionSet = db.getQuestionSet();
+        //getresult()
         return "QuestionSet: " + questionSet.toString();
     }
 
